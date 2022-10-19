@@ -1,7 +1,7 @@
 package com.example.habitstracker.models;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -59,6 +59,17 @@ public class User {
     public void setHabitList(HabitList habitList) {
         this.habitList = habitList;
     }
-    //toDO equals hashcode
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+
+        return Objects.equals(userId, user.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return userId != null ? userId.hashCode() : 0;
+    }
 }

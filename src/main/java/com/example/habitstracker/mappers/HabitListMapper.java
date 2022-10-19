@@ -4,7 +4,6 @@ import com.example.habitstracker.controllers.HabitListDTO;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
 
-import javax.persistence.OneToMany;
 import java.util.List;
 
 public class HabitListMapper {

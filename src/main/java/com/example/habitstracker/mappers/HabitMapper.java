@@ -5,7 +5,6 @@ import com.example.habitstracker.models.Color;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.Priority;
-
 import org.springframework.stereotype.Component;
 
 

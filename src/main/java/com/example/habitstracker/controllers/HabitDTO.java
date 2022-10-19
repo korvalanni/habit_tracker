@@ -4,14 +4,16 @@ import com.example.habitstracker.models.Color;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.Priority;
 
+import java.util.Objects;
+
 public class HabitDTO {
 
     private Long id;
-    private HabitList habitList; // foreign key какая аннотация???
+    private HabitList habitList;
     private String name;
     private String description;
     private Priority priority;
-    private Color color; // foreign key
+    private Color color;
     private Long repeats;
 
     public Long getId() {
@@ -29,7 +31,7 @@ public class HabitDTO {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -70,5 +72,17 @@ public class HabitDTO {
         this.repeats = repeats;
     }
 
-    //toDO equals hashcode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HabitDTO habitDTO)) return false;
+
+        return Objects.equals(id, habitDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
 }

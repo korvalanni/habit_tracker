@@ -3,7 +3,6 @@ package com.example.habitstracker.services;
 import com.example.habitstracker.controllers.HabitDTO;
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
-import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.repository.HabitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ public class HabitService {
 
     @Autowired // вместо переменных подставь конкретные объекты
     public HabitService(HabitRepository habitRepository) {
-        
+
         this.habitRepository = habitRepository;
     }
 

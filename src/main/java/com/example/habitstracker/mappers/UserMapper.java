@@ -7,26 +7,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-    
-    public static User toEntity(UserDTO userDTO){
+
+    public static User toEntity(UserDTO userDTO) {
         Long id = userDTO.getUserId();
 
         String nickname = userDTO.getNickname();
 
         String password = userDTO.getPassword();
-      
+
         HabitList habitList = userDTO.getHabitList();
-        
+
         User user = new User();
         user.setUserId(id);
         user.setNickname(nickname);
         user.setPassword(password);
         user.setHabitList(habitList);
-        
+
         return user;
-    } 
-    
-    public static UserDTO toDTO(User user){
+    }
+
+    public static UserDTO toDTO(User user) {
         Long id = user.getUserId();
 
         String nickname = user.getNickname();

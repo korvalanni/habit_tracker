@@ -2,7 +2,7 @@ package com.example.habitstracker.controllers;
 
 import com.example.habitstracker.models.HabitList;
 
-import javax.persistence.OneToOne;
+import java.util.Objects;
 
 public class UserDTO {
 
@@ -11,7 +11,7 @@ public class UserDTO {
     private String nickname;
 
     private String password;
-   
+
     private HabitList habitList;
 
     public Long getUserId() {
@@ -45,5 +45,17 @@ public class UserDTO {
     public void setHabitList(HabitList habitList) {
         this.habitList = habitList;
     }
-    //toDO equals hashcode
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDTO userDTO)) return false;
+
+        return Objects.equals(userId, userDTO.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return userId != null ? userId.hashCode() : 0;
+    }
 }

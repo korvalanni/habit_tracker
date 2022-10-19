@@ -2,20 +2,22 @@ package com.example.habitstracker.models;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "habit_list")
 public class HabitList {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(mappedBy="habitList")
+    @OneToMany(mappedBy = "habitList")
     private List<Habit> habits;
 
-    public HabitList(){
-        
+    public HabitList() {
+
     }
+
     public HabitList(Long id, String name, List<Habit> habits) {
         this.id = id;
         this.name = name;
@@ -45,5 +47,17 @@ public class HabitList {
     public void setHabits(List<Habit> habits) {
         this.habits = habits;
     }
-    //toDO equals hashcode
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HabitList habitList)) return false;
+
+        return Objects.equals(id, habitList.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

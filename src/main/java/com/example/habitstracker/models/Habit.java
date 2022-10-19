@@ -1,12 +1,13 @@
 package com.example.habitstracker.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "habit")
 public class Habit {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
@@ -16,7 +17,7 @@ public class Habit {
     @ManyToOne
     private HabitList habitList;
 
-    public Habit(){
+    public Habit() {
 
     }
 
@@ -84,5 +85,17 @@ public class Habit {
     public void setHabitList(HabitList habitList) {
         this.habitList = habitList;
     }
-    //toDO equals hashcode
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Habit habit)) return false;
+
+        return Objects.equals(id, habit.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

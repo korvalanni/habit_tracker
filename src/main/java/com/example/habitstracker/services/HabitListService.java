@@ -16,7 +16,7 @@ public class HabitListService {
         this.habitListRepository = habitListRepository;
     }
 
-    public HabitList addHabitList(HabitListDTO habitListDTO){
+    public HabitList addHabitList(HabitListDTO habitListDTO) {
         HabitList habitList = HabitListMapper.toEntity(habitListDTO);
         habitListRepository.save(habitList);
         return habitList;
