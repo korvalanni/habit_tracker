@@ -1,6 +1,6 @@
 package com.example.habitstracker.mappers;
 
-import com.example.habitstracker.controllers.HabitDTO;
+import com.example.habitstracker.dto.HabitDTO;
 import com.example.habitstracker.models.Color;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;

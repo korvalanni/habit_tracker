@@ -1,6 +1,6 @@
 package com.example.habitstracker.mappers;
 
-import com.example.habitstracker.controllers.UserDTO;
+import com.example.habitstracker.dto.UserDTO;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.User;
 import org.springframework.stereotype.Component;

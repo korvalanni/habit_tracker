@@ -1,5 +1,6 @@
 package com.example.habitstracker.controllers;
 
+import com.example.habitstracker.dto.HabitDTO;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.services.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;

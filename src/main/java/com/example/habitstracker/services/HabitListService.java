@@ -1,6 +1,6 @@
 package com.example.habitstracker.services;
 
-import com.example.habitstracker.controllers.HabitListDTO;
+import com.example.habitstracker.dto.HabitListDTO;
 import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.repository.HabitListRepository;

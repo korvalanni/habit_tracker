@@ -1,4 +1,4 @@
-package com.example.habitstracker.controllers;
+package com.example.habitstracker.dto;
 
 import com.example.habitstracker.models.Color;
 import com.example.habitstracker.models.HabitList;

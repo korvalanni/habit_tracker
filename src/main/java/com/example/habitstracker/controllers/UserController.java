@@ -1,5 +1,6 @@
 package com.example.habitstracker.controllers;
 
+import com.example.habitstracker.dto.UserDTO;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.services.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
