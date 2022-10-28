@@ -1,0 +1,32 @@
+package com.example.habitstracker.services;
+
+import com.example.habitstracker.dto.UserDTO;
+import com.example.habitstracker.exceptions.UserExistException;
+import com.example.habitstracker.mappers.UserMapper;
+import com.example.habitstracker.models.User;
+import com.example.habitstracker.repository.HabitListRepository;
+import com.example.habitstracker.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class UserService {
+    private final UserRepository userRepository;
+    private final HabitListRepository habitListRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository, HabitListRepository habitListRepository) {
+        this.userRepository = userRepository;
+        this.habitListRepository = habitListRepository;
+    }
+
+    public User addUser(UserDTO userDTO) {
+        User user = UserMapper.toEntity(userDTO);
+        habitListRepository.save(user.getHabitList());
+        if(userRepository.findByNickname(userDTO.getNickname()).isPresent())
+            throw new UserExistException(userDTO.getNickname());
+        userRepository.save(user);
+        return user;
+    }
+
+}
