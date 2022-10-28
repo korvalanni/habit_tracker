@@ -17,8 +17,5 @@ public class HabitListController {
         this.habitListService = habitListService;
     }
 
-    @PostMapping("/habit_list")
-    public HabitList createHabitList(@RequestBody HabitListDTO habitListDTO) {
-        return habitListService.addHabitList(habitListDTO);
-    }
+    
 }
