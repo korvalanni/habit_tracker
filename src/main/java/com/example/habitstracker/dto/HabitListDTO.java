@@ -1,39 +1,18 @@
 package com.example.habitstracker.dto;
 
 import com.example.habitstracker.models.Habit;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
 public class HabitListDTO {
     private Long id;
     private String name;
-    private List<Habit> habits;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Habit> getHabits() {
-        return habits;
-    }
-
-    public void setHabits(List<Habit> habits) {
-        this.habits = habits;
-    }
-
+    private List<Habit> habits;    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

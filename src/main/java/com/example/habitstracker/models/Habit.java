@@ -1,10 +1,15 @@
 package com.example.habitstracker.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "habit")
+@Getter
+@Setter
 public class Habit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,63 +33,7 @@ public class Habit {
         this.priority = priority;
         this.color = color;
         this.repeats = repeats;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public Long getRepeats() {
-        return repeats;
-    }
-
-    public void setRepeats(Long repeats) {
-        this.repeats = repeats;
-    }
-
-    public HabitList getHabitList() {
-        return habitList;
-    }
-
-    public void setHabitList(HabitList habitList) {
-        this.habitList = habitList;
-    }
+    }   
 
     @Override
     public boolean equals(Object o) {

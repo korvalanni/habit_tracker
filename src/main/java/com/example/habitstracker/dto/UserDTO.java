@@ -1,61 +1,33 @@
 package com.example.habitstracker.dto;
 
-import com.example.habitstracker.models.HabitList;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
+@Getter
+@Setter
 public class UserDTO {
 
-    private Long userId;
-
     private String nickname;
-
-    private String password;
-
-    private HabitList habitList;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public HabitList getHabitList() {
-        return habitList;
-    }
-
-    public void setHabitList(HabitList habitList) {
-        this.habitList = habitList;
-    }
+    private String password;    
+    private String habitListName;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserDTO userDTO)) return false;
 
-        return Objects.equals(userId, userDTO.userId);
+        if (!Objects.equals(nickname, userDTO.nickname)) return false;
+        if (!Objects.equals(password, userDTO.password)) return false;
+        return Objects.equals(habitListName, userDTO.habitListName);
     }
 
     @Override
     public int hashCode() {
-        return userId != null ? userId.hashCode() : 0;
+        int result = nickname != null ? nickname.hashCode() : 0;
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (habitListName != null ? habitListName.hashCode() : 0);
+        return result;
     }
 }
