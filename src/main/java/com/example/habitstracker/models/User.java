@@ -2,11 +2,14 @@ package com.example.habitstracker.models;
 
 import javax.persistence.*;
 import java.util.Objects;
+
+import com.example.habitstracker.models.listeners.UserListener;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name = "users")
+@EntityListeners(UserListener.class)
 @Getter
 @Setter
 public class User {

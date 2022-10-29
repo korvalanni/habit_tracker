@@ -1,5 +1,6 @@
 package com.example.habitstracker.repository;
 
+import com.example.habitstracker.dto.UserDTO;
 import com.example.habitstracker.models.User;
 import org.springframework.data.repository.CrudRepository;
 
@@ -10,5 +11,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
      * Ищем пользователя по никнейму
      **/
     Optional<User> findByNickname(String nickname);
+    User getByNickname(String nickname);
+
+    void deleteByNickName(String nickname);
+
+    User updateUserPasswordByNickName(String nickname, UserDTO userDTO);
 
 }

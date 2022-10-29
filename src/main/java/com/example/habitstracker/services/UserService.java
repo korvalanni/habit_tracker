@@ -26,7 +26,7 @@ public class UserService {
     public User addUser(UserDTO userDTO) {
         User user = UserMapper.toEntity(userDTO);
         habitListRepository.save(user.getHabitList());
-        if(userRepository.findByNickname(userDTO.getNickname()).isPresent())
+        if (userRepository.findByNickname(userDTO.getNickname()).isPresent())
             throw new UserExistException(userDTO.getNickname());
         userRepository.save(user);
         return user;
@@ -43,7 +43,7 @@ public class UserService {
         User user = getByNickname(nickname);
         userRepository.delete(user);
     }
-    
+
     // toDo будем переписывать
     public User updateUserPasswordByNickName(String nickname, UserDTO userDTO){
         User user = getByNickname(nickname);
