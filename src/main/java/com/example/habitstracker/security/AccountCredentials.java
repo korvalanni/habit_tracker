@@ -1,11 +1,11 @@
 package com.example.habitstracker.security;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class AccountCredentials {
     private String username;
     private String password;
-
-    public AccountCredentials() {
-    }
 
     public AccountCredentials(String username, String password) {
         this.username = username;

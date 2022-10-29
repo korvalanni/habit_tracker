@@ -1,20 +1,25 @@
 package com.example.habitstracker.models;
 
+import com.example.habitstracker.models.listeners.UserListener;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
-
-import com.example.habitstracker.models.listeners.UserListener;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "users")
 @EntityListeners(UserListener.class)
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long userId;
 
     private String nickname;
@@ -23,10 +28,6 @@ public class User {
 
     @OneToOne
     private HabitList habitList;
-
-    public User() {
-
-    }
 
     public User(Long userId, String nickname, String password, HabitList habitList) {
         this.userId = userId;
