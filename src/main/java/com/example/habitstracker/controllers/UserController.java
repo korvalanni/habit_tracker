@@ -3,15 +3,14 @@ package com.example.habitstracker.controllers;
 import com.example.habitstracker.dto.UserDTO;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.services.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
     private final UserService userService;
 
-
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -21,25 +20,18 @@ public class UserController {
         return userService.addUser(userDTO);
     }
 
-    /*
-        todo:
-            Нужна авторизация пользователя. Скорее всего у каждого пользователя будет некий id или
-            мб токен (зависит от реализации) т.е. идентификатор, этот идентификатор нам понадобится
-            во всех запросах, которые как-то влияют на данные (создание привычки, удаление и т.п.)
+    @GetMapping("/get_user/{nickname}")
+    public User getUserByNickname(@PathVariable String nickname) {
+        return userService.getByNickname(nickname);
+    }
 
-            Авторизацию в library (лекция)
-    */
+    @PostMapping("/delete_user/{nickname}")
+    public void deleteUserByNickname(@PathVariable String nickname) {
+        userService.deleteByNickName(nickname);
+    }
 
-    /*
-        Todo:
-            Например, один из сценариев использования сервиса:
-            1) регистрируемся
-            2) авторизуемся с данными, указанными при регистрации
-            3) создание привычки
-                Список привычек уже должен быть создан. Создается в момент регистрации.
-
-                Для создания нужна информация о привычке (название, описание...) + userId, поэтому
-                правим HabitDTO
-            4) Получение списка привычек для просмотра в приложении
-    */
+    @PutMapping("/update_user/{nickname}")
+    public User updateUserByNickname(@PathVariable String nickname, @RequestBody UserDTO userDTO) {
+        return userService.updateUserPasswordByNickName(nickname, userDTO);
+    }
 }

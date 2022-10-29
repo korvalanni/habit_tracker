@@ -33,4 +33,5 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByNickname("nick")).thenThrow(UserExistException.class);
         Assertions.assertThrows(UserExistException.class, () -> userService.addUser(userDTO));
     }
+
 }
