@@ -1,6 +1,5 @@
 package com.example.habitstracker.repository;
 
-import com.example.habitstracker.dto.UserDTO;
 import com.example.habitstracker.models.User;
 import org.springframework.data.repository.CrudRepository;
 
