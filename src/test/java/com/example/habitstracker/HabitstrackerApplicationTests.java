@@ -4,7 +4,6 @@ import com.example.habitstracker.dto.UserDTO;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
 import com.example.habitstracker.mappers.UserMapper;
-import com.example.habitstracker.models.User;
 import com.example.habitstracker.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 @SpringBootTest
-// @RunWith(SpringJUnit4ClassRunner.class)
 class HabitstrackerApplicationTests {
 
     @Autowired
