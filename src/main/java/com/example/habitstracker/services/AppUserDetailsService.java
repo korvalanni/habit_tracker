@@ -16,6 +16,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Autowired
     public AppUserDetailsService(UserRepository userRepository) {
+        // todo service
         this.userRepository = userRepository;
     }
 

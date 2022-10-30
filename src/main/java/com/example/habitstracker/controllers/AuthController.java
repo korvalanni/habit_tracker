@@ -4,15 +4,13 @@ import com.example.habitstracker.dto.UserDTO;
 import com.example.habitstracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Контроллер для авторизации
  */
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
 
@@ -29,8 +27,12 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    // http://localhost:8080/auth/registration
     @PostMapping("/registration")
     public ResponseEntity<Void> registration(@RequestBody UserDTO userDTO) {
+        // TODO проверить, что ользователь не авторизирован *(второй раз регистрироваться нельзя)
+        // получение текущего пользователя
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.addUser(userDTO);
         return ResponseEntity.ok().build();
     }
