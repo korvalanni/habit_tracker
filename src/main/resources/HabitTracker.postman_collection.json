@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "a583dcb5-f361-4246-9cce-c5920af6a120",
-		"name": "Test",
+		"name": "HabitTracker",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18525568"
 	},
@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nickname\": \"Test\",\r\n    \"password\": \"test\",    \r\n    \"habitListName\": \"TT\"\r\n}\r\n",
+					"raw": "{\r\n    \"nickname\": \"Test\", \r\n    \"password\": \"test\", \r\n    \"habitListName\": \"TT\" \r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,13 +21,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/registration",
+					"raw": "http://localhost:8080/auth/registration",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"auth",
 						"registration"
 					]
 				}
@@ -36,12 +37,28 @@
 		},
 		{
 			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let value = postman.getResponseHeader(\"Authorization\")\r",
+							"value = value.split(' ')[1]\r",
+							"\r",
+							"tests[\"JWT = \" + value] = (value != null);\r",
+							"\r",
+							"pm.collectionVariables.set(\"TOKEN\", value);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"Test\",\r\n    \"password\": \"test\"\r\n}\r\n",
+					"raw": "{\r\n    \"username\": \"Test\", \r\n    \"password\": \"test\" \r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -49,13 +66,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/login",
+					"raw": "http://localhost:8080/auth/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"auth",
 						"login"
 					]
 				}
@@ -64,15 +82,21 @@
 		},
 		{
 			"name": "Test",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
+							"pm.request.headers.add({ key: \"Authorization\", value: token})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwidXNlcklkIjoxMiwiZXhwIjoyMjY2OTcwNjAwfQ.FpHH4PEaeiFdbm33ihF0uXej2YqA-PlvvgnBqVunEirsLRE0vgiC57ViIMsqcnaEpPIPGamrAoItSCQI94MSQQ",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "http://localhost:8080/test",
 					"protocol": "http",
@@ -91,10 +115,16 @@
 			"name": "Add habit",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwidXNlcklkIjoxNiwiZXhwIjoyMjY3MDQ4ODE2fQ.Nb0ZCQC_6wTz26bqbHZOYGehpoKom-KgRmzghwfGIuVOkrot4sNB6Krkaq8tk5P11A5VmD5iqMVB3COhH_V0-g",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": String,\r\n    \"description\": String,\r\n    \"priority\": Int(ENUM),\r\n    \"color\": Int(ENUM),\r\n    \"repeats\": int,\r\n    \"done_dates\": [ long(???) ]\r\n}\r\n\r\nreturn -> \"id\"",
+					"raw": "{\r\n    \"title\": \"String\", // String\r\n    \"description\": \"String\", // String \r\n    \"priority\": 0, // Enum (int)\r\n    \"color\": 0, // Enum (int)\r\n    \"repeats\": 0, // Int\r\n    \"done_dates\": [ 0 ] // List<Long>\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -102,14 +132,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/add_habit",
+					"raw": "http://localhost:8080/habit",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"add_habit"
+						"habit"
 					]
 				}
 			},
@@ -125,7 +155,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": String,\r\n    \"description\": String,\r\n    \"priority\": Int(ENUM),\r\n    \"color\": Int(ENUM),\r\n    \"repeats\": int,\r\n    \"done_dates\": [ long(???) ]\r\n}",
+					"raw": "{\r\n    \"title\": String, // String\r\n    \"description\": String, // String\r\n    \"priority\": Int(ENUM), // Enum(int)\r\n    \"color\": Int(ENUM), // Enum(int)\r\n    \"repeats\": int, // int\r\n    \"done_dates\": [ long(???) ] // List<Long>\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -153,7 +183,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": long\r\n}",
+					"raw": "{\r\n    \"id\": long // long. Перепишем под jwt\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -181,7 +211,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": long, \r\n    \"data\": long(???)\r\n}",
+					"raw": "{\r\n    \"id\": long, // long\r\n    \"data\": long(???) // long\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -201,6 +231,12 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "TOKEN",
+			"value": ""
 		}
 	]
 }
