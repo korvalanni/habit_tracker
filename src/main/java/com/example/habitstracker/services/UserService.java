@@ -4,6 +4,7 @@ import com.example.habitstracker.dto.UserDTO;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
 import com.example.habitstracker.mappers.UserMapper;
+import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.repository.UserRepository;
@@ -51,5 +52,10 @@ public class UserService {
         user.setPassword(password);
         userRepository.save(user);
         return user;
+    }
+
+    public HabitList getUserHabitList(UserDTO userDTO){
+        User user = getByNickname(userDTO.getNickname());
+        return user.getHabitList();
     }
 }

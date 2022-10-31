@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/*
+    Контроллер для привычки
+ */
 @RestController
 public class HabitController {
     private final HabitService habitService;
