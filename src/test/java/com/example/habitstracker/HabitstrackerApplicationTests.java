@@ -5,6 +5,7 @@ import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.services.UserService;
+import com.example.habitstracker.utils.DatabaseUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,10 +31,8 @@ class HabitstrackerApplicationTests {
 
     @AfterEach
     void tearDown() {
-        // todo: think about it: User.class.getAnnotation(Table.class).name();
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users", "habit", "habit_list");
+        DatabaseUtils.clear(jdbcTemplate);
     }
-
 
     @Test
     void checkSameNicks() {
@@ -47,11 +46,11 @@ class HabitstrackerApplicationTests {
         Assertions.assertThrows(UserExistException.class, () -> userService.addUser(userDTO));
     }
 
-/**
-    1) Создаем пользователя и сохраняем его
-    2) Создаем новую dto с новым паролем и через сервис меняем пароль
-    3) Проверям, что в бд лежит пользователь с новым паролем
-    */
+    /**
+     * 1) Создаем пользователя и сохраняем его
+     * 2) Создаем новую dto с новым паролем и через сервис меняем пароль
+     * 3) Проверям, что в бд лежит пользователь с новым паролем
+     */
     @Test
     void checkUpdate() {
         String username = "nick";
