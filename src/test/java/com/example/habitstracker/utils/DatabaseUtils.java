@@ -19,7 +19,8 @@ public class DatabaseUtils {
         String userTable = getTableNameByEntity(User.class);
         String habitTable = getTableNameByEntity(Habit.class);
         String habitList = getTableNameByEntity(HabitList.class);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, userTable, habitTable, habitList);
+        String habitDoneDates = "habit_done_dates";
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, userTable, habitTable, habitList, habitDoneDates);
     }
 
     private static <T> String getTableNameByEntity(Class<T> item) {

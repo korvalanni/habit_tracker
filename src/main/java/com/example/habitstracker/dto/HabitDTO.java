@@ -7,20 +7,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Objects;
+import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class HabitDTO {
-
-    @EqualsAndHashCode.Include
-    private Long id;
-    private HabitList habitList;
-    private String name;
+    private String title;
     private String description;
     private Priority priority;
     private Color color;
     private Long repeats;
-
+    private List<Long> done_dates;
 }
