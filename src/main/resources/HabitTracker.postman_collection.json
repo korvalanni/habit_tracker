@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nickname\": \"Test\", \r\n    \"password\": \"test\", \r\n    \"habitListName\": \"TT\" \r\n}\r\n",
+					"raw": "{\r\n    \"username\": \"Test\", \r\n    \"password\": \"test\", \r\n    \"habitListName\": \"TT\" \r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,13 +98,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/test",
+					"raw": "http://localhost:8080/auth/test",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"auth",
 						"test"
 					]
 				}
@@ -113,6 +114,18 @@
 		},
 		{
 			"name": "Add habit",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
+							"pm.request.headers.add({ key: \"Authorization\", value: token})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -124,7 +137,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"String\", // String\r\n    \"description\": \"String\", // String \r\n    \"priority\": 0, // Enum (int)\r\n    \"color\": 0, // Enum (int)\r\n    \"repeats\": 0, // Int\r\n    \"done_dates\": [ 0 ] // List<Long>\r\n}",
+					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\", \r\n    \"priority\": 0, \r\n    \"color\": 0, \r\n    \"repeats\": 0, \r\n    \"done_dates\": [ 0 ] \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

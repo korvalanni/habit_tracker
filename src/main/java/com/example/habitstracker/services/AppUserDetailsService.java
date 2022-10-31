@@ -22,11 +22,11 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepository.findByNickname(username);
+        var user = userRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User with " + username + " doesn't exists.");
         }
         com.example.habitstracker.models.User user1 = user.get();
-        return new User(user1.getNickname(), user1.getPassword(), new ArrayList<>());
+        return new User(user1.getUsername(), user1.getPassword(), new ArrayList<>());
     }
 }
