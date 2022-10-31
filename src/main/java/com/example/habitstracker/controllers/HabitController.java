@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+/*
+    Контроллер для привычки
+*/
 @Tag(name = "Habit", description = "Control habits")
 @RestController
 @RequestMapping("/habit")

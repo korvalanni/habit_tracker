@@ -28,6 +28,7 @@ public class HabitList {
         this.name = name;
     }
 
+
     public HabitList(Long id, String name, List<Habit> habits) {
         this.id = id;
         this.name = name;
