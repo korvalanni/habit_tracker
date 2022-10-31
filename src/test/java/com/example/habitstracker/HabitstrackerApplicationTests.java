@@ -40,7 +40,7 @@ class HabitstrackerApplicationTests {
     @BeforeAll
     static void createUserDTO() {
         userDTO = new UserDTO();
-        userDTO.setNickname("nick");
+        userDTO.setUsername("nick");
         userDTO.setPassword("123");
         userDTO.setHabitListName("name");
     }

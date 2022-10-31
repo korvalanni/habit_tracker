@@ -55,7 +55,7 @@ public class UserService {
     }
 
     public HabitList getUserHabitList(UserDTO userDTO){
-        User user = getByNickname(userDTO.getNickname());
+        User user = getByUsername(userDTO.getUsername());
         return user.getHabitList();
     }
 }
