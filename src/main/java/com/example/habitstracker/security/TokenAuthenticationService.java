@@ -6,11 +6,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+// TODO бин
 public class TokenAuthenticationService {
     private static long TOKEN_EXPIRY;
     //    private static final long TOKEN_EXPIRY = 600000000000L;
@@ -29,6 +32,7 @@ public class TokenAuthenticationService {
         TOKEN_EXPIRY = tokenExpiry;
     }
 
+    // FIXME не синглтон
     public static TokenAuthenticationService getInstance() {
         if (instance != null)
             return instance;
@@ -49,18 +53,19 @@ public class TokenAuthenticationService {
     // Синтаксический разбор токена
     public Authentication getAuthentication(HttpServletRequest request) {
         var token = request.getHeader(AUTHORIZATION_HEADER_KEY);
-        if (token != null) {
-            var user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().getSubject();
+        if (token == null)
+            return null;
+        var user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().getSubject();
+        if (user == null)
+            return null;
+        return new UsernamePasswordAuthenticationToken(user, null, List.of());
 
-            if (user != null)
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<GrantedAuthority>());
-        }
-        return null;
     }
 
     public long getUserIdFromRequest(HttpServletRequest request) {
         var token = request.getHeader(AUTHORIZATION_HEADER_KEY).replace(TOKEN_PREFIX, "");
-        var id = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().get(ID_KEY);
+        var sks = new SecretKeySpec(SECRET.getBytes(), SignatureAlgorithm.HS512.getValue());
+        var id = Jwts.parserBuilder().setSigningKey(sks).build().parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().get(ID_KEY);
         return Long.parseLong(id.toString());
     }
 }

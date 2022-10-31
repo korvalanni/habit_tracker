@@ -15,11 +15,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
+// TODO переделать на БИН
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     private AuthenticationManager authenticationManager;
     private UserRepository userService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public JWTLoginFilter(String url, AuthenticationManager authenticationManager, UserRepository userService) {
@@ -30,12 +32,14 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
-        var credentials = new ObjectMapper().readValue(request.getInputStream(), AccountCredentials.class);
-        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword(), new ArrayList<>()));
+        var credentials = objectMapper.readValue(request.getInputStream(), AccountCredentials.class);
+        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            credentials.username(), credentials.password(), List.of())
+        );
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        TokenAuthenticationService.getInstance().addAuthentication(response, authResult.getName(), userService.findByNickname(authResult.getName()).get().getUserId());
+        TokenAuthenticationService.getInstance().addAuthentication(response, authResult.getName(), userService.findByUsername(authResult.getName()).get().getUserId());
     }
 }

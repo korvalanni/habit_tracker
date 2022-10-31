@@ -8,6 +8,7 @@ import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.UserService;
+import com.example.habitstracker.utils.DatabaseUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -46,10 +47,8 @@ class HabitstrackerApplicationTests {
 
     @AfterEach
     void tearDown() {
-        // todo: think about it: User.class.getAnnotation(Table.class).name();
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users", "habit", "habit_list");
+        DatabaseUtils.clear(jdbcTemplate);
     }
-
 
     @Test
     void checkSameNicks() {
@@ -64,7 +63,7 @@ class HabitstrackerApplicationTests {
      */
     @Test
     void checkUpdate() {
-        String nickname = "nick";
+        String username = "nick";
         String newPassword = "234";
         // Создаем пользователя и сохраняем его
         userService.addUser(userDTO);
@@ -74,10 +73,10 @@ class HabitstrackerApplicationTests {
         userDTO1.setPassword(newPassword);
 
         // Создаем новую dto с новым паролем и через сервис меняем пароль
-        userService.updateUserPasswordByNickName(nickname, userDTO1);
+        userService.updateUserPasswordByUsername(username, userDTO1);
 
         //Проверям, что в бд лежит пользователь с новым паролем
-        String password = userService.getByNickname(nickname).getPassword();
+        String password = userService.getByUsername(username).getPassword();
         Assertions.assertEquals(password, newPassword);
     }
 
@@ -85,8 +84,8 @@ class HabitstrackerApplicationTests {
     void checkUserDelete() {
         userService.addUser(userDTO);
 
-        userService.deleteByNickName("nick");
-        Assertions.assertThrows(UserNotFoundException.class, () -> userService.getByNickname("nick"));
+        userService.deleteByUsername("nick");
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.getByUsername("nick"));
     }
 
     @Test

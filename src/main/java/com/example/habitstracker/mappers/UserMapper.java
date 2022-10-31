@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     public static User toEntity(UserDTO userDTO) {
-        String nickname = userDTO.getNickname();
+        String username = userDTO.getUsername();
 
         String password = userDTO.getPassword();
 
         User user = new User();
-        user.setNickname(nickname);
+        user.setUsername(username);
         user.setPassword(password);
         user.setHabitList(new HabitList(userDTO.getHabitListName()));
         return user;
@@ -23,13 +23,13 @@ public class UserMapper {
     public static UserDTO toDTO(User user) {
         Long id = user.getUserId();
 
-        String nickname = user.getNickname();
+        String username = user.getUsername();
 
         String password = user.getPassword();
 
 
         UserDTO userDTO = new UserDTO();
-        userDTO.setNickname(nickname);
+        userDTO.setUsername(username);
         userDTO.setPassword(password);
 
         return userDTO;

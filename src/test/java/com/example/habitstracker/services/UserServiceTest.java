@@ -23,14 +23,14 @@ public class UserServiceTest {
         UserService userService = new UserService(userRepository, habitListRepository);
 
         UserDTO userDTO = new UserDTO();
-        userDTO.setNickname("nick");
+        userDTO.setUsername("nick");
         userDTO.setPassword("123");
         userDTO.setHabitListName("name");
 
-        Mockito.when(userRepository.findByNickname("nick")).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findByUsername("nick")).thenReturn(Optional.empty());
         userService.addUser(userDTO);
 
-        Mockito.when(userRepository.findByNickname("nick")).thenThrow(UserExistException.class);
+        Mockito.when(userRepository.findByUsername("nick")).thenThrow(UserExistException.class);
         Assertions.assertThrows(UserExistException.class, () -> userService.addUser(userDTO));
     }
 
