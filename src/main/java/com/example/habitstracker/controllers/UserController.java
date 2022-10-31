@@ -18,12 +18,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "Create new user")
-    @PostMapping("/add_user")
-    public User createUser(@RequestBody UserDTO userDTO) {
-        return userService.addUser(userDTO);
-    }
-
     @Operation(summary = "Get user")
     @GetMapping("/get_user/{username}")
     public User getUserByUsername(@PathVariable String username) {
