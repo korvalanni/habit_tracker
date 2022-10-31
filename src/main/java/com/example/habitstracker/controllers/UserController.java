@@ -25,20 +25,20 @@ public class UserController {
     }
 
     @Operation(summary = "Get user")
-    @GetMapping("/get_user/{nickname}")
-    public User getUserByNickname(@PathVariable String nickname) {
-        return userService.getByNickname(nickname);
+    @GetMapping("/get_user/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        return userService.getByUsername(username);
     }
 
     @Operation(summary = "Delete user")
-    @PostMapping("/delete_user/{nickname}")
-    public void deleteUserByNickname(@PathVariable String nickname) {
-        userService.deleteByNickName(nickname);
+    @PostMapping("/delete_user/{username}")
+    public void deleteUserByUsername(@PathVariable String username) {
+        userService.deleteByUsername(username);
     }
 
     @Operation(summary = "Update user")
-    @PutMapping("/update_user/{nickname}")
-    public User updateUserByNickname(@PathVariable String nickname, @RequestBody UserDTO userDTO) {
-        return userService.updateUserPasswordByNickName(nickname, userDTO);
+    @PutMapping("/update_user/{username}")
+    public User updateUserByUsername(@PathVariable String username, @RequestBody UserDTO userDTO) {
+        return userService.updateUserPasswordByUsername(username, userDTO);
     }
 }

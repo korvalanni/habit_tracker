@@ -22,16 +22,16 @@ public class User {
     @EqualsAndHashCode.Include
     private Long userId;
 
-    private String nickname;
+    private String username;
 
     private String password;
 
     @OneToOne
     private HabitList habitList;
 
-    public User(Long userId, String nickname, String password, HabitList habitList) {
+    public User(Long userId, String username, String password, HabitList habitList) {
         this.userId = userId;
-        this.nickname = nickname;
+        this.username = username;
         this.password = password;
         this.habitList = habitList;
     }

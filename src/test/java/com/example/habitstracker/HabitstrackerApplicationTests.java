@@ -39,7 +39,7 @@ class HabitstrackerApplicationTests {
     void checkSameNicks() {
 
         UserDTO userDTO = new UserDTO();
-        userDTO.setNickname("nick");
+        userDTO.setUsername("nick");
         userDTO.setPassword("123");
         userDTO.setHabitListName("name");
 
@@ -51,14 +51,15 @@ class HabitstrackerApplicationTests {
     1) Создаем пользователя и сохраняем его
     2) Создаем новую dto с новым паролем и через сервис меняем пароль
     3) Проверям, что в бд лежит пользователь с новым паролем
-    */    @Test
+    */
+    @Test
     void checkUpdate() {
-        String nickname = "nick";
+        String username = "nick";
         String newPassword = "234";
 
         // Создаем пользователя и сохраняем его
         UserDTO userDTO = new UserDTO();
-        userDTO.setNickname(nickname);
+        userDTO.setUsername(username);
         userDTO.setPassword("123");
         userDTO.setHabitListName("name");
         userService.addUser(userDTO);
@@ -68,22 +69,22 @@ class HabitstrackerApplicationTests {
         userDTO1.setPassword(newPassword);
 
         // Создаем новую dto с новым паролем и через сервис меняем пароль
-        userService.updateUserPasswordByNickName(nickname, userDTO1);
+        userService.updateUserPasswordByUsername(username, userDTO1);
 
         //Проверям, что в бд лежит пользователь с новым паролем
-        String password = userService.getByNickname(nickname).getPassword();
+        String password = userService.getByUsername(username).getPassword();
         Assertions.assertEquals(password, newPassword);
     }
 
     @Test
     void checkUserDelete() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setNickname("nick");
+        userDTO.setUsername("nick");
         userDTO.setPassword("123");
         userDTO.setHabitListName("name");
         userService.addUser(userDTO);
 
-        userService.deleteByNickName("nick");
-        Assertions.assertThrows(UserNotFoundException.class, () -> userService.getByNickname("nick"));
+        userService.deleteByUsername("nick");
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.getByUsername("nick"));
     }
 }

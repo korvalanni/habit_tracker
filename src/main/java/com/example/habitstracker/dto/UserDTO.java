@@ -5,16 +5,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Objects;
-
 @Getter
 @Setter
 @Schema(description = "Describe user")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserDTO {
-    @Schema(title = "User's nickname")
+    @Schema(title = "User's name")
     @EqualsAndHashCode.Include
-    private String nickname;
+    private String username;
     @EqualsAndHashCode.Include
     private String password;    
     @EqualsAndHashCode.Include

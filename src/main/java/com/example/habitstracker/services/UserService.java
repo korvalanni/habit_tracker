@@ -26,27 +26,27 @@ public class UserService {
     public User addUser(UserDTO userDTO) {
         User user = UserMapper.toEntity(userDTO);
         habitListRepository.save(user.getHabitList());
-        if (userRepository.findByNickname(userDTO.getNickname()).isPresent())
-            throw new UserExistException(userDTO.getNickname());
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
+            throw new UserExistException(userDTO.getUsername());
         userRepository.save(user);
         return user;
     }
 
-    public User getByNickname(String nickname){
-        Optional<User> userOpt = userRepository.findByNickname(nickname);
+    public User getByUsername(String username){
+        Optional<User> userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty())
-            throw new UserNotFoundException(nickname);
+            throw new UserNotFoundException(username);
         return userOpt.get();
     }
 
-    public void deleteByNickName(String nickname){
-        User user = getByNickname(nickname);
+    public void deleteByUsername(String username){
+        User user = getByUsername(username);
         userRepository.delete(user);
     }
 
     // toDo будем переписывать
-    public User updateUserPasswordByNickName(String nickname, UserDTO userDTO){
-        User user = getByNickname(nickname);
+    public User updateUserPasswordByUsername(String username, UserDTO userDTO){
+        User user = getByUsername(username);
         String password = userDTO.getPassword();
         user.setPassword(password);
         userRepository.save(user);
