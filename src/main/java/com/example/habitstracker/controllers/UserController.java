@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "User", description = "Control users")
 @RestController
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 

@@ -145,13 +145,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/habit",
+					"raw": "http://localhost:8080/habit/habit",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"habit",
 						"habit"
 					]
 				}
@@ -159,7 +160,145 @@
 			"response": []
 		},
 		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
+							"pm.request.headers.add({ key: \"Authorization\", value: token})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwidXNlcklkIjoxNiwiZXhwIjoyMjY3MDQ4ODE2fQ.Nb0ZCQC_6wTz26bqbHZOYGehpoKom-KgRmzghwfGIuVOkrot4sNB6Krkaq8tk5P11A5VmD5iqMVB3COhH_V0-g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"String\", \r\n    \"password\": \"String\", \r\n    \"habitListName\": \"String\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/user/update_user/String",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"update_user",
+						"String"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
+							"pm.request.headers.add({ key: \"Authorization\", value: token})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwidXNlcklkIjoxNiwiZXhwIjoyMjY3MDQ4ODE2fQ.Nb0ZCQC_6wTz26bqbHZOYGehpoKom-KgRmzghwfGIuVOkrot4sNB6Krkaq8tk5P11A5VmD5iqMVB3COhH_V0-g",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/user/get_user/String",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"get_user",
+						"String"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
+							"pm.request.headers.add({ key: \"Authorization\", value: token})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwidXNlcklkIjoxNiwiZXhwIjoyMjY3MDQ4ODE2fQ.Nb0ZCQC_6wTz26bqbHZOYGehpoKom-KgRmzghwfGIuVOkrot4sNB6Krkaq8tk5P11A5VmD5iqMVB3COhH_V0-g",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/user/delete_user/String",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"delete_user",
+						"String"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Update habit",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
+							"pm.request.headers.add({ key: \"Authorization\", value: token})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -168,7 +307,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": String, // String\r\n    \"description\": String, // String\r\n    \"priority\": Int(ENUM), // Enum(int)\r\n    \"color\": Int(ENUM), // Enum(int)\r\n    \"repeats\": int, // int\r\n    \"done_dates\": [ long(???) ] // List<Long>\r\n}",
+					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\",\r\n    \"priority\": 1,\r\n    \"color\": 1, \r\n    \"repeats\": 1, \r\n    \"done_dates\": []\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -176,13 +315,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/update_habit",
+					"raw": "http://localhost:8080/habit/update_habit",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"habit",
 						"update_habit"
 					]
 				}
@@ -191,6 +331,18 @@
 		},
 		{
 			"name": "Delete habit",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
+							"pm.request.headers.add({ key: \"Authorization\", value: token})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -204,13 +356,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/delete_habit",
+					"raw": "http://localhost:8080/habit/delete_habit",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"habit",
 						"delete_habit"
 					]
 				}
@@ -219,6 +372,18 @@
 		},
 		{
 			"name": "Done habit",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
+							"pm.request.headers.add({ key: \"Authorization\", value: token})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -232,13 +397,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/done_habit",
+					"raw": "http://localhost:8080/habit/done_habit",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"habit",
 						"done_habit"
 					]
 				}
