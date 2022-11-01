@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "habit_list")
@@ -24,7 +23,7 @@ public class HabitList {
     @OneToMany(mappedBy = "habitList")
     private List<Habit> habits;
 
-    public HabitList(String name){
+    public HabitList(String name) {
         this.name = name;
     }
 

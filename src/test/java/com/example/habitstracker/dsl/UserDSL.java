@@ -5,8 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 
-import java.util.HashMap;
-
 import static io.restassured.RestAssured.given;
 
 /**
@@ -24,9 +22,9 @@ public class UserDSL {
         // @formatter:off
         given()
                 .headers("Authorization", "Bearer " + TokenHolder.token)
-            .when()
+                .when()
                 .post("/delete_user/" + user.getUsername())
-            .then()
+                .then()
                 .statusCode(200);
         // @formatter:on
     }
@@ -40,9 +38,9 @@ public class UserDSL {
         // @formatter:off
         given()
                 .headers("Authorization", "Bearer " + TokenHolder.token)
-            .when()
+                .when()
                 .post("/get_user/" + username)
-            .then()
+                .then()
                 .statusCode(200);
         // @formatter:on
     }
@@ -61,9 +59,9 @@ public class UserDSL {
                 .headers("Authorization", "Bearer " + TokenHolder.token)
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(user))
-            .when()
+                .when()
                 .post("/update_user/" + username)
-            .then()
+                .then()
                 .statusCode(200);
         // @formatter:on
     }

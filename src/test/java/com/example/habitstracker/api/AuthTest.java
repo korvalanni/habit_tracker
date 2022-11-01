@@ -17,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.awt.font.TextHitInfo;
-
 import static io.restassured.RestAssured.given;
 
 /**
@@ -70,7 +68,7 @@ class AuthTest {
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(user))
-            .when()
+                .when()
                 .post("/auth/registration")
                 .getBody()
                 .asString();
@@ -97,7 +95,7 @@ class AuthTest {
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(user))
-            .when()
+                .when()
                 .post("/auth/login")
                 .getBody()
                 .asString();
