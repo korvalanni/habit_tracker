@@ -1,9 +1,11 @@
 package com.example.habitstracker.api;
 
+import com.example.habitstracker.Constants;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.TokenHolder;
 import com.example.habitstracker.dto.ErrorResponseDTO;
 import com.example.habitstracker.exceptions.UserExistException;
+import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.utils.DatabaseUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,11 +66,13 @@ class AuthTest {
         var exception = new UserExistException(user.getUsername());
         var expected = new ErrorResponseDTO(1, exception.getMessage());
 
+        var dto = UserMapper.toDTO(user);
+
         // @formatter:off
         var response = given()
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(user))
-                .when()
+                .body(OBJECT_MAPPER.writeValueAsString(dto))
+            .when()
                 .post("/auth/registration")
                 .getBody()
                 .asString();
@@ -95,8 +99,8 @@ class AuthTest {
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(user))
-                .when()
-                .post("/auth/login")
+            .when()
+                .post(Constants.API.LOGIN)
                 .getBody()
                 .asString();
         // @formatter:on

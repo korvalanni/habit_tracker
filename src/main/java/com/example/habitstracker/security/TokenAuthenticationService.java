@@ -1,69 +1,89 @@
 package com.example.habitstracker.security;
 
+import com.example.habitstracker.Constants;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
-// TODO бин
+/**
+ * Сервис для работы с JWT
+ */
+@Component
 public class TokenAuthenticationService {
-    private static long TOKEN_EXPIRY;
-    //    private static final long TOKEN_EXPIRY = 600000000000L;
-    private static String SECRET;
-    //    private static final String SECRET = "veryverybigsecretveryverybigsecretveryverybigsecretveryverybigsecretveryverybigsecretveryverybigsecret";
-    private static final String TOKEN_PREFIX = "Bearer";
-    private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
-    private static final String ID_KEY = "userId";
-    private static TokenAuthenticationService instance;
+    private final long tokenExpiry;
+    private final String secret;
+    private final String TOKEN_PREFIX = "Bearer";
+    private final String AUTHORIZATION_HEADER = "Authorization";
+    private JwtParser jwtParser;
 
-    public static void setSECRET(String SECRET) {
-        TokenAuthenticationService.SECRET = SECRET;
+    @Autowired
+    public TokenAuthenticationService(
+            @Value("${app.jwt.secret}") String secret,
+            @Value("${app.jwt.expire}") long expire) {
+        this.secret = secret;
+        buildJwtParser();
+        tokenExpiry = expire;
     }
 
-    public static void setTokenExpiry(long tokenExpiry) {
-        TOKEN_EXPIRY = tokenExpiry;
-    }
+    private void buildJwtParser() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        Key key = Keys.hmacShaKeyFor(keyBytes);
 
-    // FIXME не синглтон
-    public static TokenAuthenticationService getInstance() {
-        if (instance != null)
-            return instance;
-        instance = new TokenAuthenticationService();
-        return instance;
+        // todo: убери дублирование 43-44 и 51-52
+        jwtParser = Jwts.parserBuilder().setSigningKey(key).build();
     }
 
     public void addAuthentication(HttpServletResponse response, String username, Long id) {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        Key key = Keys.hmacShaKeyFor(keyBytes);
         var jwt = Jwts.builder()
                 .setSubject(username)
-                .claim(ID_KEY, id)
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRY))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .claim(Constants.JWTClaims.USER_ID, id)
+                .setExpiration(new Date(System.currentTimeMillis() + tokenExpiry))
+                .signWith(key)
                 .compact();
-        response.addHeader(AUTHORIZATION_HEADER_KEY, TOKEN_PREFIX + " " + jwt);
+        response.addHeader(AUTHORIZATION_HEADER, TOKEN_PREFIX + " " + jwt);
     }
 
     // Синтаксический разбор токена
     public Authentication getAuthentication(HttpServletRequest request) {
-        var token = request.getHeader(AUTHORIZATION_HEADER_KEY);
+        var token = getAuthorizationToken(request);
         if (token == null)
             return null;
-        var user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().getSubject();
-        if (user == null)
+        token = getJWT(token);
+        // todo: что делать если тут пустой токен?
+        var username = jwtParser.parseClaimsJws(token).getBody().getSubject();
+        if (username == null)
             return null;
-        return new UsernamePasswordAuthenticationToken(user, null, List.of());
-
+        return new UsernamePasswordAuthenticationToken(username, extractUserCredentials(token), List.of());
     }
 
-    public long getUserIdFromRequest(HttpServletRequest request) {
-        var token = request.getHeader(AUTHORIZATION_HEADER_KEY).replace(TOKEN_PREFIX, "");
-        var sks = new SecretKeySpec(SECRET.getBytes(), SignatureAlgorithm.HS512.getValue());
-        var id = Jwts.parserBuilder().setSigningKey(sks).build().parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().get(ID_KEY);
-        return Long.parseLong(id.toString());
+    private String getAuthorizationToken(HttpServletRequest request) {
+        return request.getHeader(AUTHORIZATION_HEADER);
+    }
+
+    private String getJWT(String token) {
+        return token.replace(TOKEN_PREFIX, "");
+    }
+
+    private UserCredentials extractUserCredentials(String token) {
+        var body = jwtParser.parseClaimsJws(token).getBody();
+        var username = body.getSubject();
+        var id = Long.parseLong(body.get(Constants.JWTClaims.USER_ID).toString());
+        return new UserCredentials(id, username);
     }
 }

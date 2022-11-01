@@ -1,5 +1,7 @@
 package com.example.habitstracker.dsl;
 
+import com.example.habitstracker.Constants;
+import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +9,6 @@ import io.restassured.http.ContentType;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
-
 
 import static io.restassured.RestAssured.given;
 
@@ -23,13 +24,15 @@ public class AuthDSL {
      * @param user Пользователь
      */
     public static void register(User user) throws JsonProcessingException {
+        var dto = UserMapper.toDTO(user);
+
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(user))
-                .when()
+                .body(OBJECT_MAPPER.writeValueAsString(dto))
+            .when()
                 .post("/auth/registration")
-                .then()
+            .then()
                 .statusCode(200);
         // @formatter:on
     }
@@ -50,7 +53,7 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(json)
                 .when()
-                .post("/auth/login")
+                .post(Constants.API.LOGIN)
                 .then()
                 .statusCode(200);
         // @formatter:on
