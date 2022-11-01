@@ -26,15 +26,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-    /**
-     * Тестовый метод. Должен быть недоступен без авторизации
-     */
-    @Operation(summary = "Method for test access")
-    @GetMapping("/test")
-    public ResponseEntity<Void> testAccess() {
-        return ResponseEntity.ok().build();
-    }
-
     @Operation(summary = "Register new account")
     @PostMapping("/registration")
     public ResponseEntity<Void> registration(@RequestBody UserDTO userDTO) {
