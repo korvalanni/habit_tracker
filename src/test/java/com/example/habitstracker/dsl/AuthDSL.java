@@ -7,8 +7,7 @@ import io.restassured.http.ContentType;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+
 
 import static io.restassured.RestAssured.given;
 
