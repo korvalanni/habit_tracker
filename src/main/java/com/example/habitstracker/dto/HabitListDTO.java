@@ -15,6 +15,6 @@ public class HabitListDTO {
     @EqualsAndHashCode.Include
     private Long id;
     private String name;
-    private List<Habit> habits;    
+    private List<HabitDTO> habits;
 
 }
