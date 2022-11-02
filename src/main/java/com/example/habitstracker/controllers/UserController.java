@@ -19,6 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    //toDO исправить User -> UserDTO
     @Operation(summary = "Get user")
     @GetMapping("/get_user/{username}")
     public User getUserByUsername(@PathVariable String username) {
@@ -31,6 +32,7 @@ public class UserController {
         userService.deleteByUsername(username);
     }
 
+    //toDo исправить User -> UserDTO
     @Operation(summary = "Update user")
     @PutMapping("/update_user/{username}")
     public User updateUserByUsername(@PathVariable String username, @RequestBody UserDTO userDTO) {
