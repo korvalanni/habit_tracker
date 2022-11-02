@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "habit")
@@ -18,22 +19,24 @@ public class Habit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    private String name;
+    private String title;
     private String description;
     private Priority priority;
     private Color color;
     private Long repeats;
     @ManyToOne
     private HabitList habitList;
+    @ElementCollection
+    private List<Long> doneDates;
 
-
-    public Habit(Long id, String name, String description, Priority priority, Color color, Long repeats) {
-        this.id = id;
-        this.name = name;
+    // todo: убдеись, что этот конструктор нужен нам
+    public Habit(String title, String description, Priority priority, Color color, Long repeats, List<Long> doneDates) {
+        this.title = title;
         this.description = description;
         this.priority = priority;
         this.color = color;
         this.repeats = repeats;
+        this.doneDates = doneDates;
     }
 
 }

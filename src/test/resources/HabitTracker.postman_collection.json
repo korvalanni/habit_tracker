@@ -81,38 +81,6 @@
 			"response": []
 		},
 		{
-			"name": "Test",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"let token = pm.collectionVariables.get(\"TOKEN\");\r",
-							"pm.request.headers.add({ key: \"Authorization\", value: token})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/auth/test",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"auth",
-						"test"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Update user",
 			"event": [
 				{
@@ -248,13 +216,7 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwidXNlcklkIjoxNiwiZXhwIjoyMjY3MDQ4ODE2fQ.Nb0ZCQC_6wTz26bqbHZOYGehpoKom-KgRmzghwfGIuVOkrot4sNB6Krkaq8tk5P11A5VmD5iqMVB3COhH_V0-g",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\", \r\n    \"priority\": 0, \r\n    \"color\": 0, \r\n    \"repeats\": 0, \r\n    \"done_dates\": [ 0 ] \r\n}",
@@ -304,7 +266,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\", \r\n    \"priority\": 0, \r\n    \"color\": 0, \r\n    \"repeats\": 0, \r\n    \"done_dates\": [ 0 ] \r\n}",
+					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\", \r\n    \"priority\": 0, \r\n    \"color\": 0, \r\n    \"repeats\": 0, \r\n    \"done_dates\": [ 0 ] \r\n} // todo: переделвй на лист привычек",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -341,11 +303,8 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -449,6 +408,33 @@
 						"habit",
 						"done_habit"
 					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"TOKEN\", null);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
 				}
 			},
 			"response": []

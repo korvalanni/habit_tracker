@@ -40,6 +40,13 @@ public class UserService {
         return userOpt.get();
     }
 
+    public User getById(long id){
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isEmpty())
+            throw new UserNotFoundException(id);
+        return userOpt.get();
+    }
+
     public void deleteByUsername(String username){
         User user = getByUsername(username);
         userRepository.delete(user);

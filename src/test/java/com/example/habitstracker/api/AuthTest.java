@@ -14,6 +14,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -39,7 +40,7 @@ class AuthTest {
         user = new User(0L, "Nik", "Cap", null);
     }
 
-    @AfterEach
+    @BeforeEach
     void tearDown() {
         DatabaseUtils.clear(jdbcTemplate);
     }
@@ -85,7 +86,7 @@ class AuthTest {
     /**
      * Пробуем войти используя неверные данные для входа
      */
-    @Disabled("Надо доработать ответы на некорректные данные для авторизации")
+  @Disabled("Надо доработать ответы на некорректные данные для авторизации")
     @Test
     void test_incorrectPassword() throws JsonProcessingException {
         AuthDSL.register(user);
