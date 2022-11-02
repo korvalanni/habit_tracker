@@ -50,6 +50,7 @@ public class HabitTest {
      * Проверяем, что привычка создается
      */
     @Test
+//    @Disabled
     void test_createHabit() throws JsonProcessingException {
         HabitDSL.createHabit(habit);
         List<Habit> habits = habitService.getHabits();

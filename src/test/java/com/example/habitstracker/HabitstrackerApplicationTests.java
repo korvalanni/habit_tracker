@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootTest
 class HabitstrackerApplicationTests {
-
     @Autowired
     private UserService userService;
     @Autowired
@@ -30,6 +29,7 @@ class HabitstrackerApplicationTests {
     private static UserDTO userDTO;
 
     @Test
+    @Disabled
     void contextLoads() {
     }
 
@@ -47,6 +47,7 @@ class HabitstrackerApplicationTests {
     }
 
     @Test
+//    @Disabled
     void checkSameNicks() {
         userService.addUser(userDTO);
         Assertions.assertThrows(UserExistException.class, () -> userService.addUser(userDTO));
@@ -58,6 +59,7 @@ class HabitstrackerApplicationTests {
      * 3) Проверям, что в бд лежит пользователь с новым паролем
      */
     @Test
+//    @Disabled
     void checkUpdate() {
         String username = "nick";
         String newPassword = "234";
@@ -77,6 +79,7 @@ class HabitstrackerApplicationTests {
     }
 
     @Test
+//    @Disabled
     void checkUserDelete() {
         userService.addUser(userDTO);
 
@@ -85,6 +88,7 @@ class HabitstrackerApplicationTests {
     }
 
     @Test
+//    @Disabled
     void checkExistenceHabitListGet() {
         userService.addUser(userDTO);
         HabitList habitList = userService.getUserHabitList(userDTO);
@@ -92,6 +96,7 @@ class HabitstrackerApplicationTests {
     }
 
     @Test
+//    @Disabled
     void checkNotExistHabitList() {
         String name = "new_name";
         Assertions.assertThrows(HabitListNotFoundException.class, () -> habitListService.getListsWithName(name));

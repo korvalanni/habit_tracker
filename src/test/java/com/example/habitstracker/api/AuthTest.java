@@ -49,6 +49,7 @@ class AuthTest {
      * Проверка механизма регистрации и логина
      */
     @Test
+//    @Disabled("Fix in the future")
     void test_registrationAndLogin() throws JsonProcessingException {
         AuthDSL.register(user);
         AuthDSL.login(user);
@@ -61,6 +62,7 @@ class AuthTest {
      * Пробуем зарегистрировать одного и того же пользователя дважды
      */
     @Test
+//    @Disabled("Fix in the future")
     void test_registerUserTwice() throws JsonProcessingException {
         AuthDSL.register(user);
 
@@ -86,7 +88,7 @@ class AuthTest {
     /**
      * Пробуем войти используя неверные данные для входа
      */
-  @Disabled("Надо доработать ответы на некорректные данные для авторизации")
+    @Disabled("Надо доработать ответы на некорректные данные для авторизации")
     @Test
     void test_incorrectPassword() throws JsonProcessingException {
         AuthDSL.register(user);
