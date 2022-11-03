@@ -1,6 +1,6 @@
 # Трекер привычек
 1. Создать базовую архитектуру приложения. Реализовать сущности и репозиторий для CRUD операций
-    1. User (поля: userId, nickname, password, habitListId)
+    1. User (поля: userId, username, password, habitListId)
     2. Habit (поля: listId, name, description, priority, colorId, interval, repeats) 
     3. HabitList (поля: listId, name)
     4. Colors (поля: colorId, colorCode)

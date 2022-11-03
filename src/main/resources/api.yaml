@@ -1,0 +1,313 @@
+openapi: "3.0.3"
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080/
+paths:
+  /auth/registration:
+    post:
+      description: TODO
+      summary: TODO
+      operationId: registration
+      requestBody:
+        description: TODO
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        200:
+          description: OK
+
+  /auth/login:
+    post:
+      description: TODO
+      summary: TODO
+      operationId: login
+      requestBody:
+        description: TODO
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        200:
+          description: OK
+        500:
+          description: ERROR
+
+# FIXME PLEASE and write description
+
+  /habit/create_habit:
+    post:
+      description: Create new habit
+      summary: TODO
+      operationId: createHabit
+      requestBody:
+        description: TODO
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HabitDTO'
+      responses:
+        200:
+          description: OK
+        500:
+          description: ERROR
+
+  /habit/get_habit/{id}:
+    get:
+      description: Get habit by id
+      summary: TODO
+      operationId: getHabit
+      parameters:
+        - in: path
+          name: id
+          description: TODO
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: TODO
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HabitDTO'
+        500:
+          description: ERROR
+
+  /habit/delete_habit:
+    delete:
+      description: Delete habit by id (FIXME PLEASE)
+      summary: TODO
+      operationId: deleteHabit
+      requestBody:
+        description: TODO
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdDTO'
+      responses:
+        200:
+          description: OK
+        500:
+          description: ERROR
+
+  /habit/update_habit/{id}:
+    put:
+      description: Delete habit by id (FIXME PLEASE)
+      summary: TODO
+      operationId: updateHabit
+      parameters:
+        - in: path
+          name: id
+          description: TODO
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: TODO
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HabitDTO'
+      responses:
+        200:
+          description: OK
+        500:
+          description: ERROR
+
+# FIXME TOO
+  /habit_list/get_habitList:
+    get:
+      description: TODO
+      summary: TODO
+      operationId: getHabitList
+      responses:
+        200:
+          description: TODO
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HabitListDTO'
+        500:
+          description: ERROR
+
+  /user/get_user/{username}:
+    get:
+      description: Get user
+      summary: TODO
+      operationId: getUserByUsername
+      parameters:
+        - in: path
+          name: username
+          description: TODO
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        500:
+          description: ERROR
+
+  /user/delete_user/{username}:
+    post:
+      description: Delete user
+      summary: TODO
+      operationId: deleteUserByUsername
+      parameters:
+        - in: path
+          name: username
+          description: TODO
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+        500:
+          description: ERROR
+
+  /user/update_user/{username}:
+    put:
+      description: Update user
+      summary: TODO
+      operationId: updateUserByUsername
+      parameters:
+        - in: path
+          name: username
+          description: TODO
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: TODO
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        500:
+          description: ERROR
+
+components:
+  schemas:
+
+    ErrorResponseDTO:
+      description: TODO
+      type: object
+      properties:
+        codeError:
+          type: integer
+        message:
+          type: string
+      required:
+        - codeError
+        - message
+
+    HabitDTO:
+      description: TODO
+      type: object
+      properties:
+        title:
+          description: TODO
+          type: string
+        description:
+          description: TODO
+          type: string
+        priority:
+          description: TODO
+          $ref: '#/components/schemas/Priority'
+        color:
+          description: TODO
+          $ref: '#/components/schemas/Color'
+        repeats:
+          description: TODO
+          type: integer
+          format: int64
+        done_dates:
+          description: TODO AND FIXME
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    HabitListDTO:
+      description: TODO
+      type: object
+      properties:
+        id:
+          description: TODO
+          type: integer
+          format: int64
+        name:
+          description: TODO
+          type: string
+        habits:
+          type: array
+          items:
+            $ref: '#/components/schemas/HabitDTO'
+
+    IdDTO:
+      description: хто я?
+      type: object
+      properties:
+        id:
+          description: TODO
+          type: integer
+          format: int64
+
+    UserDTO:
+      description: TODO
+      type: object
+      properties:
+        username:
+          description: TODO
+          type: string
+        password:
+          description: TODO
+          type: string
+        habitListName:
+          description: TODO
+          type: string
+
+    Priority:
+      description: TODO
+      type: string
+      enum:
+        - HIGH
+        - MIDDLE
+        - LOW
+
+    Color:
+      description: TODO
+      type: string
+      enum:
+        - RED
+        - ORANGE
+        - YELLOW
+        - LIGHT_GREEN
+        - GREEN
