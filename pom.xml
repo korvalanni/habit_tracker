@@ -171,7 +171,7 @@
 <!--							<generateSupportingFiles>false</generateSupportingFiles>-->
 							<configOptions>
 								<booleanGetterPrefix>is</booleanGetterPrefix>
-								<delegatePattern>true</delegatePattern>
+								<delegatePattern>false</delegatePattern>
 								<useOptional>true</useOptional>
 								<sourceFolder>src/main/java</sourceFolder>
 								<interfaceOnly>true</interfaceOnly>
