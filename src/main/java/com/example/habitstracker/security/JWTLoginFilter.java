@@ -1,8 +1,12 @@
 package com.example.habitstracker.security;
 
-import com.example.habitstracker.Constants;
-import com.example.habitstracker.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,11 +16,9 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+import com.example.habitstracker.Constants;
+import com.example.habitstracker.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {

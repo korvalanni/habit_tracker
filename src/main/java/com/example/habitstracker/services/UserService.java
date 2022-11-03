@@ -1,6 +1,10 @@
 package com.example.habitstracker.services;
 
-import com.example.habitstracker.dto.UserDTO;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
 import com.example.habitstracker.mappers.UserMapper;
@@ -8,10 +12,7 @@ import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
+import com.example.openapi.dto.UserDTO;
 
 @Component
 public class UserService {

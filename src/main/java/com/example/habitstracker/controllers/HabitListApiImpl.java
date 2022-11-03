@@ -1,43 +1,41 @@
 package com.example.habitstracker.controllers;
 
-import com.example.habitstracker.dto.HabitListDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.security.UserCredentials;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.openapi.api.HabitListApi;
+import com.example.openapi.dto.HabitListDTO;
 
-
-/*
-    Контроллер для листа привычек
+/**
+ * Контроллер для привычки
  */
-@Tag(name = "HabitList", description = "Control lists of habits")
 @RestController
-@RequestMapping("/habit_list")
-public class HabitListController {
+public class HabitListApiImpl implements HabitListApi
+{
     private final HabitListService habitListService;
     private final UserService userService;
 
-
     @Autowired
-    public HabitListController(HabitListService habitListService, UserService userService) {
+    public HabitListApiImpl(HabitListService habitListService, UserService userService)
+    {
         this.habitListService = habitListService;
         this.userService = userService;
     }
 
-    @GetMapping("/get_habitList")
-    public HabitListDTO getHabitList() {
+    @Override
+    public ResponseEntity<HabitListDTO> getHabitList() {
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
         User user = userService.getById(userCredentials.id());
         var id = user.getHabitList().getId();
         HabitList habitList = habitListService.getHabitListWithId(id);
-        return HabitListMapper.listDTO(habitList);
+        return ResponseEntity.ok(HabitListMapper.listDTO(habitList));
     }
 }

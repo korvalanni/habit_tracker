@@ -8,6 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+import com.example.openapi.dto.Color;
+import com.example.openapi.dto.Priority;
+
 @Entity
 @Table(name = "habit")
 @Getter

@@ -1,11 +1,11 @@
 package com.example.habitstracker.mappers;
 
-import com.example.habitstracker.dto.HabitDTO;
-import com.example.habitstracker.dto.HabitListDTO;
+import java.util.List;
+
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
-
-import java.util.List;
+import com.example.openapi.dto.HabitDTO;
+import com.example.openapi.dto.HabitListDTO;
 
 public class HabitListMapper {
     public static HabitList toEntity(HabitListDTO habitListDTO) {

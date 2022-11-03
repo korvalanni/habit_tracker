@@ -1,26 +1,30 @@
 package com.example.habitstracker.api;
 
-import com.example.habitstracker.Constants;
-import com.example.habitstracker.dsl.AuthDSL;
-import com.example.habitstracker.dsl.TokenHolder;
-import com.example.habitstracker.dto.ErrorResponseDTO;
-import com.example.habitstracker.exceptions.UserExistException;
-import com.example.habitstracker.mappers.UserMapper;
-import com.example.habitstracker.models.User;
-import com.example.habitstracker.utils.DatabaseUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.*;
+import static io.restassured.RestAssured.given;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static io.restassured.RestAssured.given;
+import com.example.habitstracker.Constants;
+import com.example.habitstracker.dsl.AuthDSL;
+import com.example.habitstracker.dsl.TokenHolder;
+import com.example.habitstracker.exceptions.UserExistException;
+import com.example.habitstracker.mappers.UserMapper;
+import com.example.habitstracker.models.User;
+import com.example.habitstracker.utils.DatabaseUtils;
+import com.example.openapi.dto.ErrorResponseDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 
 /**
  * Тесты на механизм авторизации
@@ -67,7 +71,9 @@ class AuthTest {
         AuthDSL.register(user);
 
         var exception = new UserExistException(user.getUsername());
-        var expected = new ErrorResponseDTO(1, exception.getMessage());
+        var expected = new ErrorResponseDTO()
+                .codeError(1)
+                .message(exception.getMessage());
 
         var dto = UserMapper.toDTO(user);
 
@@ -96,9 +102,11 @@ class AuthTest {
         user.setPassword("X");
 
         var exception = new UserExistException(user.getUsername());
-        var expected = new ErrorResponseDTO(1, exception.getMessage());
+      final var expected = new ErrorResponseDTO()
+              .codeError(1)
+              .message(exception.getMessage());
 
-        // @formatter:off
+      // @formatter:off
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(user))

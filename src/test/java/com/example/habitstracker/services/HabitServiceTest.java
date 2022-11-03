@@ -5,6 +5,8 @@ import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.repository.HabitRepository;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.habitstracker.security.UserCredentials;
+import com.example.openapi.dto.Color;
+import com.example.openapi.dto.Priority;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -16,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-public class HabitServiceTest {
+class HabitServiceTest {
     @InjectMocks
     private HabitService habitService;
 

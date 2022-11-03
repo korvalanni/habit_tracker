@@ -1,12 +1,13 @@
 package com.example.habitstracker.utils;
 
-import com.example.habitstracker.models.Habit;
-import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import javax.persistence.Table;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import javax.persistence.Table;
+import com.example.habitstracker.models.Habit;
+import com.example.habitstracker.models.HabitList;
+import com.example.habitstracker.models.User;
 
 /**
  * Инструменты для работы с тестовой базой донных

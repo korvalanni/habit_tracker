@@ -1,10 +1,11 @@
 package com.example.habitstracker.models.listeners;
 
-import com.example.habitstracker.models.User;
+import javax.persistence.PrePersist;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.PrePersist;
+import com.example.habitstracker.models.User;
 
 // @Component
 public class UserListener {

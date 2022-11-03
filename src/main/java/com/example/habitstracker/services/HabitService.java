@@ -1,16 +1,19 @@
 package com.example.habitstracker.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.example.habitstracker.exceptions.HabitNotFoundException;
+import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.repository.HabitRepository;
 import com.example.habitstracker.security.UserCredentials;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Optional;
+import com.example.openapi.dto.HabitDTO;
 
 @Component // нужно для контейнерной зависимости DI
 public class HabitService {
