@@ -35,7 +35,7 @@ public class HabitDSL {
                 .body(OBJECT_MAPPER.writeValueAsString(habit))
                 .header("Authorization", TokenHolder.token)
                 .when()
-                .delete("/delete_habit")
+                .delete("/habit/delete_habit")
                 .then()
                 .statusCode(200);
         // @formatter:on
@@ -46,7 +46,7 @@ public class HabitDSL {
         String json = given()
                 .header("Authorization", TokenHolder.token)
                 .when()
-                .post("/get_habit/" + id)
+                .post("/habit/get_habit/" + id)
                 .then()
                 .statusCode(200)
                 .extract()
