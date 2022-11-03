@@ -1,26 +1,32 @@
 package com.example.habitstracker.api;
 
-import com.example.habitstracker.TestUserBuilder;
-import com.example.habitstracker.dsl.AuthDSL;
-import com.example.habitstracker.dsl.HabitDSL;
-import com.example.habitstracker.dsl.UserDSL;
-import com.example.habitstracker.models.*;
-import com.example.habitstracker.services.HabitService;
-import com.example.habitstracker.utils.DatabaseUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.*;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
+import com.example.habitstracker.TestUserBuilder;
+import com.example.habitstracker.dsl.AuthDSL;
+import com.example.habitstracker.dsl.HabitDSL;
+import com.example.habitstracker.models.Habit;
+import com.example.habitstracker.models.User;
+import com.example.habitstracker.services.HabitService;
+import com.example.habitstracker.utils.DatabaseUtils;
+import com.example.openapi.dto.Color;
+import com.example.openapi.dto.Priority;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class HabitTest {
+class HabitTest {
     @LocalServerPort
     private Integer port;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

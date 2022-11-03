@@ -1,15 +1,16 @@
 package com.example.habitstracker.services;
 
-import com.example.habitstracker.dto.HabitListDTO;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.example.habitstracker.exceptions.HabitListNotFoundException;
 import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.repository.HabitListRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Optional;
+import com.example.openapi.dto.HabitListDTO;
 
 @Component
 public class HabitListService {

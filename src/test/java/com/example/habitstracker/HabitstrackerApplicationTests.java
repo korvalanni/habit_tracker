@@ -1,6 +1,10 @@
 package com.example.habitstracker;
 
-import com.example.habitstracker.dto.UserDTO;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.example.habitstracker.exceptions.HabitListNotFoundException;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
@@ -9,10 +13,7 @@ import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.UserService;
 import com.example.habitstracker.utils.DatabaseUtils;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.example.openapi.dto.UserDTO;
 
 @SpringBootTest
 class HabitstrackerApplicationTests {

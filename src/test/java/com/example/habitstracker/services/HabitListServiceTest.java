@@ -1,9 +1,9 @@
 package com.example.habitstracker.services;
 
-import com.example.habitstracker.dto.HabitListDTO;
 import com.example.habitstracker.exceptions.HabitListNotFoundException;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.repository.HabitListRepository;
+import com.example.openapi.dto.HabitListDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

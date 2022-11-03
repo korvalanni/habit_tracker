@@ -1,17 +1,17 @@
 package com.example.habitstracker.dsl;
 
+import static io.restassured.RestAssured.given;
+
+import java.util.HashMap;
+import java.util.function.Consumer;
+
 import com.example.habitstracker.Constants;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.restassured.http.ContentType;
-
-import java.util.HashMap;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-import static io.restassured.RestAssured.given;
 
 /**
  * Инструменты для взаимодействия с механизмом авторизации

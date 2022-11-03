@@ -1,15 +1,14 @@
 package com.example.habitstracker.dsl;
 
-import com.example.habitstracker.dto.HabitDTO;
+import static io.restassured.RestAssured.given;
+
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
+import com.example.openapi.dto.HabitDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.restassured.http.ContentType;
-
-import java.util.List;
-
-import static io.restassured.RestAssured.given;
 
 public class HabitDSL {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
