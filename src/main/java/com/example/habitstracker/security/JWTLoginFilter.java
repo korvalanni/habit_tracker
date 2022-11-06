@@ -7,6 +7,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.habitstracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,14 +23,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
-    private final UserRepository userService;
+    private final UserService userService;
     private final ObjectMapper objectMapper;
     private final TokenAuthenticationService tokenAuthenticationService;
 
     @Autowired
     public JWTLoginFilter(
             AuthenticationManager authenticationManager,
-            UserRepository userService,
+            UserService userService,
             TokenAuthenticationService tokenAuthenticationService,
             ObjectMapper objectMapper) {
         super(new AntPathRequestMatcher(Constants.API.LOGIN));
@@ -40,14 +41,27 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
+    public Authentication attemptAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws AuthenticationException, IOException {
         var credentials = objectMapper.readValue(request.getInputStream(), AccountCredentials.class);
-        var authToken = new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password(), List.of());
+        var authToken = new UsernamePasswordAuthenticationToken(
+                credentials.username(),
+                credentials.password(),
+                List.of());
         return getAuthenticationManager().authenticate(authToken);
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
-        tokenAuthenticationService.addAuthentication(response, authResult.getName(), userService.findByUsername(authResult.getName()).get().getUserId());
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain,
+            Authentication authResult
+    ) {
+        String username = authResult.getName();
+        long userId = userService.getByUsername(username).getUserId();
+        tokenAuthenticationService.addAuthentication(response, username, userId);
     }
 }
