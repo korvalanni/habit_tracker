@@ -1,13 +1,14 @@
 package com.example.habitstracker.api;
 
+import com.example.habitstracker.AbstractIntegrationTest;
 import com.example.habitstracker.TestUserBuilder;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.HabitDSL;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.services.HabitService;
-import com.example.habitstracker.utils.DatabaseUtils;
 import com.example.openapi.dto.Color;
+import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.Priority;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,42 +20,33 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class HabitTest {
+class HabitTest extends AbstractIntegrationTest {
     @LocalServerPort
     private Integer port;
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private ObjectMapper objectMapper;
     @Autowired
     private HabitService habitService;
-    private User user;
     private Habit habit;
 
     @BeforeEach
     void setUp() throws JsonProcessingException {
         RestAssured.port = port;
-        user = new TestUserBuilder().build();
+        User user = new TestUserBuilder().build();
         habit = new Habit("Test", "Description", Priority.HIGH, Color.GREEN, 0L, List.of(1L, 2L));
 
         AuthDSL.register(user);
         AuthDSL.login(user);
     }
 
-    @BeforeEach
-    void tearDown() {
-        DatabaseUtils.clear(jdbcTemplate);
-    }
-
     /**
      * Проверяем, что привычка создается
      */
     @Test
-//    @Disabled
     void test_createHabit() throws JsonProcessingException {
         HabitDSL.createHabit(habit);
         List<Habit> habits = habitService.getHabits();
@@ -65,7 +57,6 @@ class HabitTest {
     /**
      * Получаем привычку по идентификатору
      */
-    @Disabled("Почини")
     @Test
     void test_getHabit() throws JsonProcessingException {
         HabitDSL.createHabit(habit);
@@ -73,25 +64,21 @@ class HabitTest {
 
         Assertions.assertEquals(1, habits.size());
 
-        long id = habits.get(0).getId();
-
-        Habit getHabit = HabitDSL.getHabit(String.valueOf(id));
+        HabitDTO getHabit = HabitDSL.getHabit(String.valueOf(habit.getId()));
         Assertions.assertNotNull(getHabit);
     }
 
     /**
      * Получаем привычку по идентификатору
      */
-    @Disabled("Почини")
+    @Disabled("Почини. Падает потому что при создании привычки добавляем задачу на ее удаление. Потом удаляем " +
+            "привычку, а задание остается.")
     @Test
     void test_deleteHabit() throws JsonProcessingException {
         HabitDSL.createHabit(habit);
         List<Habit> habits = habitService.getHabits();
 
         Assertions.assertEquals(1, habits.size());
-
-        long id = habits.get(0).getId();
-        habit.setId(id);
 
         HabitDSL.deleteHabit(habit);
         habits = habitService.getHabits();

@@ -2,57 +2,76 @@ package com.example.habitstracker.dsl;
 
 import static io.restassured.RestAssured.given;
 
+import com.example.habitstracker.CleanerService;
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
 import com.example.openapi.dto.HabitDTO;
+import com.example.openapi.dto.IdDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Assertions;
 
 public class HabitDSL {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void createHabit(Habit habit) throws JsonProcessingException {
         HabitDTO habitDTO = HabitMapper.toDTO(habit);
+
         // @formatter:off
-        given()
+        String result = given()
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(habitDTO))
                 .header("Authorization", TokenHolder.token)
             .when()
                 .post("/habit/create_habit")
             .then()
-                .statusCode(200);
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
         // @formatter:on
+        IdDTO id = OBJECT_MAPPER.readValue(result, IdDTO.class);
+        habit.setId(id.getId());
+
+        CleanerService.addTask(() -> {
+            try {
+                HabitDSL.deleteHabit(habit);
+            } catch (JsonProcessingException e) {
+                Assertions.fail();
+            }
+        });
     }
 
     public static void deleteHabit(Habit habit) throws JsonProcessingException {
+        var idDto = new IdDTO().id(habit.getId());
+
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(habit))
+                .body(OBJECT_MAPPER.writeValueAsString(idDto))
                 .header("Authorization", TokenHolder.token)
-                .when()
+            .when()
                 .delete("/habit/delete_habit")
-                .then()
+            .then()
                 .statusCode(200);
         // @formatter:on
     }
 
-    public static Habit getHabit(String id) throws JsonProcessingException {
+    public static HabitDTO getHabit(String id) throws JsonProcessingException {
         // @formatter:off
         String json = given()
                 .header("Authorization", TokenHolder.token)
-                .when()
-                .post("/habit/get_habit/" + id)
-                .then()
+            .when()
+                .get("/habit/get_habit/" + id)
+            .then()
                 .statusCode(200)
                 .extract()
                 .body()
                 .asString();
         // @formatter:on
 
-        return OBJECT_MAPPER.readValue(json, Habit.class);
+        return OBJECT_MAPPER.readValue(json, HabitDTO.class);
     }
 }

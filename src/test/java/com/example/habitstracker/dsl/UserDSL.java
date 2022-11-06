@@ -23,7 +23,7 @@ public class UserDSL {
         given()
                 .headers("Authorization", "Bearer " + TokenHolder.token)
                 .when()
-                .post("/delete_user/" + user.getUsername())
+                .post("/user/delete_user/" + user.getUsername())
                 .then()
                 .statusCode(200);
         // @formatter:on
