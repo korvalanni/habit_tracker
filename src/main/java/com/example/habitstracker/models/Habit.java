@@ -32,7 +32,6 @@ public class Habit {
     @ElementCollection
     private List<Long> doneDates;
 
-    // todo: убдеись, что этот конструктор нужен нам
     public Habit(String title, String description, Priority priority, Color color, Long repeats, List<Long> doneDates) {
         this.title = title;
         this.description = description;

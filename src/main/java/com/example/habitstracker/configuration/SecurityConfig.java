@@ -18,7 +18,7 @@ import com.example.habitstracker.services.AppUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-// TODO
+// TODO Dont use deprecated class
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AppUserDetailsService userDetailsService;
     private final JWTAuthenticationFilter jwtAuthenticationFilter;

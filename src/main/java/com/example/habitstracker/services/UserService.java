@@ -53,7 +53,6 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    // toDo будем переписывать
     public User updateUserPasswordByUsername(String username, UserDTO userDTO){
         User user = getByUsername(username);
         String password = userDTO.getPassword();

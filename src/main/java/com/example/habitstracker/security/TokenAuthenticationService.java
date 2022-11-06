@@ -44,7 +44,7 @@ public class TokenAuthenticationService {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
-        // todo: убери дублирование 43-44 и 51-52
+        // todo: убери дублирование 44-45 и 52-53
         jwtParser = Jwts.parserBuilder().setSigningKey(key).build();
     }
 

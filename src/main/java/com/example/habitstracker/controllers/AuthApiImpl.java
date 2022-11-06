@@ -25,7 +25,6 @@ public class AuthApiImpl implements AuthApi
     @Override
     public ResponseEntity<Void> registration(UserDTO userDTO)
     {
-        // TODO проверить, что ользователь не авторизирован *(второй раз регистрироваться нельзя)
         // получение текущего пользователя
         // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.addUser(userDTO);
