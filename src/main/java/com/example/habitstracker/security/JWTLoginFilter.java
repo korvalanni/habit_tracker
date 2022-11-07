@@ -7,9 +7,11 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.habitstracker.exceptions.auth.IncorrectCredentialsException;
 import com.example.habitstracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,7 +20,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
 import com.example.habitstracker.Constants;
-import com.example.habitstracker.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
@@ -46,11 +47,20 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletResponse response
     ) throws AuthenticationException, IOException {
         var credentials = objectMapper.readValue(request.getInputStream(), AccountCredentials.class);
-        var authToken = new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 credentials.username(),
                 credentials.password(),
                 List.of());
-        return getAuthenticationManager().authenticate(authToken);
+
+        return tryAuthenticate(authToken);
+    }
+
+    private Authentication tryAuthenticate(UsernamePasswordAuthenticationToken authToken) {
+        try {
+            return getAuthenticationManager().authenticate(authToken);
+        } catch (BadCredentialsException exception) {
+            throw new IncorrectCredentialsException();
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Constants {
      */
     public static class API {
         public static final String LOGIN = "/auth/login";
+        public static final String REGISTRATION = "/auth/registration";
     }
 
     /**
