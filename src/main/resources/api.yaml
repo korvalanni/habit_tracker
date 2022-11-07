@@ -41,7 +41,7 @@ paths:
         500:
           description: ERROR
 
-# FIXME PLEASE and write description
+  # FIXME PLEASE and write description
 
   /habit/create_habit:
     post:
@@ -128,7 +128,7 @@ paths:
         500:
           description: ERROR
 
-# FIXME TOO
+  # FIXME TOO
   /habit_list/get_habitList:
     get:
       description: TODO
@@ -235,6 +235,8 @@ components:
         title:
           description: TODO
           type: string
+          x-constraints:
+            - "@NotNull"
         description:
           description: TODO
           type: string

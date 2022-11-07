@@ -13,6 +13,8 @@ import com.example.openapi.api.HabitApi;
 import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.IdDTO;
 
+import javax.validation.Valid;
+
 /**
  * Контроллер для привычки
  */

@@ -8,6 +8,8 @@ import com.example.habitstracker.services.UserService;
 import com.example.openapi.api.AuthApi;
 import com.example.openapi.dto.UserDTO;
 
+import javax.validation.Valid;
+
 /**
  * Реализация апи для аутентификации {@link AuthApi}
  */
