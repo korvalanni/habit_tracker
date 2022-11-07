@@ -2,6 +2,8 @@ package com.example.habitstracker.api;
 
 import static io.restassured.RestAssured.given;
 
+import com.example.habitstracker.TestUserBuilder;
+import com.example.habitstracker.models.HabitList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -38,7 +40,7 @@ class AuthTest extends AbstractIntegrationTest {
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-        user = new User(0L, "Nik", "Cap", null);
+        user = new TestUserBuilder().build();
     }
 
     /**

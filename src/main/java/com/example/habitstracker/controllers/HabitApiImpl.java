@@ -1,10 +1,5 @@
 package com.example.habitstracker.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.security.UserCredentials;
@@ -12,6 +7,10 @@ import com.example.habitstracker.services.HabitService;
 import com.example.openapi.api.HabitApi;
 import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.IdDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Контроллер для привычки

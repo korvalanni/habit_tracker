@@ -41,7 +41,7 @@ paths:
         500:
           description: ERROR
 
-# FIXME PLEASE and write description
+  # FIXME PLEASE and write description
 
   /habit/create_habit:
     post:
@@ -132,7 +132,7 @@ paths:
         500:
           description: ERROR
 
-# FIXME TOO
+  # FIXME TOO
   /habit_list/get_habitList:
     get:
       description: TODO
@@ -226,8 +226,12 @@ components:
       properties:
         codeError:
           type: integer
+          x-constraints:
+            - "@NotNull"
         message:
           type: string
+          x-constraints:
+            - "@NotNull"
       required:
         - codeError
         - message
@@ -239,9 +243,19 @@ components:
         title:
           description: TODO
           type: string
+          x-constraints:
+            - "@NotNull"
+            - "@NotBlank"
+            - "@Size(max = 50, message = \"Too long username\")"
+            # todo: check only latin
         description:
           description: TODO
           type: string
+          x-constraints:
+            - "@NotNull"
+            - "@NotBlank"
+            - "@Size(max = 150, message = \"Too long username\")"
+            # todo: check only latin
         priority:
           description: TODO
           $ref: '#/components/schemas/Priority'
@@ -252,12 +266,16 @@ components:
           description: TODO
           type: integer
           format: int64
+          x-constraints:
+            - "@Positive"
         done_dates:
           description: TODO AND FIXME
           type: array
           items:
             type: integer
             format: int64
+          x-constraints:
+            - "@NotNull"
 
     HabitListDTO:
       description: TODO
@@ -267,13 +285,24 @@ components:
           description: TODO
           type: integer
           format: int64
+          x-constraints:
+            - "@PositiveOrZero"
         name:
           description: TODO
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
         habits:
           type: array
           items:
             $ref: '#/components/schemas/HabitDTO'
+          x-constraints:
+            - "@NotNull"
 
     IdDTO:
       description: хто я?
@@ -283,6 +312,8 @@ components:
           description: TODO
           type: integer
           format: int64
+          x-constraints:
+            - "@PositiveOrZero"
 
     UserDTO:
       description: TODO
@@ -291,12 +322,34 @@ components:
         username:
           description: TODO
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
+            # todo: check only latin
         password:
           description: TODO
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This password must contains at least one character\")"
+            - "@AtLeastOneDigit(message = \"This password must contains at least one digit\")"
+            - "@NotNull"
+            - "@Size(min = 3, message = \"Too short password\")"
+            - "@Size(max = 20, message = \"Too long password\")"
         habitListName:
           description: TODO
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short habit list name\")"
+            - "@Size(max = 20, message = \"Too long habit list name\")"
+            # todo: check only latin
 
     Priority:
       description: TODO
