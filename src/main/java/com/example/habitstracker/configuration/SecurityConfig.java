@@ -5,6 +5,7 @@ import com.example.habitstracker.Constants;
 import com.example.habitstracker.filters.ExceptionHandlerFilter;
 import com.example.habitstracker.security.JWTAuthenticationFilter;
 import com.example.habitstracker.security.JWTLoginFilter;
+import org.aspectj.lang.reflect.CodeSignature;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -34,10 +35,10 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST, Constants.API.LOGIN, "/auth/registration").permitAll()
                     .antMatchers(HttpMethod.GET,
-                            "/swagger-ui/**",
+                            Constants.Swagger.UI_ANY,
                             "/swagger-resources/**",
-                            "/swagger-ui.html",
-                            "/v2/api-docs",
+                            Constants.Swagger.UI_HTML,
+                            Constants.Swagger.API_DOCS,
                             "/webjars/**").permitAll()
                     .anyRequest().authenticated()
                     .and()

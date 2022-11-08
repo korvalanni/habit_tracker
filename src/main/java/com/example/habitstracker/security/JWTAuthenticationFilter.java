@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.example.habitstracker.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,7 +32,11 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        if(request.getServletPath().equals(Constants.API.REGISTRATION)) {
+        var swaggerUi = new AntPathRequestMatcher(Constants.Swagger.UI_ANY);
+        var swaggerUiHtml = new AntPathRequestMatcher(Constants.Swagger.UI_HTML);
+        var apiDocs = new AntPathRequestMatcher(Constants.Swagger.API_DOCS);
+        if (request.getServletPath().equals(Constants.API.REGISTRATION) || swaggerUi.matches(request)
+                || swaggerUiHtml.matches(request) || apiDocs.matches(request)) {
             filterChain.doFilter(request, response);
             return;
         }

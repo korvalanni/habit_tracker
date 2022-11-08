@@ -13,6 +13,15 @@ public class Constants {
     }
 
     /**
+     * Пути для swagger
+     */
+    public static class Swagger {
+        public static final String UI_ANY = "/swagger-ui/**";
+        public static final String UI_HTML = "/swagger-ui.html";
+        public static final String API_DOCS = "/v3/api-docs/**";
+    }
+
+    /**
      * Ключи в jwt
      */
     public static class JWTClaims {
