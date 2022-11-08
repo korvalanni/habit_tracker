@@ -5,6 +5,7 @@ import static io.restassured.RestAssured.given;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
+import com.example.habitstracker.CleanerService;
 import com.example.habitstracker.Constants;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.User;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Инструменты для взаимодействия с механизмом авторизации
@@ -36,6 +38,18 @@ public class AuthDSL {
             .then()
                 .statusCode(200);
         // @formatter:on
+
+        CleanerService.addTask(() -> {
+            if (TokenHolder.token == null) {
+                try {
+                    login(user);
+                } catch (JsonProcessingException e) {
+                    Assertions.fail("Can't login. Casued by: " + e.getMessage());
+                }
+            }
+
+            UserDSL.deleteUser(user);
+        });
     }
 
     /**
@@ -59,22 +73,5 @@ public class AuthDSL {
                 .statusCode(200);
         // @formatter:on
         TokenHolder.token = response.extract().header("Authorization").split(" ")[1];
-    }
-
-    /**
-     * Обертка для выполнения действий.
-     * <p>
-     * Как работает:
-     * 1) логинимся в системе
-     * 2) выполняем действия
-     * 3) удаляем пользователя
-     *
-     * @param user     Пользователь
-     * @param function Действия
-     */
-    public static void session(User user, Consumer<User> function) throws JsonProcessingException {
-        login(user);
-        function.accept(user);
-        UserDSL.deleteUser(user);
     }
 }
