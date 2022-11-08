@@ -28,12 +28,12 @@ public class HabitApiImpl implements HabitApi
     }
 
     @Override
-    public ResponseEntity<Void> createHabit(HabitDTO habitDTO)
+    public ResponseEntity<IdDTO> createHabit(HabitDTO habitDTO)
     {
         UserCredentials credentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
         Habit habit = HabitMapper.toEntity(habitDTO);
         habitService.addHabit(credentials, habit);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new IdDTO().id(habit.getId()));
     }
 
     @Override
