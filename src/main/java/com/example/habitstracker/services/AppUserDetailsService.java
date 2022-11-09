@@ -9,25 +9,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.example.habitstracker.repository.UserRepository;
-
 @Component
 public class AppUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public AppUserDetailsService(UserRepository userRepository) {
-        // todo service
-        this.userRepository = userRepository;
+    public AppUserDetailsService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User with " + username + " doesn't exists.");
-        }
-        com.example.habitstracker.models.User user1 = user.get();
-        return new User(user1.getUsername(), user1.getPassword(), new ArrayList<>());
+        com.example.habitstracker.models.User user = userService.getByUsername(username);
+        return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 }

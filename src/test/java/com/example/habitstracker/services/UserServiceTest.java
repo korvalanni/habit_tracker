@@ -22,7 +22,7 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private HabitListRepository habitListRepository;
+    private HabitListService habitListService;
 
     @BeforeEach
     public void initMocks() throws Exception {

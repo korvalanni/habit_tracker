@@ -17,17 +17,17 @@ import com.example.openapi.dto.UserDTO;
 @Component
 public class UserService {
     private final UserRepository userRepository;
-    private final HabitListRepository habitListRepository;
+    private final HabitListService habitListService;
 
     @Autowired
-    public UserService(UserRepository userRepository, HabitListRepository habitListRepository) {
+    public UserService(UserRepository userRepository, HabitListService habitListService) {
         this.userRepository = userRepository;
-        this.habitListRepository = habitListRepository;
+        this.habitListService = habitListService;
     }
 
     public User addUser(UserDTO userDTO) {
         User user = UserMapper.toEntity(userDTO);
-        habitListRepository.save(user.getHabitList());
+        habitListService.addHabitList(user.getHabitList());
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
             throw new UserExistException(userDTO.getUsername());
         userRepository.save(user);
