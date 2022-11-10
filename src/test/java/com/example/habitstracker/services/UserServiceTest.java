@@ -150,19 +150,19 @@ public class UserServiceTest {
      * Обновление пароля пользователя
      */
     @Test
-    void test_updateUserPasswordByUsername() {
+    void test_updateUserByUsername() {
         UserDTO userDTO = new UserDTO();
         userDTO.setPassword("123");
         userDTO.setUsername("a");
-        userDTO.setHabitListName("b");
 
         User user = buildSimpleUser();
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.of(user));
 
-        User result = userService.updateUserPasswordByUsername("a", userDTO);
+        User result = userService.updateUserByUsername("a", userDTO);
 
         Assertions.assertEquals("123", result.getPassword());
+        Assertions.assertEquals("a", result.getUsername());
     }
 
     /**
@@ -179,7 +179,7 @@ public class UserServiceTest {
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> userService.updateUserPasswordByUsername("a", userDTO));
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.updateUserByUsername("a", userDTO));
 
         Assertions.assertEquals("1", user.getPassword());
     }

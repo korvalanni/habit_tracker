@@ -1,10 +1,5 @@
 package com.example.habitstracker.services;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
 import com.example.habitstracker.mappers.UserMapper;
@@ -13,6 +8,10 @@ import com.example.habitstracker.models.User;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.openapi.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class UserService {
@@ -34,34 +33,45 @@ public class UserService {
         return user;
     }
 
-    public User getByUsername(String username){
+    public User getByUsername(String username) {
         Optional<User> userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty())
             throw new UserNotFoundException(username);
         return userOpt.get();
     }
 
-    public User getById(long id){
+    public User getById(long id) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isEmpty())
             throw new UserNotFoundException(id);
         return userOpt.get();
     }
 
-    public void deleteByUsername(String username){
+    public void deleteByUsername(String username) {
         User user = getByUsername(username);
         userRepository.delete(user);
     }
 
-    public User updateUserPasswordByUsername(String username, UserDTO userDTO){
+    public User updateUserByUsername(String username, UserDTO userDTO) {
         User user = getByUsername(username);
-        String password = userDTO.getPassword();
-        user.setPassword(password);
+        var userDTOName = userDTO.getUsername();
+        var userDTOPassword = userDTO.getPassword();
+
+        if (userDTOName != null && !username.equals(userDTOName)) {
+            Optional<User> userOpt = userRepository.findByUsername(userDTOName);
+            if (!userOpt.isEmpty())
+                throw new UserExistException(userDTO.getUsername());
+            user.setUsername(userDTOName);
+        }
+
+        if (userDTOPassword != null)
+            user.setPassword(userDTOPassword);
+
         userRepository.save(user);
         return user;
     }
 
-    public HabitList getUserHabitList(UserDTO userDTO){
+    public HabitList getUserHabitList(UserDTO userDTO) {
         User user = getByUsername(userDTO.getUsername());
         return user.getHabitList();
     }

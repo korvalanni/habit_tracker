@@ -30,18 +30,17 @@ public class UserApiImpl implements UserApi
         return ResponseEntity.ok().build();
     }
 
+
     @Override
     public ResponseEntity<UserDTO> getUserByUsername(String username)
     {
-        // FIXME Write javadoc
         return ResponseEntity.ok(UserMapper.toDTO(userService.getByUsername(username)));
     }
 
     @Override
     public ResponseEntity<UserDTO> updateUserByUsername(String username, UserDTO userDTO)
     {
-        //FIXME не по смыслу
-        userService.updateUserPasswordByUsername(username, userDTO);
+        userService.updateUserByUsername(username, userDTO);
         return getUserByUsername(username);
     }
 }
