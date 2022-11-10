@@ -1,7 +1,5 @@
 package com.example.habitstracker.dsl;
 
-import static io.restassured.RestAssured.given;
-
 import com.example.habitstracker.CleanerService;
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
@@ -9,9 +7,10 @@ import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.IdDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
+
+import static io.restassured.RestAssured.given;
 
 public class HabitDSL {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -24,9 +23,9 @@ public class HabitDSL {
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(habitDTO))
                 .header("Authorization", TokenHolder.token)
-            .when()
+                .when()
                 .post("/habit/create_habit")
-            .then()
+                .then()
                 .statusCode(200)
                 .extract()
                 .body()
@@ -52,9 +51,9 @@ public class HabitDSL {
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(idDto))
                 .header("Authorization", TokenHolder.token)
-            .when()
+                .when()
                 .delete("/habit/delete_habit")
-            .then()
+                .then()
                 .statusCode(200);
         // @formatter:on
     }
@@ -63,9 +62,9 @@ public class HabitDSL {
         // @formatter:off
         String json = given()
                 .header("Authorization", TokenHolder.token)
-            .when()
+                .when()
                 .get("/habit/get_habit/" + id)
-            .then()
+                .then()
                 .statusCode(200)
                 .extract()
                 .body()
@@ -73,5 +72,19 @@ public class HabitDSL {
         // @formatter:on
 
         return OBJECT_MAPPER.readValue(json, HabitDTO.class);
+    }
+
+    public static void updateHabit(String id, Habit habit) throws JsonProcessingException {
+
+        // @formatter:off
+        given().
+                header("Authorization", TokenHolder.token)
+                .contentType(ContentType.JSON)
+                .body(OBJECT_MAPPER.writeValueAsString(HabitMapper.toDTO(habit)))
+                .when()
+                .put("/habit/update_habit/{id}", id)
+                .then()
+                .statusCode(200);
+        // @formatter:on
     }
 }

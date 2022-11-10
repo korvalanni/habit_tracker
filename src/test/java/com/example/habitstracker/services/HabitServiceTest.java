@@ -1,15 +1,15 @@
 package com.example.habitstracker.services;
 
-import com.example.habitstracker.models.*;
+import com.example.habitstracker.models.Habit;
+import com.example.habitstracker.models.HabitList;
+import com.example.habitstracker.models.User;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.repository.HabitRepository;
-import com.example.habitstracker.repository.UserRepository;
 import com.example.habitstracker.security.UserCredentials;
 import com.example.openapi.dto.Color;
 import com.example.openapi.dto.Priority;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
