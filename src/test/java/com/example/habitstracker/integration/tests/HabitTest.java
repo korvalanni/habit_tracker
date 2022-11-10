@@ -1,10 +1,10 @@
 package com.example.habitstracker.integration.tests;
 
 import com.example.habitstracker.integration.utils.TestUserBuilder;
-import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.services.HabitService;
+import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.Color;
 import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.Priority;
@@ -23,6 +23,8 @@ import java.util.List;
 class HabitTest extends AbstractIntegrationTest {
     @Autowired
     private HabitService habitService;
+    @Autowired
+    private MapperService mapperService;
     private Habit habit;
 
     @BeforeEach
@@ -93,7 +95,8 @@ class HabitTest extends AbstractIntegrationTest {
         habitDSL.updateHabit(id, updatedHabit);
         Habit expectedHabit = new Habit("Test1", "Description new",
                 Priority.MIDDLE, Color.GREEN, 1L, List.of(1L, 2L));
-        Habit gotHabit = HabitMapper.toEntity(habitDSL.getHabit(id));
+        Habit gotHabit = new Habit();
+        mapperService.transform(habitDSL.getHabit(id), gotHabit);
 
         Assertions.assertEquals(expectedHabit.getTitle(), gotHabit.getTitle());
         Assertions.assertEquals(expectedHabit.getDescription(), gotHabit.getDescription());

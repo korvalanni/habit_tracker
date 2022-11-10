@@ -1,9 +1,9 @@
 package com.example.habitstracker.controllers;
 
-import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.security.UserCredentials;
 import com.example.habitstracker.services.HabitService;
+import com.example.habitstracker.services.MapperService;
 import com.example.openapi.api.HabitApi;
 import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.IdDTO;
@@ -19,18 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class HabitApiImpl implements HabitApi
 {
     private final HabitService habitService;
+    private final MapperService mapperService;
 
     @Autowired
-    public HabitApiImpl(HabitService habitService)
+    public HabitApiImpl(HabitService habitService, MapperService mapperService)
     {
         this.habitService = habitService;
+        this.mapperService = mapperService;
     }
 
     @Override
     public ResponseEntity<IdDTO> createHabit(HabitDTO habitDTO)
     {
         UserCredentials credentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        Habit habit = HabitMapper.toEntity(habitDTO);
+        Habit habit = new Habit();
+        mapperService.transform(habitDTO, habit);
         habitService.addHabit(credentials, habit);
         return ResponseEntity.ok(new IdDTO().id(habit.getId()));
     }
@@ -47,13 +50,16 @@ public class HabitApiImpl implements HabitApi
     @Override
     public ResponseEntity<HabitDTO> getHabit(Long id)
     {
-        return ResponseEntity.ok(HabitMapper.toDTO(habitService.getHabit(id)));
+        HabitDTO habitDTO = new HabitDTO();
+        mapperService.transform(habitService.getHabit(id), habitDTO);
+        return ResponseEntity.ok(habitDTO);
     }
 
     @Override
     public ResponseEntity<Void> updateHabit(Long id, HabitDTO habitDTO)
     {
-        Habit habit = HabitMapper.toEntity(habitDTO);
+        Habit habit = new Habit();
+        mapperService.transform(habitDTO, habit);
         habitService.updateHabit(id, habit);
         return ResponseEntity.ok().build();
     }

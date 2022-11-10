@@ -6,8 +6,9 @@ import java.util.HashMap;
 
 import com.example.habitstracker.integration.utils.CleanerService;
 import com.example.habitstracker.constants.ApiConstants;
-import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.UserEntity;
+import com.example.habitstracker.services.MapperService;
+import com.example.openapi.dto.UserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,12 +27,15 @@ public class AuthDSL {
     private ObjectMapper objectMapper;
     @Autowired
     private UserDSL userDSL;
+    @Autowired
+    private MapperService mapper;
 
     /**
      * Зарегистрировать нового пользователя
      */
     public void register(UserEntity user) throws JsonProcessingException {
-        var dto = UserMapper.toDTO(user);
+        var dto = new UserDTO();
+        mapper.transform(user, dto);
 
         // @formatter:off
         given()
@@ -62,7 +66,8 @@ public class AuthDSL {
      * @return Ответ на запрос
      */
     public String sendRegistrationRequest(UserEntity user) throws JsonProcessingException {
-        var dto = UserMapper.toDTO(user);
+        var dto = new UserDTO();
+        mapper.transform(user, dto);
 
         // @formatter:off
         var result = given()
