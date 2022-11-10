@@ -3,13 +3,11 @@ package com.example.habitstracker.services;
 import com.example.habitstracker.models.*;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.repository.HabitRepository;
-import com.example.habitstracker.repository.UserRepository;
 import com.example.habitstracker.security.UserCredentials;
 import com.example.openapi.dto.Color;
 import com.example.openapi.dto.Priority;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -41,7 +39,7 @@ class HabitServiceTest {
     void test_addHabit() {
         HabitList habitList = new HabitList();
 
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setPassword("123");
         user.setHabitList(habitList);
         user.setUsername("user");
@@ -68,7 +66,7 @@ class HabitServiceTest {
      */
     @Test
     void test_deleteHabit() {
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setPassword("123");
         user.setHabitList(new HabitList());
         user.setUsername("user");
@@ -99,7 +97,7 @@ class HabitServiceTest {
      */
     @Test
     void test_updateHabit() {
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setPassword("123");
         user.setHabitList(new HabitList());
         user.setUsername("user");

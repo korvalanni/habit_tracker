@@ -5,7 +5,7 @@ import com.example.habitstracker.TestUserBuilder;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.HabitDSL;
 import com.example.habitstracker.models.Habit;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.services.HabitService;
 import com.example.openapi.dto.Color;
 import com.example.openapi.dto.HabitDTO;
@@ -36,7 +36,7 @@ class HabitTest extends AbstractIntegrationTest {
     @BeforeEach
     void setUp() throws JsonProcessingException {
         RestAssured.port = port;
-        User user = new TestUserBuilder().build();
+        UserEntity user = new TestUserBuilder().build();
         habit = new Habit("Test", "Description", Priority.HIGH, Color.GREEN, 0L, List.of(1L, 2L));
 
         AuthDSL.register(user);

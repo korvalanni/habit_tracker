@@ -7,17 +7,17 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 
 /**
  * Инструменты для работы с тестовой базой донных
  */
 public class DatabaseUtils {
     /**
-     * Очистить таблицы для сущностей {@link User}, {@link Habit}, {@link HabitList}
+     * Очистить таблицы для сущностей {@link UserEntity}, {@link Habit}, {@link HabitList}
      */
     public static void clear(JdbcTemplate jdbcTemplate) {
-        String userTable = getTableNameByEntity(User.class);
+        String userTable = getTableNameByEntity(UserEntity.class);
         String habitTable = getTableNameByEntity(Habit.class);
         String habitList = getTableNameByEntity(HabitList.class);
         String habitDoneDates = "habit_done_dates";

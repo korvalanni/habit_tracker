@@ -9,8 +9,7 @@ import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
-import com.example.habitstracker.repository.HabitListRepository;
+import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.openapi.dto.UserDTO;
 
@@ -25,8 +24,8 @@ public class UserService {
         this.habitListService = habitListService;
     }
 
-    public User addUser(UserDTO userDTO) {
-        User user = UserMapper.toEntity(userDTO);
+    public UserEntity addUser(UserDTO userDTO) {
+        UserEntity user = UserMapper.toEntity(userDTO);
         habitListService.addHabitList(user.getHabitList());
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
             throw new UserExistException(userDTO.getUsername());
@@ -34,27 +33,27 @@ public class UserService {
         return user;
     }
 
-    public User getByUsername(String username){
-        Optional<User> userOpt = userRepository.findByUsername(username);
+    public UserEntity getByUsername(String username){
+        Optional<UserEntity> userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty())
             throw new UserNotFoundException(username);
         return userOpt.get();
     }
 
-    public User getById(long id){
-        Optional<User> userOpt = userRepository.findById(id);
+    public UserEntity getById(long id){
+        Optional<UserEntity> userOpt = userRepository.findById(id);
         if (userOpt.isEmpty())
             throw new UserNotFoundException(id);
         return userOpt.get();
     }
 
     public void deleteByUsername(String username){
-        User user = getByUsername(username);
+        UserEntity user = getByUsername(username);
         userRepository.delete(user);
     }
 
-    public User updateUserPasswordByUsername(String username, UserDTO userDTO){
-        User user = getByUsername(username);
+    public UserEntity updateUserPasswordByUsername(String username, UserDTO userDTO){
+        UserEntity user = getByUsername(username);
         String password = userDTO.getPassword();
         user.setPassword(password);
         userRepository.save(user);
@@ -62,7 +61,7 @@ public class UserService {
     }
 
     public HabitList getUserHabitList(UserDTO userDTO){
-        User user = getByUsername(userDTO.getUsername());
+        UserEntity user = getByUsername(userDTO.getUsername());
         return user.getHabitList();
     }
 }

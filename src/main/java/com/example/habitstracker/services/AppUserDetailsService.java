@@ -2,6 +2,7 @@ package com.example.habitstracker.services;
 
 import java.util.ArrayList;
 
+import com.example.habitstracker.models.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.example.habitstracker.models.User user = userService.getByUsername(username);
+        UserEntity user = userService.getByUsername(username);
         return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 }

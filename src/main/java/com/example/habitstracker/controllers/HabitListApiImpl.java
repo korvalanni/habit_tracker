@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.security.UserCredentials;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.UserService;
@@ -33,7 +33,7 @@ public class HabitListApiImpl implements HabitListApi
     @Override
     public ResponseEntity<HabitListDTO> getHabitList() {
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        User user = userService.getById(userCredentials.id());
+        UserEntity user = userService.getById(userCredentials.id());
         var id = user.getHabitList().getId();
         HabitList habitList = habitListService.getHabitListWithId(id);
         return ResponseEntity.ok(HabitListMapper.listDTO(habitList));
