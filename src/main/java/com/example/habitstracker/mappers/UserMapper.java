@@ -1,5 +1,6 @@
 package com.example.habitstracker.mappers;
 
+import com.example.openapi.dto.LoginPasswordDTO;
 import org.springframework.stereotype.Component;
 
 import com.example.habitstracker.models.HabitList;
@@ -33,5 +34,16 @@ public class UserMapper {
             userDTO.setHabitListName(habitList.getName());
 
         return userDTO;
+    }
+
+    public static LoginPasswordDTO toLoginPassword(User user) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+
+        LoginPasswordDTO loginPasswordDTO = new LoginPasswordDTO();
+        loginPasswordDTO.setUsername(username);
+        loginPasswordDTO.setPassword(password);
+
+        return loginPasswordDTO;
     }
 }

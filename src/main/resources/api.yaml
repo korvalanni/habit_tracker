@@ -34,7 +34,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/LoginPasswordDTO'
       responses:
         200:
           description: OK
@@ -296,6 +296,17 @@ components:
           type: string
         habitListName:
           description: TODO
+          type: string
+
+    LoginPasswordDTO:
+      description: Объект, который хранит в себе только имя пользователя и пароль
+      type: object
+      properties:
+        username:
+          description: Имя пользователя
+          type: string
+        password:
+          description: Пароль пользователя
           type: string
 
     Priority:
