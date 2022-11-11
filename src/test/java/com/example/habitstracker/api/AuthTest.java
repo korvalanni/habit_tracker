@@ -1,8 +1,8 @@
 package com.example.habitstracker.api;
 
 import com.example.habitstracker.AbstractIntegrationTest;
-import com.example.habitstracker.Constants;
 import com.example.habitstracker.TestUserBuilder;
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.TokenHolder;
 import com.example.habitstracker.exceptions.UserExistException;

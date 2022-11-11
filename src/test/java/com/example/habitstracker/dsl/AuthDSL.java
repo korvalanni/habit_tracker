@@ -31,7 +31,7 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(dto))
             .when()
-                .post(Constants.API.REGISTRATION)
+                .post(ApiConstants.REGISTRATION)
             .then()
                 .statusCode(200);
         // @formatter:on
@@ -54,7 +54,7 @@ public class AuthDSL {
      *
      * @return Ответ на запрос
      */
-    public static String sendRegistrationRequest(User user) throws JsonProcessingException {
+    public static String sendRegistrationRequest(UserEntity user) throws JsonProcessingException {
         var dto = UserMapper.toDTO(user);
 
         // @formatter:off
@@ -62,7 +62,7 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(dto))
             .when()
-                .post(Constants.API.REGISTRATION);
+                .post(ApiConstants.REGISTRATION);
         // @formatter:on
 
         if (result.getStatusCode() == 200) {

@@ -4,7 +4,7 @@ import com.example.habitstracker.AbstractIntegrationTest;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.ErrorResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -28,7 +28,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     private Integer port;
     @Autowired
     private ObjectMapper objectMapper;
-    private User user;
+    private UserEntity user;
     private final TypeReference<List<ErrorResponseDTO>> listType = new TypeReference<>() {
     };
 
@@ -37,7 +37,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
         RestAssured.port = port;
         HabitList habitList = new HabitList();
         habitList.setName("MyHabits");
-        user = new User(0L, "Kennedy", "Kennedy228", habitList);
+        user = new UserEntity(0L, "Kennedy", "Kennedy228", habitList);
     }
 
     /**
