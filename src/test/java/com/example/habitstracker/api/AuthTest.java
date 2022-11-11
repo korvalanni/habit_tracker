@@ -89,7 +89,7 @@ class AuthTest extends AbstractIntegrationTest {
     void test_incorrectPassword() throws JsonProcessingException, CloneNotSupportedException {
         AuthDSL.register(user);
 
-        User newUser = (User) user.clone();
+        UserEntity newUser = (UserEntity) user.clone();
         newUser.setPassword("X");
 
         var exception = new IncorrectCredentialsException();

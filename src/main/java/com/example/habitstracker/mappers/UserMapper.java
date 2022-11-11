@@ -39,7 +39,7 @@ public class UserMapper {
     /**
      * Конвертировать пользователя в объект, в которром есть информация о логине и о пароле
      */
-    public static LoginPasswordDTO toLoginPassword(User user) {
+    public static LoginPasswordDTO toLoginPassword(UserEntity user) {
         String username = user.getUsername();
         String password = user.getPassword();
 
