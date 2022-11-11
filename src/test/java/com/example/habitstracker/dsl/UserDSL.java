@@ -60,7 +60,7 @@ public class UserDSL {
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(user))
                 .when()
-                .post("/update_user/" + username)
+                .put("/update_user/" + username)
                 .then()
                 .statusCode(200);
         // @formatter:on

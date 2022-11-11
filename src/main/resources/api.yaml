@@ -108,19 +108,19 @@ paths:
 
   /habit/update_habit/{id}:
     put:
-      description: Delete habit by id (FIXME PLEASE)
-      summary: TODO
+      description: Обновляет только поля, указанные в теле запроса, у привычки с заданным в запросе id. Если поля менять не надо, то их не должно быть в теле запроса
+      summary: Обновление привычки
       operationId: updateHabit
       parameters:
         - in: path
           name: id
-          description: TODO
+          description: идентификатор привычки
           required: true
           schema:
             type: integer
             format: int64
       requestBody:
-        description: TODO
+        description: здесь передаем поля, которые хотим менять
         required: true
         content:
           application/json:
@@ -128,9 +128,9 @@ paths:
               $ref: '#/components/schemas/HabitDTO'
       responses:
         200:
-          description: OK
+          description: Привычка обновилась
         500:
-          description: ERROR
+          description: Запрос некорректный
 
   # FIXME TOO
   /habit_list/get_habitList:
