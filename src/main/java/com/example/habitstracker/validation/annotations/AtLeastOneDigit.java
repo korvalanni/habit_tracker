@@ -1,7 +1,6 @@
 package com.example.habitstracker.validation.annotations;
 
 import com.example.habitstracker.validation.validators.AtLeastOneDigitValidator;
-import com.example.habitstracker.validation.validators.AtLeastOneLetterValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

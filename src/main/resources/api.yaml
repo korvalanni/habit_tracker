@@ -227,11 +227,11 @@ components:
         codeError:
           type: integer
           x-constraints:
-            - "@NotNull"
+            - "@NotNull(message = \"Error code should not be null\")"
         message:
           type: string
           x-constraints:
-            - "@NotNull"
+            - "@NotNull(message = \"Message should not be null\")"
       required:
         - codeError
         - message
@@ -244,18 +244,16 @@ components:
           description: TODO
           type: string
           x-constraints:
-            - "@NotNull"
+            - "@NotNull(message = \"Title should not be null\")"
             - "@NotBlank"
             - "@Size(max = 50, message = \"Too long username\")"
-            # todo: check only latin
         description:
           description: TODO
           type: string
           x-constraints:
-            - "@NotNull"
+            - "@NotNull(message = \"Description should not be null\")"
             - "@NotBlank"
             - "@Size(max = 150, message = \"Too long username\")"
-            # todo: check only latin
         priority:
           description: TODO
           $ref: '#/components/schemas/Priority'
@@ -275,7 +273,7 @@ components:
             type: integer
             format: int64
           x-constraints:
-            - "@NotNull"
+            - "@NotNull(message = \"Done dates should not be null\")"
 
     HabitListDTO:
       description: TODO
@@ -293,7 +291,7 @@ components:
           x-constraints:
             - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
             - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
-            - "@NotNull"
+            - "@NotNull(message = \"Name should not be null\")"
             - "@NotBlank"
             - "@Size(min = 3, message = \"Too short username\")"
             - "@Size(max = 20, message = \"Too long username\")"
@@ -302,7 +300,7 @@ components:
           items:
             $ref: '#/components/schemas/HabitDTO'
           x-constraints:
-            - "@NotNull"
+            - "@NotNull(message = \"Habits should not be null\")"
 
     IdDTO:
       description: хто я?
@@ -325,7 +323,7 @@ components:
           x-constraints:
             - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
             - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
-            - "@NotNull"
+            - "@NotNull(message = \"Username should not be null\")"
             - "@NotBlank"
             - "@Size(min = 3, message = \"Too short username\")"
             - "@Size(max = 20, message = \"Too long username\")"
@@ -336,20 +334,18 @@ components:
           x-constraints:
             - "@AtLeastOneLetter(message = \"This password must contains at least one character\")"
             - "@AtLeastOneDigit(message = \"This password must contains at least one digit\")"
-            - "@NotNull"
-            - "@Size(min = 3, message = \"Too short password\")"
-            - "@Size(max = 20, message = \"Too long password\")"
+            - "@NotNull(message = \"Password should not be null\")"
+            - "@Size(min = 8, message = \"Too short password\")"
         habitListName:
           description: TODO
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
             - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
-            - "@NotNull"
+            - "@NotNull(message = \"Habit list name should not be null\")"
             - "@NotBlank"
             - "@Size(min = 3, message = \"Too short habit list name\")"
             - "@Size(max = 20, message = \"Too long habit list name\")"
-            # todo: check only latin
 
     Priority:
       description: TODO

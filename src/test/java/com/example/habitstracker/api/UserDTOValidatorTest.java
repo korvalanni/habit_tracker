@@ -2,6 +2,7 @@ package com.example.habitstracker.api;
 
 import com.example.habitstracker.AbstractIntegrationTest;
 import com.example.habitstracker.dsl.AuthDSL;
+import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.User;
 import com.example.openapi.dto.ErrorResponseDTO;
@@ -19,7 +20,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import java.util.List;
 
 /**
- * Тесты на работу механизма валидации
+ * Проверка механизма валидации данных пользователя при регистрации.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserDTOValidatorTest extends AbstractIntegrationTest {
@@ -28,7 +29,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
     private User user;
-    private TypeReference<List<ErrorResponseDTO>> listType = new TypeReference<>() {
+    private final TypeReference<List<ErrorResponseDTO>> listType = new TypeReference<>() {
     };
 
     @BeforeEach
@@ -40,7 +41,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Все данные верны.
+     * Все данные верны
      */
     @Test
     void test_validationRegistration_allOk() throws JsonProcessingException {
@@ -48,17 +49,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин слишком короткий
+     * Логин слишком короткий
      */
     @Test
     void test_validationRegistration_tooShortLogin() throws JsonProcessingException {
         user.setUsername("te");
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("Too short username")
-                .codeError(0);
+                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -67,17 +68,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин слишком длинный
+     * Логин слишком длинный
      */
     @Test
     void test_validationRegistration_tooLongLogin() throws JsonProcessingException {
         user.setUsername("tetetetetetetetetetetete");
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("Too long username")
-                .codeError(0);
+                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -86,17 +87,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин пустой
+     * Логин пустой
      */
     @Test
     void test_validationRegistration_emptyLogin() throws JsonProcessingException {
         user.setUsername("             ");
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("не должно быть пустым")
-                .codeError(0);
+                .codeError(ErrorCodes.NOT_BLANK.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -104,17 +105,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин null
+     * Вместо имени пользователя передаем null
      */
     @Test
     void test_validationRegistration_nullLogin() throws JsonProcessingException {
         user.setUsername(null);
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("не должно быть пустым")
-                .codeError(0);
+                .codeError(ErrorCodes.NOT_BLANK.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -122,17 +123,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин содержит недопустимые символы
+     * Логин содержит недопустимые символы
      */
     @Test
     void test_validationRegistration_notAllowedSymbolsInLogin() throws JsonProcessingException {
         user.setUsername("vasya#");
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("Field can contains only letters, digits or underscore")
-                .codeError(0);
+                .codeError(ErrorCodes.ONLY_LETTERS_DIGITS_UNDERSCORE.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -140,17 +141,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин содержит как минимум один символ
+     * Логин должен содержать как минимум один символ
      */
     @Test
     void test_validationRegistration_atLeastOneSymbolLogin() throws JsonProcessingException {
         user.setUsername("234234234");
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("This username must contains at least one character")
-                .codeError(0);
+                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -158,17 +159,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Пароль слишком короткий
+     * Пароль слишком короткий
      */
     @Test
     void test_validationRegistration_tooShortPassword() throws JsonProcessingException {
         user.setPassword("t2");
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("Too short password")
-                .codeError(0);
+                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -176,36 +177,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Пароль слишком длинный
-     */
-    @Test
-    void test_validationRegistration_tooLongPassword() throws JsonProcessingException {
-        user.setPassword("tetetete4tetetetetetetete");
-
-        var result = AuthDSL.register2(user);
-
-        var expected = new ErrorResponseDTO()
-                .message("Too long password")
-                .codeError(0);
-
-        var errors = objectMapper.readValue(result, listType);
-
-        Assertions.assertEquals(1, errors.size());
-        Assertions.assertEquals(expected, errors.get(0));
-    }
-
-    /**
-     * Проверка валидации при регистрации. Пароль null
+     * Вместо пароля передаем null
      */
     @Test
     void test_validationRegistration_nullPassword() throws JsonProcessingException {
         user.setPassword(null);
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("не должно равняться null")
-                .codeError(0);
+                .message("Password should not be null")
+                .codeError(ErrorCodes.NOT_NULL.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -213,17 +195,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Пароль содержит как минимум один символ
+     * Пароль должен содержать как минимум один символ
      */
     @Test
     void test_validationRegistration_atLeastOneSymbolPassword() throws JsonProcessingException {
         user.setPassword("234234234");
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("This password must contains at least one character")
-                .codeError(0);
+                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -232,17 +214,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Имя списка привычек слишком короткий
+     * Название списка привычек слишком короткое
      */
     @Test
     void test_validationRegistration_tooShortHabitListName() throws JsonProcessingException {
         user.setHabitList(new HabitList("te"));
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("Too short username")
-                .codeError(0);
+                .message("Too short habit list name")
+                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -251,17 +233,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин слишком длинный
+     * Название списка привычек слишком длинное
      */
     @Test
     void test_validationRegistration_tooLongHabitListName() throws JsonProcessingException {
         user.setHabitList(new HabitList("tetetetetetetetetetetete"));
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("Too long username")
-                .codeError(0);
+                .message("Too long habit list name")
+                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -270,17 +252,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин пустой
+     * Пустое название списка привычек
      */
     @Test
     void test_validationRegistration_emptyHabitListName() throws JsonProcessingException {
         user.setHabitList(new HabitList("             "));
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("не должно быть пустым")
-                .codeError(0);
+                .codeError(ErrorCodes.NOT_BLANK.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -288,18 +270,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин null
+     *  Вместо названия списка привычек передаем null
      */
     @Test
     void test_validationRegistration_nullHabitListName() throws JsonProcessingException {
-        user.setUsername(null);
         user.setHabitList(new HabitList(null));
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("не должно быть пустым")
-                .codeError(0);
+                .codeError(ErrorCodes.NOT_BLANK.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -307,17 +288,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин содержит недопустимые символы
+     * Название списка привычек содержит недопустимые символы
      */
     @Test
     void test_validationRegistration_notAllowedSymbolsInHabitListName() throws JsonProcessingException {
         user.setHabitList(new HabitList("vasya#"));
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
                 .message("Field can contains only letters, digits or underscore")
-                .codeError(0);
+                .codeError(ErrorCodes.ONLY_LETTERS_DIGITS_UNDERSCORE.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -325,17 +306,17 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     }
 
     /**
-     * Проверка валидации при регистрации. Логин содержит как минимум один символ
+     * Название списка привычек должно содержать как минимум один символ
      */
     @Test
     void test_validationRegistration_atLeastOneSymbolHabitListName() throws JsonProcessingException {
         user.setHabitList(new HabitList("234234234"));
 
-        var result = AuthDSL.register2(user);
+        var result = AuthDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("This username must contains at least one character")
-                .codeError(0);
+                .message("This habit list name must contains at least one character")
+                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.ordinal());
 
         var errors = objectMapper.readValue(result, listType);
 

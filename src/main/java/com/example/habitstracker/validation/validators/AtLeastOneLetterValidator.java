@@ -5,6 +5,9 @@ import com.example.habitstracker.validation.annotations.AtLeastOneLetter;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Валидатор для полей, которые помечены аннотацией {@link AtLeastOneLetter}
+ */
 public class AtLeastOneLetterValidator implements ConstraintValidator<AtLeastOneLetter, String> {
     @Override
     public void initialize(AtLeastOneLetter constraintAnnotation) {
@@ -14,7 +17,7 @@ public class AtLeastOneLetterValidator implements ConstraintValidator<AtLeastOne
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null)
-            return true;
+            return false;
 
         for(char character : value.toCharArray()) {
             if(Character.isLetter(character))

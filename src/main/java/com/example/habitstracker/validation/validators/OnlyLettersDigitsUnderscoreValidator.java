@@ -5,6 +5,9 @@ import com.example.habitstracker.validation.annotations.OnlyLettersDigitsUndersc
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Валидатор для полей, которые помечены аннотацией {@link OnlyLettersDigitsUnderscore}
+ */
 public class OnlyLettersDigitsUnderscoreValidator implements ConstraintValidator<OnlyLettersDigitsUnderscore, String> {
     @Override
     public void initialize(OnlyLettersDigitsUnderscore constraintAnnotation) {
@@ -14,10 +17,10 @@ public class OnlyLettersDigitsUnderscoreValidator implements ConstraintValidator
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null)
-            return true;
+            return false;
 
         for(char character : value.toCharArray()) {
-            if(!((Character.isLetter(character)) || (Character.isDigit(character)) || (character == '_')))
+            if(!Character.isLetter(character) && !Character.isDigit(character) && (character != '_'))
                 return false;
         }
         return true;

@@ -1,5 +1,6 @@
 package com.example.habitstracker.advices;
 
+import com.example.habitstracker.validation.annotations.AtLeastOneLetter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -51,7 +52,7 @@ public class UserAdvice {
         List<ErrorResponseDTO> errors = methodArgumentNotValidException
                 .getFieldErrors()
                 .stream()
-                .map(error -> new ErrorResponseDTO().codeError(0).message(error.getDefaultMessage()))
+                .map(error -> new ErrorResponseDTO().codeError(ErrorCodes.parse(error).ordinal()).message(error.getDefaultMessage()))
                 .toList();
 
         return ResponseEntity.badRequest().body(errors);

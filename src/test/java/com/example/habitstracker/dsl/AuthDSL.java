@@ -22,8 +22,6 @@ public class AuthDSL {
 
     /**
      * Зарегистрировать нового пользователя
-     *
-     * @param user Пользователь
      */
     public static void register(User user) throws JsonProcessingException {
         var dto = UserMapper.toDTO(user);
@@ -51,7 +49,12 @@ public class AuthDSL {
         });
     }
 
-    public static String register2(User user) throws JsonProcessingException {
+    /**
+     * Отправить запрос на регистрацию пользователя и получить ответ
+     *
+     * @return Ответ на запрос
+     */
+    public static String sendRegistrationRequest(User user) throws JsonProcessingException {
         var dto = UserMapper.toDTO(user);
 
         // @formatter:off

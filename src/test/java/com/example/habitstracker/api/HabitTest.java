@@ -5,7 +5,6 @@ import com.example.habitstracker.TestUserBuilder;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.HabitDSL;
 import com.example.habitstracker.models.Habit;
-import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.User;
 import com.example.habitstracker.services.HabitService;
 import com.example.openapi.dto.Color;
