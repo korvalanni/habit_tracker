@@ -1,6 +1,6 @@
-package com.example.habitstracker.dsl;
+package com.example.habitstracker.integration.utils.dsl;
 
-import com.example.habitstracker.CleanerService;
+import com.example.habitstracker.integration.utils.CleanerService;
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
 import com.example.openapi.dto.HabitDTO;
@@ -9,81 +9,87 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static io.restassured.RestAssured.given;
 
+/**
+ * Инструменты для взаимодействия с api привычек
+ */
+@Component
 public class HabitDSL {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    public static void createHabit(Habit habit) throws JsonProcessingException {
+    public void createHabit(Habit habit) throws JsonProcessingException {
         HabitDTO habitDTO = HabitMapper.toDTO(habit);
 
         // @formatter:off
         String result = given()
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(habitDTO))
+                .body(objectMapper.writeValueAsString(habitDTO))
                 .header("Authorization", TokenHolder.token)
-                .when()
+            .when()
                 .post("/habit/create_habit")
-                .then()
+            .then()
                 .statusCode(200)
                 .extract()
                 .body()
                 .asString();
         // @formatter:on
-        IdDTO id = OBJECT_MAPPER.readValue(result, IdDTO.class);
+        IdDTO id = objectMapper.readValue(result, IdDTO.class);
         habit.setId(id.getId());
 
         CleanerService.addTask(() -> {
             try {
-                HabitDSL.deleteHabit(habit);
+                deleteHabit(habit);
             } catch (JsonProcessingException e) {
                 Assertions.fail();
             }
         });
     }
 
-    public static void deleteHabit(Habit habit) throws JsonProcessingException {
+    public void deleteHabit(Habit habit) throws JsonProcessingException {
         var idDto = new IdDTO().id(habit.getId());
 
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(idDto))
+                .body(objectMapper.writeValueAsString(idDto))
                 .header("Authorization", TokenHolder.token)
-                .when()
+            .when()
                 .delete("/habit/delete_habit")
-                .then()
+            .then()
                 .statusCode(200);
         // @formatter:on
     }
 
-    public static HabitDTO getHabit(String id) throws JsonProcessingException {
+    public HabitDTO getHabit(String id) throws JsonProcessingException {
         // @formatter:off
         String json = given()
                 .header("Authorization", TokenHolder.token)
-                .when()
+            .when()
                 .get("/habit/get_habit/" + id)
-                .then()
+            .then()
                 .statusCode(200)
                 .extract()
                 .body()
                 .asString();
         // @formatter:on
 
-        return OBJECT_MAPPER.readValue(json, HabitDTO.class);
+        return objectMapper.readValue(json, HabitDTO.class);
     }
 
-    public static void updateHabit(String id, Habit habit) throws JsonProcessingException {
-
+    public void updateHabit(String id, Habit habit) throws JsonProcessingException {
         // @formatter:off
         given()
                 .header("Authorization", TokenHolder.token)
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(HabitMapper.toDTO(habit)))
-                .when()
+                .body(objectMapper.writeValueAsString(HabitMapper.toDTO(habit)))
+            .when()
                 .put("/habit/update_habit/{id}", id)
-                .then()
+            .then()
                 .statusCode(200);
         // @formatter:on
     }

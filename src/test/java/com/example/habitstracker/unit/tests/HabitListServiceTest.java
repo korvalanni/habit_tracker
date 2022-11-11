@@ -1,9 +1,10 @@
-package com.example.habitstracker.services;
+package com.example.habitstracker.unit.tests;
 
 import com.example.habitstracker.exceptions.HabitListNotFoundException;
 import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.repository.HabitListRepository;
+import com.example.habitstracker.services.HabitListService;
 import com.example.openapi.dto.HabitListDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,6 @@ import java.util.Optional;
 public class HabitListServiceTest {
     @InjectMocks
     private HabitListService habitListService;
-
     @Mock
     private HabitListRepository habitListRepository;
 

@@ -1,30 +1,34 @@
-package com.example.habitstracker.dsl;
+package com.example.habitstracker.integration.utils.dsl;
 
 import com.example.habitstracker.models.UserEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static io.restassured.RestAssured.given;
 
 /**
  * Инструменты для взаимодействия с api пользователя
  */
+@Component
 public class UserDSL {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * Удалить пользователя
      *
      * @param user Пользователь, которого удаляем
      */
-    public static void deleteUser(UserEntity user) {
+    public void deleteUser(UserEntity user) {
         // @formatter:off
         given()
                 .headers("Authorization", "Bearer " + TokenHolder.token)
-                .when()
+            .when()
                 .post("/user/delete_user/" + user.getUsername())
-                .then()
+            .then()
                 .statusCode(200);
         // @formatter:on
     }
@@ -34,13 +38,13 @@ public class UserDSL {
      *
      * @param username Ник пользователя, которого ъотим получить
      */
-    public static void getUser(String username) {
+    public void getUser(String username) {
         // @formatter:off
         given()
                 .headers("Authorization", "Bearer " + TokenHolder.token)
-                .when()
+            .when()
                 .post("/get_user/" + username)
-                .then()
+            .then()
                 .statusCode(200);
         // @formatter:on
     }
@@ -53,15 +57,15 @@ public class UserDSL {
      * @param username Ник пользователя
      * @param user     Новые данные
      */
-    public static void updateUser(String username, UserEntity user) throws JsonProcessingException {
+    public void updateUser(String username, UserEntity user) throws JsonProcessingException {
         // @formatter:off
         given()
                 .headers("Authorization", "Bearer " + TokenHolder.token)
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(user))
-                .when()
+                .body(objectMapper.writeValueAsString(user))
+            .when()
                 .put("/update_user/" + username)
-                .then()
+            .then()
                 .statusCode(200);
         // @formatter:on
     }

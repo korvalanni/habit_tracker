@@ -1,8 +1,11 @@
-package com.example.habitstracker;
+package com.example.habitstracker.integration.utils;
 
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 
+/**
+ * Класс для построения тестового пользователя
+ */
 public class TestUserBuilder {
     private long id = 0;
     private String username = "Nick";

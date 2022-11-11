@@ -1,4 +1,4 @@
-package com.example.habitstracker.dsl;
+package com.example.habitstracker.integration.utils.dsl;
 
 /**
  * Специальный класс, который сохраняет JWT между запросами

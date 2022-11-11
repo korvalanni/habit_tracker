@@ -1,4 +1,6 @@
-package com.example.habitstracker;
+package com.example.habitstracker.integration.utils;
+
+import com.example.habitstracker.Lambda;
 
 import java.util.Stack;
 
