@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.habitstracker.constants.JWTClaims;
 import com.example.habitstracker.exceptions.auth.EmptyAuthorizationHeaderException;
 import com.example.habitstracker.exceptions.auth.IncorrectClaimsException;
 import com.example.habitstracker.exceptions.auth.IncorrectJWTException;
@@ -19,8 +20,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import com.example.habitstracker.Constants;
 
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -59,7 +58,7 @@ public class TokenAuthenticationService {
         Key key = Keys.hmacShaKeyFor(keyBytes);
         var jwt = Jwts.builder()
                 .setSubject(username)
-                .claim(Constants.JWTClaims.USER_ID, id)
+                .claim(JWTClaims.USER_ID, id)
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpiry))
                 .signWith(key)
                 .compact();
@@ -108,7 +107,7 @@ public class TokenAuthenticationService {
     private UserCredentials extractUserCredentials(String token) {
         var body = extractBody(token);
         var username = body.getSubject();
-        var id = Long.parseLong(body.get(Constants.JWTClaims.USER_ID).toString());
+        var id = Long.parseLong(body.get(JWTClaims.USER_ID).toString());
         return new UserCredentials(id, username);
     }
 }
