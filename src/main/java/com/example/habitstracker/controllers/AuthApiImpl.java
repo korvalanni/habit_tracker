@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.habitstracker.services.UserService;
 import com.example.openapi.api.AuthApi;
 import com.example.openapi.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Реализация апи для аутентификации {@link AuthApi}

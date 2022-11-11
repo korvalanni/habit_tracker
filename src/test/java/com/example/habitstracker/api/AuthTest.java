@@ -12,12 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import com.example.habitstracker.AbstractIntegrationTest;
-import com.example.habitstracker.Constants;
+import com.example.habitstracker.TestUserBuilder;
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.TokenHolder;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.mappers.UserMapper;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.ErrorResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,12 +34,12 @@ class AuthTest extends AbstractIntegrationTest {
     private Integer port;
     @Autowired
     private ObjectMapper objectMapper;
-    private User user;
+    private UserEntity user;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-        user = new User(0L, "Nik", "Cap", null);
+        user = new TestUserBuilder().build();
     }
 
     /**
@@ -101,7 +102,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
             .when()
-                .post(Constants.API.LOGIN)
+                .post(ApiConstants.LOGIN)
                 .getBody()
                 .asString();
         // @formatter:on

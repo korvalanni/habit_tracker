@@ -41,7 +41,7 @@ paths:
         500:
           description: ERROR
 
-# FIXME PLEASE and write description
+  # FIXME PLEASE and write description
 
   /habit/create_habit:
     post:
@@ -132,7 +132,7 @@ paths:
         500:
           description: ERROR
 
-# FIXME TOO
+  # FIXME TOO
   /habit_list/get_habitList:
     get:
       description: TODO
@@ -188,18 +188,11 @@ paths:
         500:
           description: ERROR
 
-  /user/update_user/{username}:
+  /user/update_user/:
     put:
       description: Update user
       summary: TODO
       operationId: updateUserByUsername
-      parameters:
-        - in: path
-          name: username
-          description: TODO
-          required: true
-          schema:
-            type: string
       requestBody:
         description: TODO
         required: true
@@ -210,10 +203,6 @@ paths:
       responses:
         200:
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDTO'
         500:
           description: ERROR
 
@@ -226,8 +215,12 @@ components:
       properties:
         codeError:
           type: integer
+          x-constraints:
+            - "@NotNull(message = \"Error code should not be null\")"
         message:
           type: string
+          x-constraints:
+            - "@NotNull(message = \"Message should not be null\")"
       required:
         - codeError
         - message
@@ -239,9 +232,17 @@ components:
         title:
           description: TODO
           type: string
+          x-constraints:
+            - "@NotNull(message = \"Title should not be null\")"
+            - "@NotBlank"
+            - "@Size(max = 50, message = \"Too long username\")"
         description:
           description: TODO
           type: string
+          x-constraints:
+            - "@NotNull(message = \"Description should not be null\")"
+            - "@NotBlank"
+            - "@Size(max = 150, message = \"Too long username\")"
         priority:
           description: TODO
           $ref: '#/components/schemas/Priority'
@@ -252,12 +253,16 @@ components:
           description: TODO
           type: integer
           format: int64
+          x-constraints:
+            - "@Positive"
         done_dates:
           description: TODO AND FIXME
           type: array
           items:
             type: integer
             format: int64
+          x-constraints:
+            - "@NotNull(message = \"Done dates should not be null\")"
 
     HabitListDTO:
       description: TODO
@@ -267,13 +272,24 @@ components:
           description: TODO
           type: integer
           format: int64
+          x-constraints:
+            - "@PositiveOrZero"
         name:
           description: TODO
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Name should not be null\")"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
         habits:
           type: array
           items:
             $ref: '#/components/schemas/HabitDTO'
+          x-constraints:
+            - "@NotNull(message = \"Habits should not be null\")"
 
     IdDTO:
       description: хто я?
@@ -283,6 +299,8 @@ components:
           description: TODO
           type: integer
           format: int64
+          x-constraints:
+            - "@PositiveOrZero"
 
     UserDTO:
       description: TODO
@@ -291,12 +309,32 @@ components:
         username:
           description: TODO
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Username should not be null\")"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
+            # todo: check only latin
         password:
           description: TODO
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This password must contains at least one character\")"
+            - "@AtLeastOneDigit(message = \"This password must contains at least one digit\")"
+            - "@NotNull(message = \"Password should not be null\")"
+            - "@Size(min = 8, message = \"Too short password\")"
         habitListName:
           description: TODO
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Habit list name should not be null\")"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short habit list name\")"
+            - "@Size(max = 20, message = \"Too long habit list name\")"
 
     LoginPasswordDTO:
       description: Объект, который хранит в себе только имя пользователя и пароль

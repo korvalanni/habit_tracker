@@ -72,7 +72,7 @@ class HabitstrackerApplicationTests {
         userDTO1.setPassword(newPassword);
 
         // Создаем новую dto с новым паролем и через сервис меняем пароль
-        userService.updateUserPasswordByUsername(username, userDTO1);
+        userService.updateUserByUsername(username, userDTO1);
 
         //Проверям, что в бд лежит пользователь с новым паролем
         String password = userService.getByUsername(username).getPassword();
