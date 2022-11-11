@@ -49,26 +49,26 @@ public class HabitService {
     /**
      * Обновление привычки 
      * @param id -- идишник привычки
-     * @param habit -- привычка с полями, которые мы хотим обновить у привычки в базе с указанным id
+     * @param updatedHabit -- привычка с полями, которые мы хотим обновить у привычки в базе с указанным id
      */
-    public void updateHabit(long id, Habit habit) {
-        Optional<Habit> habit1 = habitRepository.findById(id);
-        if (habit1.isEmpty())
+    public void updateHabit(long id, Habit updatedHabit) {
+        Optional<Habit> oldHabitOpt = habitRepository.findById(id);
+        if (oldHabitOpt.isEmpty())
             throw new HabitNotFoundException(id);
-        Habit habit2 = habit1.get();
+        Habit dataBaseHabit = oldHabitOpt.get();
         
-        if (habit.getHabitList() != null)
-            habit2.setHabitList(habit.getHabitList());
-        if (habit.getTitle() != null)
-            habit2.setTitle(habit.getTitle());
-        if (habit.getColor() != null)
-            habit2.setColor(habit.getColor());
-        if (habit.getPriority() != null)
-            habit2.setPriority(habit.getPriority());
-        if (habit.getRepeats() != null)
-            habit2.setRepeats(habit.getRepeats());
-        if (habit.getDescription() != null)
-            habit2.setDescription(habit.getDescription());
-        habitRepository.save(habit2);
+        if (updatedHabit.getHabitList() != null)
+            dataBaseHabit.setHabitList(updatedHabit.getHabitList());
+        if (updatedHabit.getTitle() != null)
+            dataBaseHabit.setTitle(updatedHabit.getTitle());
+        if (updatedHabit.getColor() != null)
+            dataBaseHabit.setColor(updatedHabit.getColor());
+        if (updatedHabit.getPriority() != null)
+            dataBaseHabit.setPriority(updatedHabit.getPriority());
+        if (updatedHabit.getRepeats() != null)
+            dataBaseHabit.setRepeats(updatedHabit.getRepeats());
+        if (updatedHabit.getDescription() != null)
+            dataBaseHabit.setDescription(updatedHabit.getDescription());
+        habitRepository.save(dataBaseHabit);
     }
 }

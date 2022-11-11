@@ -89,14 +89,17 @@ class HabitTest extends AbstractIntegrationTest {
     void test_updateHabit() throws JsonProcessingException{
         HabitDSL.createHabit(habit);
         String id = habit.getId().toString();
-        Habit habit1 = new Habit();
-        habit1.setTitle("Test1");
-        habit1.setDescription("Description new");
-        habit1.setPriority(Priority.MIDDLE);
-        HabitDSL.updateHabit(id, habit1);
+
+        Habit updatedHabit = new Habit();
+        updatedHabit.setTitle("Test1");
+        updatedHabit.setDescription("Description new");
+        updatedHabit.setPriority(Priority.MIDDLE);
+
+        HabitDSL.updateHabit(id, updatedHabit);
         Habit expectedHabit = new Habit("Test1", "Description new",
                 Priority.MIDDLE, Color.GREEN, 0L, List.of(1L, 2L));
         Habit gotHabit = HabitMapper.toEntity(HabitDSL.getHabit(id));
+
         Assertions.assertEquals(expectedHabit.getTitle(), gotHabit.getTitle());
         Assertions.assertEquals(expectedHabit.getDescription(), gotHabit.getDescription());
         Assertions.assertEquals(expectedHabit.getPriority(), gotHabit.getPriority());
