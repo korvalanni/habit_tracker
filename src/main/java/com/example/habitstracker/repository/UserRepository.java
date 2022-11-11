@@ -4,12 +4,12 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<UserEntity, Long> {
     /**
      * Ищем пользователя по никнейму
      **/
-    Optional<User> findByUsername(String username);
+    Optional<UserEntity> findByUsername(String username);
 
 }

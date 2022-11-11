@@ -1,7 +1,18 @@
 package com.example.habitstracker.api;
 
-import static io.restassured.RestAssured.given;
-
+import com.example.habitstracker.AbstractIntegrationTest;
+import com.example.habitstracker.TestUserBuilder;
+import com.example.habitstracker.constants.ApiConstants;
+import com.example.habitstracker.dsl.AuthDSL;
+import com.example.habitstracker.dsl.TokenHolder;
+import com.example.habitstracker.exceptions.UserExistException;
+import com.example.habitstracker.mappers.UserMapper;
+import com.example.habitstracker.models.UserEntity;
+import com.example.openapi.dto.ErrorResponseDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -11,18 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import com.example.habitstracker.AbstractIntegrationTest;
-import com.example.habitstracker.Constants;
-import com.example.habitstracker.dsl.AuthDSL;
-import com.example.habitstracker.dsl.TokenHolder;
-import com.example.habitstracker.exceptions.UserExistException;
-import com.example.habitstracker.mappers.UserMapper;
-import com.example.habitstracker.models.User;
-import com.example.openapi.dto.ErrorResponseDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
+import static io.restassured.RestAssured.given;
 
 /**
  * Тесты на механизм авторизации
@@ -33,12 +33,12 @@ class AuthTest extends AbstractIntegrationTest {
     private Integer port;
     @Autowired
     private ObjectMapper objectMapper;
-    private User user;
+    private UserEntity user;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-        user = new User(0L, "Nik", "Cap", null);
+        user = new TestUserBuilder().build();
     }
 
     /**
@@ -101,7 +101,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(user))
             .when()
-                .post(Constants.API.LOGIN)
+                .post(ApiConstants.LOGIN)
                 .getBody()
                 .asString();
         // @formatter:on

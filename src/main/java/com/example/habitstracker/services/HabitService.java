@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.habitstracker.exceptions.HabitNotFoundException;
-import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.HabitRepository;
 import com.example.habitstracker.security.UserCredentials;
-import com.example.openapi.dto.HabitDTO;
 
 @Component // нужно для контейнерной зависимости DI
 public class HabitService {
@@ -27,7 +25,7 @@ public class HabitService {
     }
 
     public Habit addHabit(UserCredentials credentials, Habit habit) {
-        User user = userService.getById(credentials.id());
+        UserEntity user = userService.getById(credentials.id());
         HabitList habitList = user.getHabitList();
         habit.setHabitList(habitList);
         habitRepository.save(habit);
