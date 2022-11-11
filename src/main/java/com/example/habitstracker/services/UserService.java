@@ -62,7 +62,7 @@ public class UserService {
         var userDTOPassword = userDTO.getPassword();
 
         if (userDTOName != null && !username.equals(userDTOName)) {
-            Optional<User> userOpt = userRepository.findByUsername(userDTOName);
+            Optional<UserEntity> userOpt = userRepository.findByUsername(userDTOName);
             if (userOpt.isPresent())
                 throw new UserExistException(userDTO.getUsername());
             user.setUsername(userDTOName);
