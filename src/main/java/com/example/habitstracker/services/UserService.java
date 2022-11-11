@@ -52,14 +52,14 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public User updateUserByUsername(String username, UserDTO userDTO) {
+    public void updateUserByUsername(String username, UserDTO userDTO) {
         User user = getByUsername(username);
         var userDTOName = userDTO.getUsername();
         var userDTOPassword = userDTO.getPassword();
 
         if (userDTOName != null && !username.equals(userDTOName)) {
             Optional<User> userOpt = userRepository.findByUsername(userDTOName);
-            if (!userOpt.isEmpty())
+            if (userOpt.isPresent())
                 throw new UserExistException(userDTO.getUsername());
             user.setUsername(userDTOName);
         }
@@ -68,7 +68,6 @@ public class UserService {
             user.setPassword(userDTOPassword);
 
         userRepository.save(user);
-        return user;
     }
 
     public HabitList getUserHabitList(UserDTO userDTO) {

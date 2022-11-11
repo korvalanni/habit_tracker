@@ -159,7 +159,9 @@ public class UserServiceTest {
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.of(user));
 
-        User result = userService.updateUserByUsername("a", userDTO);
+        userService.updateUserByUsername("a", userDTO);
+        
+        User result = userService.getByUsername("a");
 
         Assertions.assertEquals("123", result.getPassword());
         Assertions.assertEquals("a", result.getUsername());
