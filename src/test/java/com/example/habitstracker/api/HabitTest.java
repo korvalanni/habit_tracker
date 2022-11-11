@@ -6,6 +6,7 @@ import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.HabitDSL;
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
+import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.services.HabitService;
 import com.example.openapi.dto.Color;
@@ -95,10 +96,11 @@ class HabitTest extends AbstractIntegrationTest {
         updatedHabit.setTitle("Test1");
         updatedHabit.setDescription("Description new");
         updatedHabit.setPriority(Priority.MIDDLE);
+        updatedHabit.setDoneDates(List.of(1L, 2L));
 
         HabitDSL.updateHabit(id, updatedHabit);
         Habit expectedHabit = new Habit("Test1", "Description new",
-                Priority.MIDDLE, Color.GREEN, 0L, List.of(1L, 2L));
+                Priority.MIDDLE, Color.GREEN, 1L, List.of(1L, 2L));
         Habit gotHabit = HabitMapper.toEntity(HabitDSL.getHabit(id));
 
         Assertions.assertEquals(expectedHabit.getTitle(), gotHabit.getTitle());

@@ -69,6 +69,7 @@ public class HabitService {
             dataBaseHabit.setRepeats(updatedHabit.getRepeats());
         if (updatedHabit.getDescription() != null)
             dataBaseHabit.setDescription(updatedHabit.getDescription());
+        
         habitRepository.save(dataBaseHabit);
     }
 }

@@ -77,8 +77,8 @@ public class HabitDSL {
     public static void updateHabit(String id, Habit habit) throws JsonProcessingException {
 
         // @formatter:off
-        given().
-                header("Authorization", TokenHolder.token)
+        given()
+                .header("Authorization", TokenHolder.token)
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(HabitMapper.toDTO(habit)))
                 .when()

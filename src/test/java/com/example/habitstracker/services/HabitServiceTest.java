@@ -2,7 +2,7 @@ package com.example.habitstracker.services;
 
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.repository.HabitRepository;
 import com.example.habitstracker.security.UserCredentials;
