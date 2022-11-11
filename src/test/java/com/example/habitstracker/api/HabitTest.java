@@ -36,8 +36,9 @@ class HabitTest extends AbstractIntegrationTest {
     @BeforeEach
     void setUp() throws JsonProcessingException {
         RestAssured.port = port;
-        UserEntity user = new TestUserBuilder().build();
-        habit = new Habit("Test", "Description", Priority.HIGH, Color.GREEN, 0L, List.of(1L, 2L));
+
+        User user = new TestUserBuilder().build();
+        habit = new Habit("Test", "Description", Priority.HIGH, Color.GREEN, 1L, List.of(1L, 2L));
 
         AuthDSL.register(user);
         AuthDSL.login(user);

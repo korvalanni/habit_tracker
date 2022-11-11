@@ -22,8 +22,6 @@ public class AuthDSL {
 
     /**
      * Зарегистрировать нового пользователя
-     *
-     * @param user Пользователь
      */
     public static void register(UserEntity user) throws JsonProcessingException {
         var dto = UserMapper.toDTO(user);
@@ -33,7 +31,7 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(dto))
             .when()
-                .post("/auth/registration")
+                .post(Constants.API.REGISTRATION)
             .then()
                 .statusCode(200);
         // @formatter:on
@@ -49,6 +47,39 @@ public class AuthDSL {
 
             UserDSL.deleteUser(user);
         });
+    }
+
+    /**
+     * Отправить запрос на регистрацию пользователя и получить ответ
+     *
+     * @return Ответ на запрос
+     */
+    public static String sendRegistrationRequest(User user) throws JsonProcessingException {
+        var dto = UserMapper.toDTO(user);
+
+        // @formatter:off
+        var result = given()
+                .contentType(ContentType.JSON)
+                .body(OBJECT_MAPPER.writeValueAsString(dto))
+            .when()
+                .post(Constants.API.REGISTRATION);
+        // @formatter:on
+
+        if (result.getStatusCode() == 200) {
+            CleanerService.addTask(() -> {
+                if (TokenHolder.token == null) {
+                    try {
+                        login(user);
+                    } catch (JsonProcessingException e) {
+                        Assertions.fail("Can't login. Casued by: " + e.getMessage());
+                    }
+                }
+
+                UserDSL.deleteUser(user);
+            });
+        }
+
+        return result.getBody().asString();
     }
 
     /**
