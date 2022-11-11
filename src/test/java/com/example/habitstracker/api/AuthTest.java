@@ -2,6 +2,7 @@ package com.example.habitstracker.api;
 
 import static io.restassured.RestAssured.given;
 
+import com.example.habitstracker.constants.ApiConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import com.example.habitstracker.AbstractIntegrationTest;
-import com.example.habitstracker.Constants;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.TokenHolder;
 import com.example.habitstracker.exceptions.UserExistException;
@@ -101,7 +101,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(user))
             .when()
-                .post(Constants.API.LOGIN)
+                .post(ApiConstants.LOGIN)
                 .getBody()
                 .asString();
         // @formatter:on

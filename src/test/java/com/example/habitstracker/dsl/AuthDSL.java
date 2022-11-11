@@ -5,7 +5,7 @@ import static io.restassured.RestAssured.given;
 import java.util.HashMap;
 
 import com.example.habitstracker.CleanerService;
-import com.example.habitstracker.Constants;
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.UserEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -67,7 +67,7 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(json)
                 .when()
-                .post(Constants.API.LOGIN)
+                .post(ApiConstants.LOGIN)
                 .then()
                 .statusCode(200);
         // @formatter:on
