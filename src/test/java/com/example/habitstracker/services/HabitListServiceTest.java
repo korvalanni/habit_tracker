@@ -1,6 +1,7 @@
 package com.example.habitstracker.services;
 
 import com.example.habitstracker.exceptions.HabitListNotFoundException;
+import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.openapi.dto.HabitListDTO;
@@ -38,7 +39,8 @@ public class HabitListServiceTest {
         habitListDTO.setName("Test");
         habitListDTO.setHabits(new ArrayList<>());
 
-        habitListService.addHabitList(habitListDTO);
+        HabitList habitList = HabitListMapper.toEntity(habitListDTO);
+        habitListService.addHabitList(habitList);
     }
 
     // todo: проверка доавбления с пустым id

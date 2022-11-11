@@ -3,8 +3,7 @@ package com.example.habitstracker.services;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
-import com.example.habitstracker.repository.HabitListRepository;
+import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.openapi.dto.UserDTO;
 import org.junit.jupiter.api.*;
@@ -22,7 +21,7 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private HabitListRepository habitListRepository;
+    private HabitListService habitListService;
 
     @BeforeEach
     public void initMocks() throws Exception {
@@ -38,8 +37,8 @@ public class UserServiceTest {
         return userDTO;
     }
 
-    private User buildSimpleUser() {
-        User user = new User();
+    private UserEntity buildSimpleUser() {
+        UserEntity user = new UserEntity();
         user.setPassword("1");
         user.setUsername("a");
         user.setHabitList(new HabitList());
@@ -67,7 +66,7 @@ public class UserServiceTest {
     void test_addTwiceUser() {
         UserDTO userDTO = buildSimpleUserDTO();
 
-        Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.of(new User()));
+        Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.of(new UserEntity()));
 
         Assertions.assertThrowsExactly(UserExistException.class, () -> userService.addUser(userDTO));
     }
@@ -81,11 +80,11 @@ public class UserServiceTest {
      */
     @Test
     void test_getByUsername() {
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.of(user));
 
-        User result = userService.getByUsername("a");
+        UserEntity result = userService.getByUsername("a");
 
         Assertions.assertEquals(user, result);
     }
@@ -95,7 +94,7 @@ public class UserServiceTest {
      */
     @Test
     void test_getByNotExistingUsername() {
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.empty());
 
@@ -110,11 +109,11 @@ public class UserServiceTest {
      */
     @Test
     void test_getById() {
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findById(0L)).thenReturn(Optional.of(user));
 
-        User result = userService.getById(0L);
+        UserEntity result = userService.getById(0L);
 
         Assertions.assertEquals(user, result);
     }
@@ -124,7 +123,7 @@ public class UserServiceTest {
      */
     @Test
     void test_getByNotExistingId() {
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findById(0L)).thenReturn(Optional.empty());
 
@@ -136,7 +135,7 @@ public class UserServiceTest {
      */
     @Test
     void test_deleteByUsername() {
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.of(user));
         userService.deleteByUsername("a");
@@ -156,11 +155,11 @@ public class UserServiceTest {
         userDTO.setUsername("a");
         userDTO.setHabitListName("b");
 
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.of(user));
 
-        User result = userService.updateUserPasswordByUsername("a", userDTO);
+        UserEntity result = userService.updateUserPasswordByUsername("a", userDTO);
 
         Assertions.assertEquals("123", result.getPassword());
     }
@@ -175,7 +174,7 @@ public class UserServiceTest {
         userDTO.setUsername("a");
         userDTO.setHabitListName("b");
 
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.empty());
 
@@ -194,7 +193,7 @@ public class UserServiceTest {
         userDTO.setUsername("a");
         userDTO.setHabitListName("b");
 
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.of(user));
 
@@ -213,7 +212,7 @@ public class UserServiceTest {
         userDTO.setUsername("a");
         userDTO.setHabitListName("b");
 
-        User user = buildSimpleUser();
+        UserEntity user = buildSimpleUser();
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.empty());
 
