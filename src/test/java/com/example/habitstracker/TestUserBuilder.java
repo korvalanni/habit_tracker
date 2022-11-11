@@ -1,7 +1,7 @@
 package com.example.habitstracker;
 
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 
 public class TestUserBuilder {
     private long id = 0;
@@ -29,7 +29,7 @@ public class TestUserBuilder {
         return this;
     }
 
-    public User build() {
-        return new User(id, username, password, habitList);
+    public UserEntity build() {
+        return new UserEntity(id, username, password, habitList);
     }
 }

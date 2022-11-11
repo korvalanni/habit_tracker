@@ -7,6 +7,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.exceptions.auth.IncorrectCredentialsException;
 import com.example.habitstracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
-import com.example.habitstracker.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
@@ -34,7 +34,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             UserService userService,
             TokenAuthenticationService tokenAuthenticationService,
             ObjectMapper objectMapper) {
-        super(new AntPathRequestMatcher(Constants.API.LOGIN));
+        super(new AntPathRequestMatcher(ApiConstants.LOGIN));
         super.setAuthenticationManager(authenticationManager);
         this.userService = userService;
         this.tokenAuthenticationService = tokenAuthenticationService;

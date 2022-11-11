@@ -7,7 +7,7 @@ import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.dsl.TokenHolder;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.mappers.UserMapper;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.ErrorResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,7 @@ class AuthTest extends AbstractIntegrationTest {
     private Integer port;
     @Autowired
     private ObjectMapper objectMapper;
-    private User user;
+    private UserEntity user;
 
     @BeforeEach
     void setUp() {
@@ -101,7 +101,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(user))
             .when()
-                .post(Constants.API.LOGIN)
+                .post(ApiConstants.LOGIN)
                 .getBody()
                 .asString();
         // @formatter:on

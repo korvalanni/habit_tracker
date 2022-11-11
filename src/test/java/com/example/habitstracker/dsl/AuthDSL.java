@@ -5,9 +5,9 @@ import static io.restassured.RestAssured.given;
 import java.util.HashMap;
 
 import com.example.habitstracker.CleanerService;
-import com.example.habitstracker.Constants;
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.mappers.UserMapper;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,7 +23,7 @@ public class AuthDSL {
     /**
      * Зарегистрировать нового пользователя
      */
-    public static void register(User user) throws JsonProcessingException {
+    public static void register(UserEntity user) throws JsonProcessingException {
         var dto = UserMapper.toDTO(user);
 
         // @formatter:off
@@ -87,7 +87,7 @@ public class AuthDSL {
      *
      * @param user Пользователь, под котором логинимся
      */
-    public static void login(User user) throws JsonProcessingException {
+    public static void login(UserEntity user) throws JsonProcessingException {
         var values = new HashMap<String, String>();
         values.put("username", user.getUsername());
         values.put("password", user.getPassword());
@@ -98,7 +98,7 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(json)
                 .when()
-                .post(Constants.API.LOGIN)
+                .post(ApiConstants.LOGIN)
                 .then()
                 .statusCode(200);
         // @formatter:on
