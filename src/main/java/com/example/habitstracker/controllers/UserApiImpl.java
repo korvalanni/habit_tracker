@@ -1,7 +1,9 @@
 package com.example.habitstracker.controllers;
 
+import com.example.habitstracker.security.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.habitstracker.mappers.UserMapper;
@@ -30,18 +32,19 @@ public class UserApiImpl implements UserApi
         return ResponseEntity.ok().build();
     }
 
+
     @Override
     public ResponseEntity<UserDTO> getUserByUsername(String username)
     {
-        // FIXME Write javadoc
         return ResponseEntity.ok(UserMapper.toDTO(userService.getByUsername(username)));
     }
 
     @Override
-    public ResponseEntity<UserDTO> updateUserByUsername(String username, UserDTO userDTO)
+    public ResponseEntity<Void> updateUserByUsername(UserDTO userDTO)
     {
-        //FIXME не по смыслу
-        userService.updateUserPasswordByUsername(username, userDTO);
-        return getUserByUsername(username);
+        UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        String username = userCredentials.username();
+        userService.updateUserByUsername(username, userDTO); 
+        return ResponseEntity.ok().build();
     }
 }

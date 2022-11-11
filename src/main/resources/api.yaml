@@ -188,18 +188,11 @@ paths:
         500:
           description: ERROR
 
-  /user/update_user/{username}:
+  /user/update_user/:
     put:
       description: Update user
       summary: TODO
       operationId: updateUserByUsername
-      parameters:
-        - in: path
-          name: username
-          description: TODO
-          required: true
-          schema:
-            type: string
       requestBody:
         description: TODO
         required: true
@@ -210,10 +203,6 @@ paths:
       responses:
         200:
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDTO'
         500:
           description: ERROR
 

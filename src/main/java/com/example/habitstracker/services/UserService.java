@@ -12,6 +12,10 @@ import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.openapi.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class UserService {
@@ -52,12 +56,22 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public UserEntity updateUserPasswordByUsername(String username, UserDTO userDTO){
+    public void updateUserByUsername(String username, UserDTO userDTO) {
         UserEntity user = getByUsername(username);
-        String password = userDTO.getPassword();
-        user.setPassword(password);
+        var userDTOName = userDTO.getUsername();
+        var userDTOPassword = userDTO.getPassword();
+
+        if (userDTOName != null && !username.equals(userDTOName)) {
+            Optional<UserEntity> userOpt = userRepository.findByUsername(userDTOName);
+            if (userOpt.isPresent())
+                throw new UserExistException(userDTO.getUsername());
+            user.setUsername(userDTOName);
+        }
+
+        if (userDTOPassword != null)
+            user.setPassword(userDTOPassword);
+
         userRepository.save(user);
-        return user;
     }
 
     public HabitList getUserHabitList(UserDTO userDTO){
