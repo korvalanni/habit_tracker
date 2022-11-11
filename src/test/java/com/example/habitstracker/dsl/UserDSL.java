@@ -1,6 +1,6 @@
 package com.example.habitstracker.dsl;
 
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
@@ -18,7 +18,7 @@ public class UserDSL {
      *
      * @param user Пользователь, которого удаляем
      */
-    public static void deleteUser(User user) {
+    public static void deleteUser(UserEntity user) {
         // @formatter:off
         given()
                 .headers("Authorization", "Bearer " + TokenHolder.token)
@@ -53,7 +53,7 @@ public class UserDSL {
      * @param username Ник пользователя
      * @param user     Новые данные
      */
-    public static void updateUser(String username, User user) throws JsonProcessingException {
+    public static void updateUser(String username, UserEntity user) throws JsonProcessingException {
         // @formatter:off
         given()
                 .headers("Authorization", "Bearer " + TokenHolder.token)

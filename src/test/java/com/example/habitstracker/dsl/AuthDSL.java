@@ -3,12 +3,11 @@ package com.example.habitstracker.dsl;
 import static io.restassured.RestAssured.given;
 
 import java.util.HashMap;
-import java.util.function.Consumer;
 
 import com.example.habitstracker.CleanerService;
-import com.example.habitstracker.Constants;
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.mappers.UserMapper;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,10 +22,8 @@ public class AuthDSL {
 
     /**
      * Зарегистрировать нового пользователя
-     *
-     * @param user Пользователь
      */
-    public static void register(User user) throws JsonProcessingException {
+    public static void register(UserEntity user) throws JsonProcessingException {
         var dto = UserMapper.toDTO(user);
 
         // @formatter:off
@@ -34,7 +31,7 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(OBJECT_MAPPER.writeValueAsString(dto))
             .when()
-                .post("/auth/registration")
+                .post(ApiConstants.REGISTRATION)
             .then()
                 .statusCode(200);
         // @formatter:on
@@ -53,11 +50,44 @@ public class AuthDSL {
     }
 
     /**
+     * Отправить запрос на регистрацию пользователя и получить ответ
+     *
+     * @return Ответ на запрос
+     */
+    public static String sendRegistrationRequest(UserEntity user) throws JsonProcessingException {
+        var dto = UserMapper.toDTO(user);
+
+        // @formatter:off
+        var result = given()
+                .contentType(ContentType.JSON)
+                .body(OBJECT_MAPPER.writeValueAsString(dto))
+            .when()
+                .post(ApiConstants.REGISTRATION);
+        // @formatter:on
+
+        if (result.getStatusCode() == 200) {
+            CleanerService.addTask(() -> {
+                if (TokenHolder.token == null) {
+                    try {
+                        login(user);
+                    } catch (JsonProcessingException e) {
+                        Assertions.fail("Can't login. Casued by: " + e.getMessage());
+                    }
+                }
+
+                UserDSL.deleteUser(user);
+            });
+        }
+
+        return result.getBody().asString();
+    }
+
+    /**
      * Залогинится в системе
      *
      * @param user Пользователь, под котором логинимся
      */
-    public static void login(User user) throws JsonProcessingException {
+    public static void login(UserEntity user) throws JsonProcessingException {
         var values = new HashMap<String, String>();
         values.put("username", user.getUsername());
         values.put("password", user.getPassword());
@@ -68,7 +98,7 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(json)
                 .when()
-                .post(Constants.API.LOGIN)
+                .post(ApiConstants.LOGIN)
                 .then()
                 .statusCode(200);
         // @formatter:on

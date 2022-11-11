@@ -5,7 +5,7 @@ import javax.persistence.PrePersist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 
 // @Component
 public class UserListener {
@@ -18,7 +18,7 @@ public class UserListener {
 
     @PrePersist
     // TODO проверить, что при обновлении этот шифровщик пароля работает @PreUpdate
-    public void hashPassword(User user) {
+    public void hashPassword(UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 }

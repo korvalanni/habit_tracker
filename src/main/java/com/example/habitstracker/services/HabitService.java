@@ -3,7 +3,7 @@ package com.example.habitstracker.services;
 import com.example.habitstracker.exceptions.HabitNotFoundException;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.HabitRepository;
 import com.example.habitstracker.security.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class HabitService {
     }
 
     public Habit addHabit(UserCredentials credentials, Habit habit) {
-        User user = userService.getById(credentials.id());
+        UserEntity user = userService.getById(credentials.id());
         HabitList habitList = user.getHabitList();
         habit.setHabitList(habitList);
         habitRepository.save(habit);
@@ -47,7 +47,7 @@ public class HabitService {
     }
 
     /**
-     * Обновление привычки 
+     * Обновление привычки
      * @param id -- идишник привычки
      * @param updatedHabit -- привычка с полями, которые мы хотим обновить у привычки в базе с указанным id
      */
@@ -56,7 +56,7 @@ public class HabitService {
         if (oldHabitOpt.isEmpty())
             throw new HabitNotFoundException(id);
         Habit dataBaseHabit = oldHabitOpt.get();
-        
+
         if (updatedHabit.getHabitList() != null)
             dataBaseHabit.setHabitList(updatedHabit.getHabitList());
         if (updatedHabit.getTitle() != null)

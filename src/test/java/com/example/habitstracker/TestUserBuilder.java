@@ -1,13 +1,13 @@
 package com.example.habitstracker;
 
 import com.example.habitstracker.models.HabitList;
-import com.example.habitstracker.models.User;
+import com.example.habitstracker.models.UserEntity;
 
 public class TestUserBuilder {
     private long id = 0;
     private String username = "Nick";
-    private String password = "Passwd!";
-    private HabitList habitList = null;
+    private String password = "Passwd2!";
+    private HabitList habitList = new HabitList("Habits");
 
     public TestUserBuilder setId(long id) {
         this.id = id;
@@ -29,7 +29,7 @@ public class TestUserBuilder {
         return this;
     }
 
-    public User build() {
-        return new User(id, username, password, habitList);
+    public UserEntity build() {
+        return new UserEntity(id, username, password, habitList);
     }
 }

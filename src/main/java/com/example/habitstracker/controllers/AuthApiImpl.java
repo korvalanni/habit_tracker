@@ -1,5 +1,6 @@
 package com.example.habitstracker.controllers;
 
+import com.example.openapi.dto.LoginPasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.habitstracker.services.UserService;
 import com.example.openapi.api.AuthApi;
 import com.example.openapi.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Реализация апи для аутентификации {@link AuthApi}
@@ -32,7 +36,7 @@ public class AuthApiImpl implements AuthApi
     }
 
     @Override
-    public ResponseEntity<Void> login(UserDTO userDTO)
+    public ResponseEntity<Void> login(LoginPasswordDTO loginPasswordDTO)
     {
         // stub for swagger
         return ResponseEntity.ok().build();

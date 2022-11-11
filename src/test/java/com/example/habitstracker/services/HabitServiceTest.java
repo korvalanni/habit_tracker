@@ -41,7 +41,7 @@ class HabitServiceTest {
     void test_addHabit() {
         HabitList habitList = new HabitList();
 
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setPassword("123");
         user.setHabitList(habitList);
         user.setUsername("user");
@@ -68,7 +68,7 @@ class HabitServiceTest {
      */
     @Test
     void test_deleteHabit() {
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setPassword("123");
         user.setHabitList(new HabitList());
         user.setUsername("user");
@@ -99,7 +99,7 @@ class HabitServiceTest {
      */
     @Test
     void test_updateHabit() {
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setPassword("123");
         user.setHabitList(new HabitList());
         user.setUsername("user");
