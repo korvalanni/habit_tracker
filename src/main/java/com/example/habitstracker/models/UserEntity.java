@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class UserEntity {
+public class UserEntity implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -40,5 +40,13 @@ public class UserEntity {
         this.username = username;
         this.password = password;
         this.habitList = habitList;
+    }
+
+    /**
+     * Make shallow copy
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

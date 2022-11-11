@@ -1,5 +1,16 @@
 package com.example.habitstracker.api;
 
+import static io.restassured.RestAssured.given;
+
+import com.example.habitstracker.exceptions.auth.IncorrectCredentialsException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.server.LocalServerPort;
+
 import com.example.habitstracker.AbstractIntegrationTest;
 import com.example.habitstracker.TestUserBuilder;
 import com.example.habitstracker.constants.ApiConstants;
@@ -13,16 +24,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
-
-import static io.restassured.RestAssured.given;
 
 /**
  * Тесты на механизм авторизации
@@ -84,22 +85,22 @@ class AuthTest extends AbstractIntegrationTest {
     /**
      * Пробуем войти используя неверные данные для входа
      */
-    @Disabled("Надо доработать ответы на некорректные данные для авторизации")
     @Test
-    void test_incorrectPassword() throws JsonProcessingException {
+    void test_incorrectPassword() throws JsonProcessingException, CloneNotSupportedException {
         AuthDSL.register(user);
 
-        user.setPassword("X");
+        UserEntity newUser = (UserEntity) user.clone();
+        newUser.setPassword("X");
 
-        var exception = new UserExistException(user.getUsername());
-        final var expected = new ErrorResponseDTO()
-                .codeError(1)
+        var exception = new IncorrectCredentialsException();
+        var expected = new ErrorResponseDTO()
+                .codeError(7)
                 .message(exception.getMessage());
 
-        // @formatter:off
+        var dto = UserMapper.toLoginPassword(newUser);
         var response = given()
                 .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(user))
+                .body(objectMapper.writeValueAsString(dto))
             .when()
                 .post(ApiConstants.LOGIN)
                 .getBody()
