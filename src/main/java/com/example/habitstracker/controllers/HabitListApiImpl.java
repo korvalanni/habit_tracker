@@ -1,11 +1,11 @@
 package com.example.habitstracker.controllers;
 
+import com.example.habitstracker.services.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.security.UserCredentials;
@@ -22,12 +22,14 @@ public class HabitListApiImpl implements HabitListApi
 {
     private final HabitListService habitListService;
     private final UserService userService;
+    private final MapperService mapperService;
 
     @Autowired
-    public HabitListApiImpl(HabitListService habitListService, UserService userService)
+    public HabitListApiImpl(HabitListService habitListService, UserService userService, MapperService mapperService)
     {
         this.habitListService = habitListService;
         this.userService = userService;
+        this.mapperService = mapperService;
     }
 
     @Override
@@ -36,6 +38,10 @@ public class HabitListApiImpl implements HabitListApi
         UserEntity user = userService.getById(userCredentials.id());
         var id = user.getHabitList().getId();
         HabitList habitList = habitListService.getHabitListWithId(id);
-        return ResponseEntity.ok(HabitListMapper.listDTO(habitList));
+
+        HabitListDTO habitListDTO = new HabitListDTO();
+        mapperService.transform(habitList, habitListDTO);
+
+        return ResponseEntity.ok(habitListDTO);
     }
 }

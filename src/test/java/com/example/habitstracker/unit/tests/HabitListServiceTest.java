@@ -1,32 +1,33 @@
-package com.example.habitstracker.services;
+package com.example.habitstracker.unit.tests;
 
 import com.example.habitstracker.exceptions.HabitListNotFoundException;
 import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.repository.HabitListRepository;
+import com.example.habitstracker.services.HabitListService;
+import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.HabitListDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class HabitListServiceTest {
-    @InjectMocks
+public class HabitListServiceTest extends AbstractUnitTest {
     private HabitListService habitListService;
-
-    @Mock
     private HabitListRepository habitListRepository;
 
     @BeforeEach
-    public void initMocks() throws Exception {
-        MockitoAnnotations.openMocks(this).close();
+    public void initMocks() {
+        habitListRepository = Mockito.mock(HabitListRepository.class);
+        mapperService = Mockito.mock(MapperService.class);
+
+        habitListService = new HabitListService(habitListRepository, mapperService);
+
+        setupMapperService(HabitListDTO.class, HabitList.class, new HabitListMapper.Deserializer());
     }
 
     /**
@@ -39,8 +40,7 @@ public class HabitListServiceTest {
         habitListDTO.setName("Test");
         habitListDTO.setHabits(new ArrayList<>());
 
-        HabitList habitList = HabitListMapper.toEntity(habitListDTO);
-        habitListService.addHabitList(habitList);
+        habitListService.addHabitList(habitListDTO);
     }
 
     // todo: проверка доавбления с пустым id

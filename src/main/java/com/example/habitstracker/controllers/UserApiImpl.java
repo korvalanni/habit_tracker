@@ -1,12 +1,12 @@
 package com.example.habitstracker.controllers;
 
+import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.security.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.services.UserService;
 import com.example.openapi.api.UserApi;
 import com.example.openapi.dto.UserDTO;
@@ -18,11 +18,13 @@ import com.example.openapi.dto.UserDTO;
 public class UserApiImpl implements UserApi
 {
     private final UserService userService;
+    private final MapperService mapperService;
 
     @Autowired
-    public UserApiImpl(UserService userService)
+    public UserApiImpl(UserService userService, MapperService mapperService)
     {
         this.userService = userService;
+        this.mapperService = mapperService;
     }
 
     @Override
@@ -32,11 +34,12 @@ public class UserApiImpl implements UserApi
         return ResponseEntity.ok().build();
     }
 
-
     @Override
     public ResponseEntity<UserDTO> getUserByUsername(String username)
     {
-        return ResponseEntity.ok(UserMapper.toDTO(userService.getByUsername(username)));
+        UserDTO dto = new UserDTO();
+        mapperService.transform(userService.getByUsername(username), dto);
+        return ResponseEntity.ok(dto);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class UserApiImpl implements UserApi
     {
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
         String username = userCredentials.username();
-        userService.updateUserByUsername(username, userDTO); 
+        userService.updateUserByUsername(username, userDTO);
         return ResponseEntity.ok().build();
     }
 }

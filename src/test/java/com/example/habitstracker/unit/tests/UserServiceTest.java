@@ -1,31 +1,38 @@
-package com.example.habitstracker.services;
+package com.example.habitstracker.unit.tests;
 
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
+import com.example.habitstracker.mappers.HabitListMapper;
+import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.UserRepository;
+import com.example.habitstracker.services.HabitListService;
+import com.example.habitstracker.services.MapperService;
+import com.example.habitstracker.services.UserService;
+import com.example.openapi.dto.HabitListDTO;
 import com.example.openapi.dto.UserDTO;
-import org.junit.jupiter.api.*;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-public class UserServiceTest {
-    @InjectMocks
+public class UserServiceTest extends AbstractUnitTest {
     private UserService userService;
-
-    @Mock
     private UserRepository userRepository;
-    @Mock
     private HabitListService habitListService;
 
     @BeforeEach
-    public void initMocks() throws Exception {
-        MockitoAnnotations.openMocks(this).close();
+    public void initMocks() {
+        userRepository = Mockito.mock(UserRepository.class);
+        habitListService = Mockito.mock(HabitListService.class);
+        mapperService = Mockito.mock(MapperService.class);
+
+        userService = new UserService(userRepository, habitListService, mapperService);
+
+        setupMapperService(UserDTO.class, UserEntity.class, new UserMapper.Deserializer());
     }
 
     private UserDTO buildSimpleUserDTO() {

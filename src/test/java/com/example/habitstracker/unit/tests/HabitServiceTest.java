@@ -1,4 +1,4 @@
-package com.example.habitstracker.services;
+package com.example.habitstracker.unit.tests;
 
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
@@ -6,6 +6,8 @@ import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.repository.HabitRepository;
 import com.example.habitstracker.security.UserCredentials;
+import com.example.habitstracker.services.HabitService;
+import com.example.habitstracker.services.UserService;
 import com.example.openapi.dto.Color;
 import com.example.openapi.dto.Priority;
 import org.junit.jupiter.api.Assertions;

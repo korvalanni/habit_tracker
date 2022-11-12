@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "a583dcb5-f361-4246-9cce-c5920af6a120",
+		"_postman_id": "4de7e8f4-bf84-4642-a84d-0b5f9801a623",
 		"name": "HabitTracker",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18525568"
+		"_exporter_id": "24187545"
 	},
 	"item": [
 		{
@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"Test\", \r\n    \"password\": \"test\", \r\n    \"habitListName\": \"TT\" \r\n}\r\n",
+					"raw": "{\r\n    \"username\": \"Kennedy\", \r\n    \"password\": \"Kennedy228\", \r\n    \"habitListName\": \"MyHabits\" \r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -58,7 +58,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"Test\", \r\n    \"password\": \"test\" \r\n}\r\n",
+					"raw": "{\r\n    \"username\": \"Kennedy\", \r\n    \"password\": \"Kennedy228\" \r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -96,13 +96,7 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwidXNlcklkIjoxNiwiZXhwIjoyMjY3MDQ4ODE2fQ.Nb0ZCQC_6wTz26bqbHZOYGehpoKom-KgRmzghwfGIuVOkrot4sNB6Krkaq8tk5P11A5VmD5iqMVB3COhH_V0-g",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"String\", \r\n    \"password\": \"String\", \r\n    \"habitListName\": \"String\"\r\n}",
@@ -113,7 +107,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/user/update_user/String",
+					"raw": "http://localhost:8080/user/update_user/Test",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -122,7 +116,7 @@
 					"path": [
 						"user",
 						"update_user",
-						"String"
+						"Test"
 					]
 				}
 			},
@@ -219,7 +213,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\", \r\n    \"priority\": 0, \r\n    \"color\": 0, \r\n    \"repeats\": 0, \r\n    \"done_dates\": [ 0 ] \r\n}",
+					"raw": "{\r\n    \"title\": \"string\",\r\n    \"description\": \"string\",\r\n    \"priority\": \"HIGH\",\r\n    \"color\": \"RED\",\r\n    \"repeats\": 1,\r\n    \"done_dates\": [\r\n        0\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -255,15 +249,12 @@
 					}
 				}
 			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwidXNlcklkIjoxNiwiZXhwIjoyMjY3MDQ4ODE2fQ.Nb0ZCQC_6wTz26bqbHZOYGehpoKom-KgRmzghwfGIuVOkrot4sNB6Krkaq8tk5P11A5VmD5iqMVB3COhH_V0-g",
-						"type": "text"
-					}
-				],
+				"method": "GET",
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\", \r\n    \"priority\": 0, \r\n    \"color\": 0, \r\n    \"repeats\": 0, \r\n    \"done_dates\": [ 0 ] \r\n} // todo: переделвй на лист привычек",
@@ -274,7 +265,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/habit/get_habit/14",
+					"raw": "http://localhost:8080/habit/get_habit/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -283,7 +274,7 @@
 					"path": [
 						"habit",
 						"get_habit",
-						"14"
+						"1"
 					]
 				}
 			},
@@ -308,7 +299,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\",\r\n    \"priority\": 1,\r\n    \"color\": 1, \r\n    \"repeats\": 1, \r\n    \"done_dates\": []\r\n}",
+					"raw": "{\r\n    \"title\": \"String\", \r\n    \"description\": \"String\",\r\n    \"priority\": \"HIGH\",\r\n    \"color\": \"ORANGE\", \r\n    \"repeats\": 1, \r\n    \"done_dates\": [0]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -316,7 +307,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/habit/update_habit",
+					"raw": "http://localhost:8080/habit/update_habit/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -324,7 +315,8 @@
 					"port": "8080",
 					"path": [
 						"habit",
-						"update_habit"
+						"update_habit",
+						"1"
 					]
 				}
 			},

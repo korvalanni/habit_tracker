@@ -1,4 +1,4 @@
-package com.example.habitstracker.utils;
+package com.example.habitstracker.unit.utils;
 
 import javax.persistence.Table;
 
