@@ -2,7 +2,10 @@ package com.example.habitstracker;
 
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
+import com.example.openapi.dto.UserDTO;
 
+import javax.validation.constraints.Size;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -15,7 +18,11 @@ public class TestUserBuilder {
     private HabitList habitList = new HabitList(generateUniqueString());
 
     private String generateUniqueString() {
-        return UUID.randomUUID().toString().substring(0, 18).replace("-", "_");
+        return UUID
+                .randomUUID()
+                .toString()
+                .substring(0, 18) // Длина имени должна быть не более 20 символов
+                .replace("-", "_"); // Нельзя использовать в имени дефисы
     }
 
     public TestUserBuilder setId(long id) {
