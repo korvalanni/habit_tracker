@@ -2,8 +2,8 @@ package com.example.habitstracker.integration.utils.dsl;
 
 import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.integration.utils.CleanerService;
-import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
+import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.IdDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static com.example.habitstracker.integration.utils.dsl.DSLHelper.authorized;
-import static io.restassured.RestAssured.given;
 
 /**
  * Инструменты для взаимодействия с api привычек
@@ -23,9 +22,12 @@ import static io.restassured.RestAssured.given;
 public class HabitDSL {
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private MapperService mapperService;
 
     public void createHabit(Habit habit) throws JsonProcessingException {
-        HabitDTO habitDTO = HabitMapper.toDTO(habit);
+        var habitDTO = new HabitDTO();
+        mapperService.transform(habit, habitDTO);
 
         // @formatter:off
         String result = authorized()
@@ -81,10 +83,13 @@ public class HabitDSL {
     }
 
     public void updateHabit(String id, Habit habit) throws JsonProcessingException {
+        var habitDTO = new HabitDTO();
+        mapperService.transform(habit, habitDTO);
+
         // @formatter:off
         authorized()
                 .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(HabitMapper.toDTO(habit)))
+                .body(objectMapper.writeValueAsString(habitDTO))
             .when()
                 .put(ApiConstants.Habit.UPDATE_HABIT, id)
             .then()

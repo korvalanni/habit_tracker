@@ -28,7 +28,8 @@ public enum ErrorCodes {
     NOT_NULL,
     NOT_BLANK,
     INCORRECT_SIZE,
-    UNKNOWN_EXCEPTION;
+    UNKNOWN_EXCEPTION,
+    MAPPER_NOT_FOUND;
 
     /**
      * Получить по названию ошибки валидации ее код

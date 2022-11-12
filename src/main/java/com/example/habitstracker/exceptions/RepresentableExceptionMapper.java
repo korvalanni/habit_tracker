@@ -1,6 +1,5 @@
-package com.example.habitstracker.mappers;
+package com.example.habitstracker.exceptions;
 
-import com.example.habitstracker.exceptions.RepresentableException;
 import com.example.openapi.dto.ErrorResponseDTO;
 import org.springframework.stereotype.Component;
 

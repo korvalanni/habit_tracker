@@ -1,36 +1,51 @@
 package com.example.habitstracker.mappers;
 
-import org.springframework.stereotype.Component;
-
 import com.example.habitstracker.models.Habit;
 import com.example.openapi.dto.HabitDTO;
+import org.springframework.stereotype.Component;
 
-
-@Component
+/**
+ * Сериализатор и десериализатор для {@link Habit}
+ */
 public class HabitMapper {
-    public static Habit toEntity(HabitDTO habitDTO) {
-        Habit habit = new Habit();
+    /**
+     * Конвертирует {@link Habit} в {@link HabitDTO}
+     */
+    @Component
+    public static class Serializer extends Mapper<Habit, HabitDTO> {
+        public Serializer() {
+            super(Habit.class, HabitDTO.class);
+        }
 
-        habit.setTitle(habitDTO.getTitle());
-        habit.setDescription(habitDTO.getDescription());
-        habit.setPriority(habitDTO.getPriority());
-        habit.setColor(habitDTO.getColor());
-        habit.setRepeats(habitDTO.getRepeats());
-        habit.setDoneDates(habitDTO.getDoneDates());
-
-        return habit;
+        @Override
+        public void map(Habit from, HabitDTO to) {
+            to.setTitle(from.getTitle());
+            to.setDescription(from.getDescription());
+            to.setPriority(from.getPriority());
+            to.setColor(from.getColor());
+            to.setRepeats(from.getRepeats());
+            to.setDoneDates(from.getDoneDates());
+        }
     }
 
-    public static HabitDTO toDTO(Habit habit) {
-        HabitDTO habitDTO = new HabitDTO();
+    /**
+     * Конвертирует {@link HabitDTO} в {@link Habit}
+     */
+    @Component
+    public static class Deserializer extends Mapper<HabitDTO, Habit> {
+        public Deserializer() {
+            super(HabitDTO.class, Habit.class);
+        }
 
-        habitDTO.setTitle(habit.getTitle());
-        habitDTO.setDescription(habit.getDescription());
-        habitDTO.setPriority(habit.getPriority());
-        habitDTO.setColor(habit.getColor());
-        habitDTO.setRepeats(habit.getRepeats());
-        habitDTO.setDoneDates(habit.getDoneDates());
-
-        return habitDTO;
+        @Override
+        public void map(HabitDTO from, Habit to) {
+            to.setTitle(from.getTitle());
+            to.setDescription(from.getDescription());
+            to.setPriority(from.getPriority());
+            to.setColor(from.getColor());
+            to.setRepeats(from.getRepeats());
+            to.setDoneDates(from.getDoneDates());
+        }
     }
+
 }

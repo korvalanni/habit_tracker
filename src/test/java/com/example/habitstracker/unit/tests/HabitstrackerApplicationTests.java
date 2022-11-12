@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.habitstracker.exceptions.HabitListNotFoundException;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
-import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.UserService;
@@ -24,8 +23,6 @@ class HabitstrackerApplicationTests {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    private UserMapper userMapper;
 
     private static UserDTO userDTO;
 

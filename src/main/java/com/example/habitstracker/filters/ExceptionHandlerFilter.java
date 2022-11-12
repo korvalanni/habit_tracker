@@ -1,7 +1,7 @@
 package com.example.habitstracker.filters;
 
 import com.example.habitstracker.exceptions.RepresentableException;
-import com.example.habitstracker.mappers.RepresentableExceptionMapper;
+import com.example.habitstracker.exceptions.RepresentableExceptionMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

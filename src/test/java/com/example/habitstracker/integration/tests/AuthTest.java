@@ -1,13 +1,15 @@
 package com.example.habitstracker.integration.tests;
 
-import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.auth.IncorrectCredentialsException;
+import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.integration.utils.dsl.DSLHelper;
-import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.UserEntity;
+import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.ErrorResponseDTO;
+import com.example.openapi.dto.LoginPasswordDTO;
+import com.example.openapi.dto.UserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
@@ -24,6 +26,8 @@ import static io.restassured.RestAssured.given;
 class AuthTest extends AbstractIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private MapperService mapperService;
     private UserEntity user;
 
     @BeforeEach
@@ -56,7 +60,8 @@ class AuthTest extends AbstractIntegrationTest {
                 .codeError(1)
                 .message(exception.getMessage());
 
-        var dto = UserMapper.toDTO(user);
+        var dto = new UserDTO();
+        mapperService.transform(user, dto);
 
         // @formatter:off
         var response = given()
@@ -87,8 +92,10 @@ class AuthTest extends AbstractIntegrationTest {
                 .codeError(7)
                 .message(exception.getMessage());
 
-        var dto = UserMapper.toLoginPassword(newUser);
         // @formatter:off
+        var dto = new LoginPasswordDTO();
+        mapperService.transform(newUser, dto);
+
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))

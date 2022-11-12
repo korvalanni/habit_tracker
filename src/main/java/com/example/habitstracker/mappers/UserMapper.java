@@ -1,52 +1,68 @@
 package com.example.habitstracker.mappers;
 
-import com.example.openapi.dto.LoginPasswordDTO;
-import org.springframework.stereotype.Component;
-
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
+import com.example.openapi.dto.LoginPasswordDTO;
 import com.example.openapi.dto.UserDTO;
+import org.springframework.stereotype.Component;
 
-@Component
+/**
+ * Сериализатор и десериализатор для {@link UserEntity}
+ */
 public class UserMapper {
-    public static UserEntity toEntity(UserDTO userDTO) {
-        String username = userDTO.getUsername();
-        String password = userDTO.getPassword();
-        String habitListName = userDTO.getHabitListName();
+    /**
+     * Конвертирует {@link UserEntity} в {@link UserDTO}
+     */
+    @Component
+    public static class Serializer extends Mapper<UserEntity, UserDTO> {
+        public Serializer() {
+            super(UserEntity.class, UserDTO.class);
+        }
 
-        UserEntity user = new UserEntity();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setHabitList(new HabitList(habitListName));
+        @Override
+        public void map(UserEntity from, UserDTO to) {
+            String username = from.getUsername();
+            String password = from.getPassword();
+            HabitList habitList = from.getHabitList();
 
-        return user;
-    }
-
-    public static UserDTO toDTO(UserEntity user) {
-        String username = user.getUsername();
-        String password = user.getPassword();
-        HabitList habitList = user.getHabitList();
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(username);
-        userDTO.setPassword(password);
-        if (habitList != null)
-            userDTO.setHabitListName(habitList.getName());
-
-        return userDTO;
+            to.setUsername(username);
+            to.setPassword(password);
+            if (habitList != null)
+                to.setHabitListName(habitList.getName());
+        }
     }
 
     /**
-     * Конвертировать пользователя в объект, в которром есть информация о логине и о пароле
+     * Конвертирует {@link UserDTO} в {@link UserEntity}
      */
-    public static LoginPasswordDTO toLoginPassword(UserEntity user) {
-        String username = user.getUsername();
-        String password = user.getPassword();
+    @Component
+    public static class Deserializer extends Mapper<UserDTO, UserEntity> {
+        public Deserializer() {
+            super(UserDTO.class, UserEntity.class);
+        }
 
-        LoginPasswordDTO loginPasswordDTO = new LoginPasswordDTO();
-        loginPasswordDTO.setUsername(username);
-        loginPasswordDTO.setPassword(password);
+        @Override
+        public void map(UserDTO from, UserEntity to) {
+            String username = from.getUsername();
+            String password = from.getPassword();
+            String habitListName = from.getHabitListName();
 
-        return loginPasswordDTO;
+            to.setUsername(username);
+            to.setPassword(password);
+            to.setHabitList(new HabitList(habitListName));
+        }
+    }
+
+    @Component
+    public static class UserFromLoginPasswordDtoMapper extends Mapper<UserEntity, LoginPasswordDTO> {
+        public UserFromLoginPasswordDtoMapper() {
+            super(UserEntity.class, LoginPasswordDTO.class);
+        }
+
+        @Override
+        public void map(UserEntity from, LoginPasswordDTO to) {
+            to.setUsername(from.getUsername());
+            to.setPassword(from.getPassword());
+        }
     }
 }
