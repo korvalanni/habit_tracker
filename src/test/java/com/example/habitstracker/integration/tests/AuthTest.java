@@ -1,44 +1,34 @@
-package com.example.habitstracker.api;
+package com.example.habitstracker.integration.tests;
 
-import static io.restassured.RestAssured.given;
-
-import com.example.habitstracker.exceptions.auth.IncorrectCredentialsException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
-
-import com.example.habitstracker.AbstractIntegrationTest;
-import com.example.habitstracker.TestUserBuilder;
+import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.constants.ApiConstants;
-import com.example.habitstracker.dsl.AuthDSL;
-import com.example.habitstracker.dsl.TokenHolder;
 import com.example.habitstracker.exceptions.UserExistException;
+import com.example.habitstracker.exceptions.auth.IncorrectCredentialsException;
+import com.example.habitstracker.integration.utils.dsl.DSLHelper;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.ErrorResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static io.restassured.RestAssured.given;
 
 /**
  * Тесты на механизм авторизации
  */
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class AuthTest extends AbstractIntegrationTest {
-    @LocalServerPort
-    private Integer port;
     @Autowired
     private ObjectMapper objectMapper;
     private UserEntity user;
 
     @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
+    public void setup() {
+        super.setup();
         user = new TestUserBuilder().build();
     }
 
@@ -47,11 +37,11 @@ class AuthTest extends AbstractIntegrationTest {
      */
     @Test
     void test_registrationAndLogin() throws JsonProcessingException {
-        AuthDSL.register(user);
-        AuthDSL.login(user);
+        authDSL.register(user);
+        authDSL.login(user);
 
-        Assertions.assertNotNull(TokenHolder.token);
-        Assertions.assertFalse(TokenHolder.token.isEmpty());
+        Assertions.assertNotNull(DSLHelper.getToken());
+        Assertions.assertFalse(DSLHelper.getToken().isEmpty());
     }
 
     /**
@@ -59,7 +49,7 @@ class AuthTest extends AbstractIntegrationTest {
      */
     @Test
     void test_registerUserTwice() throws JsonProcessingException {
-        AuthDSL.register(user);
+        authDSL.register(user);
 
         var exception = new UserExistException(user.getUsername());
         var expected = new ErrorResponseDTO()
@@ -73,7 +63,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
             .when()
-                .post("/auth/registration")
+                .post(ApiConstants.Auth.REGISTRATION)
                 .getBody()
                 .asString();
         // @formatter:on
@@ -87,7 +77,7 @@ class AuthTest extends AbstractIntegrationTest {
      */
     @Test
     void test_incorrectPassword() throws JsonProcessingException, CloneNotSupportedException {
-        AuthDSL.register(user);
+        authDSL.register(user);
 
         UserEntity newUser = (UserEntity) user.clone();
         newUser.setPassword("X");
@@ -98,11 +88,12 @@ class AuthTest extends AbstractIntegrationTest {
                 .message(exception.getMessage());
 
         var dto = UserMapper.toLoginPassword(newUser);
+        // @formatter:off
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
-            .when()
-                .post(ApiConstants.LOGIN)
+             .when()
+                .post(ApiConstants.Auth.LOGIN)
                 .getBody()
                 .asString();
         // @formatter:on

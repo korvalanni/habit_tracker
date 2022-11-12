@@ -34,7 +34,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             UserService userService,
             TokenAuthenticationService tokenAuthenticationService,
             ObjectMapper objectMapper) {
-        super(new AntPathRequestMatcher(ApiConstants.LOGIN));
+        super(new AntPathRequestMatcher(ApiConstants.Auth.LOGIN));
         super.setAuthenticationManager(authenticationManager);
         this.userService = userService;
         this.tokenAuthenticationService = tokenAuthenticationService;

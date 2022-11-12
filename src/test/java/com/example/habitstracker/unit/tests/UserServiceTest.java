@@ -1,10 +1,12 @@
-package com.example.habitstracker.services;
+package com.example.habitstracker.unit.tests;
 
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.UserRepository;
+import com.example.habitstracker.services.HabitListService;
+import com.example.habitstracker.services.UserService;
 import com.example.openapi.dto.UserDTO;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;

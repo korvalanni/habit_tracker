@@ -1,10 +1,10 @@
-package com.example.habitstracker.dsl;
+package com.example.habitstracker.integration.utils.dsl;
 
 import static io.restassured.RestAssured.given;
 
 import java.util.HashMap;
 
-import com.example.habitstracker.CleanerService;
+import com.example.habitstracker.integration.utils.CleanerService;
 import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.UserEntity;
@@ -13,31 +13,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
 
 /**
- * Инструменты для взаимодействия с механизмом авторизации
+ * Инструменты для взаимодействия с api авторизации
  */
+@Component
 public class AuthDSL {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
+    @Autowired
+    private UserDSL userDSL;
 
     /**
      * Зарегистрировать нового пользователя
      */
-    public static void register(UserEntity user) throws JsonProcessingException {
+    public void register(UserEntity user) throws JsonProcessingException {
         var dto = UserMapper.toDTO(user);
 
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(dto))
+                .body(objectMapper.writeValueAsString(dto))
             .when()
-                .post(ApiConstants.REGISTRATION)
+                .post(ApiConstants.Auth.REGISTRATION)
             .then()
                 .statusCode(200);
         // @formatter:on
 
         CleanerService.addTask(() -> {
-            if (TokenHolder.token == null) {
+            if (DSLHelper.getToken() == null) {
                 try {
                     login(user);
                 } catch (JsonProcessingException e) {
@@ -45,7 +52,7 @@ public class AuthDSL {
                 }
             }
 
-            UserDSL.deleteUser(user);
+            userDSL.deleteUser(user);
         });
     }
 
@@ -54,20 +61,20 @@ public class AuthDSL {
      *
      * @return Ответ на запрос
      */
-    public static String sendRegistrationRequest(UserEntity user) throws JsonProcessingException {
+    public String sendRegistrationRequest(UserEntity user) throws JsonProcessingException {
         var dto = UserMapper.toDTO(user);
 
         // @formatter:off
         var result = given()
                 .contentType(ContentType.JSON)
-                .body(OBJECT_MAPPER.writeValueAsString(dto))
+                .body(objectMapper.writeValueAsString(dto))
             .when()
-                .post(ApiConstants.REGISTRATION);
+                .post(ApiConstants.Auth.REGISTRATION);
         // @formatter:on
 
         if (result.getStatusCode() == 200) {
             CleanerService.addTask(() -> {
-                if (TokenHolder.token == null) {
+                if (DSLHelper.getToken() == null) {
                     try {
                         login(user);
                     } catch (JsonProcessingException e) {
@@ -75,7 +82,7 @@ public class AuthDSL {
                     }
                 }
 
-                UserDSL.deleteUser(user);
+                userDSL.deleteUser(user);
             });
         }
 
@@ -87,21 +94,21 @@ public class AuthDSL {
      *
      * @param user Пользователь, под котором логинимся
      */
-    public static void login(UserEntity user) throws JsonProcessingException {
+    public void login(UserEntity user) throws JsonProcessingException {
         var values = new HashMap<String, String>();
         values.put("username", user.getUsername());
         values.put("password", user.getPassword());
-        var json = OBJECT_MAPPER.writeValueAsString(values);
+        var json = objectMapper.writeValueAsString(values);
 
         // @formatter:off
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when()
-                .post(ApiConstants.LOGIN)
-                .then()
+            .when()
+                .post(ApiConstants.Auth.LOGIN)
+            .then()
                 .statusCode(200);
         // @formatter:on
-        TokenHolder.token = response.extract().header("Authorization").split(" ")[1];
+        DSLHelper.setToken(response.extract().header(HttpHeaders.AUTHORIZATION).split(" ")[1]);
     }
 }

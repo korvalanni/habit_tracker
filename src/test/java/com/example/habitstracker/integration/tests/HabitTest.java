@@ -1,47 +1,39 @@
-package com.example.habitstracker.api;
+package com.example.habitstracker.integration.tests;
 
-import com.example.habitstracker.AbstractIntegrationTest;
-import com.example.habitstracker.TestUserBuilder;
-import com.example.habitstracker.dsl.AuthDSL;
-import com.example.habitstracker.dsl.HabitDSL;
+import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
-import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.services.HabitService;
 import com.example.openapi.dto.Color;
 import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.Priority;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+/**
+ * Тесты на механизмы работы с привычками
+ */
 class HabitTest extends AbstractIntegrationTest {
-    @LocalServerPort
-    private Integer port;
     @Autowired
     private HabitService habitService;
     private Habit habit;
 
     @BeforeEach
     void setUp() throws JsonProcessingException {
-        RestAssured.port = port;
+        super.setup();
 
         UserEntity user = new TestUserBuilder().build();
         habit = new Habit("Test", "Description", Priority.HIGH, Color.GREEN, 1L, List.of(1L, 2L));
 
-        AuthDSL.register(user);
-        AuthDSL.login(user);
+        authDSL.register(user);
+        authDSL.login(user);
     }
 
     /**
@@ -49,7 +41,7 @@ class HabitTest extends AbstractIntegrationTest {
      */
     @Test
     void test_createHabit() throws JsonProcessingException {
-        HabitDSL.createHabit(habit);
+        habitDSL.createHabit(habit);
         List<Habit> habits = habitService.getHabits();
 
         Assertions.assertEquals(1, habits.size());
@@ -60,12 +52,12 @@ class HabitTest extends AbstractIntegrationTest {
      */
     @Test
     void test_getHabit() throws JsonProcessingException {
-        HabitDSL.createHabit(habit);
+        habitDSL.createHabit(habit);
         List<Habit> habits = habitService.getHabits();
 
         Assertions.assertEquals(1, habits.size());
 
-        HabitDTO getHabit = HabitDSL.getHabit(String.valueOf(habit.getId()));
+        HabitDTO getHabit = habitDSL.getHabit(String.valueOf(habit.getId()));
         Assertions.assertNotNull(getHabit);
     }
 
@@ -76,20 +68,20 @@ class HabitTest extends AbstractIntegrationTest {
             "привычку, а задание остается.")
     @Test
     void test_deleteHabit() throws JsonProcessingException {
-        HabitDSL.createHabit(habit);
+        habitDSL.createHabit(habit);
         List<Habit> habits = habitService.getHabits();
 
         Assertions.assertEquals(1, habits.size());
 
-        HabitDSL.deleteHabit(habit);
+        habitDSL.deleteHabit(habit);
         habits = habitService.getHabits();
 
         Assertions.assertEquals(0, habits.size());
     }
 
     @Test
-    void test_updateHabit() throws JsonProcessingException{
-        HabitDSL.createHabit(habit);
+    void test_updateHabit() throws JsonProcessingException {
+        habitDSL.createHabit(habit);
         String id = habit.getId().toString();
 
         Habit updatedHabit = new Habit();
@@ -98,10 +90,10 @@ class HabitTest extends AbstractIntegrationTest {
         updatedHabit.setPriority(Priority.MIDDLE);
         updatedHabit.setDoneDates(List.of(1L, 2L));
 
-        HabitDSL.updateHabit(id, updatedHabit);
+        habitDSL.updateHabit(id, updatedHabit);
         Habit expectedHabit = new Habit("Test1", "Description new",
                 Priority.MIDDLE, Color.GREEN, 1L, List.of(1L, 2L));
-        Habit gotHabit = HabitMapper.toEntity(HabitDSL.getHabit(id));
+        Habit gotHabit = HabitMapper.toEntity(habitDSL.getHabit(id));
 
         Assertions.assertEquals(expectedHabit.getTitle(), gotHabit.getTitle());
         Assertions.assertEquals(expectedHabit.getDescription(), gotHabit.getDescription());

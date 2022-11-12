@@ -33,7 +33,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         var swaggerUi = new AntPathRequestMatcher(SwaggerConstants.UI_ANY);
         var swaggerUiHtml = new AntPathRequestMatcher(SwaggerConstants.UI_HTML);
         var apiDocs = new AntPathRequestMatcher(SwaggerConstants.API_DOCS);
-        if (request.getServletPath().equals(ApiConstants.REGISTRATION)
+        if (request.getServletPath().equals(ApiConstants.Auth.REGISTRATION)
                 || swaggerUi.matches(request)
                 || swaggerUiHtml.matches(request)
                 || apiDocs.matches(request)) {
