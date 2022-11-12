@@ -1,6 +1,7 @@
 package com.example.habitstracker.integration.tests;
 
 import com.example.habitstracker.exceptions.ErrorCodes;
+import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.ErrorResponseDTO;
@@ -27,9 +28,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     @BeforeEach
     void setUp() {
         super.setup();
-        HabitList habitList = new HabitList();
-        habitList.setName("MyHabits");
-        user = new UserEntity(0L, "Kennedy", "Kennedy228", habitList);
+        user = new TestUserBuilder().build();
     }
 
     /**
