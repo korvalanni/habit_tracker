@@ -50,7 +50,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("Too short username")
-                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
+                .codeError(ErrorCodes.INCORRECT_SIZE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -69,7 +69,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("Too long username")
-                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
+                .codeError(ErrorCodes.INCORRECT_SIZE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -88,7 +88,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("не должно быть пустым")
-                .codeError(ErrorCodes.NOT_BLANK.ordinal());
+                .codeError(ErrorCodes.NOT_BLANK.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -106,7 +106,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("не должно быть пустым")
-                .codeError(ErrorCodes.NOT_BLANK.ordinal());
+                .codeError(ErrorCodes.NOT_BLANK.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -124,7 +124,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("Field can contains only letters, digits or underscore")
-                .codeError(ErrorCodes.ONLY_LETTERS_DIGITS_UNDERSCORE.ordinal());
+                .codeError(ErrorCodes.ONLY_LETTERS_DIGITS_UNDERSCORE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -142,7 +142,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("This username must contains at least one character")
-                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.ordinal());
+                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -160,7 +160,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("Too short password")
-                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
+                .codeError(ErrorCodes.INCORRECT_SIZE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -178,7 +178,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("Password should not be null")
-                .codeError(ErrorCodes.NOT_NULL.ordinal());
+                .codeError(ErrorCodes.NOT_NULL.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -196,7 +196,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("This password must contains at least one character")
-                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.ordinal());
+                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -215,7 +215,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("Too short habit list name")
-                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
+                .codeError(ErrorCodes.INCORRECT_SIZE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -234,7 +234,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("Too long habit list name")
-                .codeError(ErrorCodes.INCORRECT_SIZE.ordinal());
+                .codeError(ErrorCodes.INCORRECT_SIZE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -253,7 +253,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("не должно быть пустым")
-                .codeError(ErrorCodes.NOT_BLANK.ordinal());
+                .codeError(ErrorCodes.NOT_BLANK.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -271,7 +271,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("не должно быть пустым")
-                .codeError(ErrorCodes.NOT_BLANK.ordinal());
+                .codeError(ErrorCodes.NOT_BLANK.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -289,7 +289,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("Field can contains only letters, digits or underscore")
-                .codeError(ErrorCodes.ONLY_LETTERS_DIGITS_UNDERSCORE.ordinal());
+                .codeError(ErrorCodes.ONLY_LETTERS_DIGITS_UNDERSCORE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -307,7 +307,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
 
         var expected = new ErrorResponseDTO()
                 .message("This habit list name must contains at least one character")
-                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.ordinal());
+                .codeError(ErrorCodes.AT_LEAST_ONE_LETTER.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 

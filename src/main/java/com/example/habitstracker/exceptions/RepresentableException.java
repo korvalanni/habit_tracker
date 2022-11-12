@@ -15,7 +15,7 @@ public abstract class RepresentableException extends RuntimeException {
         this.code = code;
     }
 
-    public int getCode() {
-        return code.ordinal();
+    public String getCode() {
+        return code.getCode();
     }
 }
