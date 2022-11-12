@@ -20,7 +20,7 @@ public class UserAdvice {
     public ResponseEntity<ErrorResponseDTO> userNotFoundHandler(UserNotFoundException userNotFoundException) {
         String message = userNotFoundException.getMessage();
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO()
-                .codeError(ErrorCodes.USER_NOT_FOUND.ordinal())
+                .codeError(ErrorCodes.USER_NOT_FOUND.getCode())
                 .message(message);
         return ResponseEntity.badRequest().body(errorResponseDTO);
     }
@@ -29,7 +29,7 @@ public class UserAdvice {
     public ResponseEntity<ErrorResponseDTO> userExistHandler(UserExistException userExistException) {
         String message = userExistException.getMessage();
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO()
-                .codeError(ErrorCodes.USER_EXISTS.ordinal())
+                .codeError(ErrorCodes.USER_EXISTS.getCode())
                 .message(message);
         return ResponseEntity.internalServerError().body(errorResponseDTO);
     }
@@ -37,7 +37,7 @@ public class UserAdvice {
     @ExceptionHandler(HabitNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> habitNotFound(HabitNotFoundException habitNotFoundException) {
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO()
-                .codeError(ErrorCodes.HABIT_NOT_FOUND.ordinal())
+                .codeError(ErrorCodes.HABIT_NOT_FOUND.getCode())
                 .message(habitNotFoundException.getMessage());
         return ResponseEntity.badRequest().body(errorResponseDTO);
     }
@@ -52,7 +52,7 @@ public class UserAdvice {
         List<ErrorResponseDTO> errors = methodArgumentNotValidException
                 .getFieldErrors()
                 .stream()
-                .map(error -> new ErrorResponseDTO().codeError(ErrorCodes.parse(error).ordinal()).message(error.getDefaultMessage()))
+                .map(error -> new ErrorResponseDTO().codeError(ErrorCodes.parse(error).getCode()).message(error.getDefaultMessage()))
                 .toList();
 
         return ResponseEntity.badRequest().body(errors);

@@ -1,6 +1,7 @@
 package com.example.habitstracker.integration.tests;
 
 import com.example.habitstracker.constants.ApiConstants;
+import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.auth.IncorrectCredentialsException;
 import com.example.habitstracker.integration.utils.TestUserBuilder;
@@ -57,7 +58,7 @@ class AuthTest extends AbstractIntegrationTest {
 
         var exception = new UserExistException(user.getUsername());
         var expected = new ErrorResponseDTO()
-                .codeError(1)
+                .codeError(ErrorCodes.USER_EXISTS.getCode())
                 .message(exception.getMessage());
 
         var dto = new UserDTO();
@@ -89,7 +90,7 @@ class AuthTest extends AbstractIntegrationTest {
 
         var exception = new IncorrectCredentialsException();
         var expected = new ErrorResponseDTO()
-                .codeError(7)
+                .codeError(ErrorCodes.INCORRECT_LOGIN_PASSWORD.getCode())
                 .message(exception.getMessage());
 
         // @formatter:off

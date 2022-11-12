@@ -214,7 +214,7 @@ components:
       type: object
       properties:
         codeError:
-          type: integer
+          type: string
           x-constraints:
             - "@NotNull(message = \"Error code should not be null\")"
         message:
