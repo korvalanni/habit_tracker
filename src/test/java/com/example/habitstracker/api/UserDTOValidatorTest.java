@@ -1,6 +1,7 @@
 package com.example.habitstracker.api;
 
 import com.example.habitstracker.AbstractIntegrationTest;
+import com.example.habitstracker.TestUserBuilder;
 import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.models.HabitList;
@@ -35,9 +36,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-        HabitList habitList = new HabitList();
-        habitList.setName("MyHabits");
-        user = new UserEntity(0L, "Kennedy", "Kennedy228", habitList);
+        user = new TestUserBuilder().build();
     }
 
     /**

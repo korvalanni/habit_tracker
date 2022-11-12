@@ -3,11 +3,20 @@ package com.example.habitstracker;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 
+import java.util.UUID;
+
+/**
+ * Класс для создания пользователя со случайными данными. Использовать только для тестов системы.
+ */
 public class TestUserBuilder {
     private long id = 0;
-    private String username = "Nick";
-    private String password = "Passwd2!";
-    private HabitList habitList = new HabitList("Habits");
+    private String username = generateUniqueString();
+    private String password = generateUniqueString();
+    private HabitList habitList = new HabitList(generateUniqueString());
+
+    private String generateUniqueString() {
+        return UUID.randomUUID().toString().substring(0, 18).replace("-", "_");
+    }
 
     public TestUserBuilder setId(long id) {
         this.id = id;
