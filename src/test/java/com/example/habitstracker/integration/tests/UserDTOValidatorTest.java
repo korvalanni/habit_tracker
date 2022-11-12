@@ -1,9 +1,7 @@
 package com.example.habitstracker.integration.tests;
 
-import com.example.habitstracker.AbstractIntegrationTest;
-import com.example.habitstracker.TestUserBuilder;
-import com.example.habitstracker.dsl.AuthDSL;
 import com.example.habitstracker.exceptions.ErrorCodes;
+import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.ErrorResponseDTO;
