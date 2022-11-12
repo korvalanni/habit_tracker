@@ -1,5 +1,6 @@
 package com.example.habitstracker.integration.utils.dsl;
 
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.models.UserEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +8,7 @@ import io.restassured.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.example.habitstracker.integration.utils.dsl.DSLHelper.authorized;
 import static io.restassured.RestAssured.given;
 
 /**
@@ -24,10 +26,9 @@ public class UserDSL {
      */
     public void deleteUser(UserEntity user) {
         // @formatter:off
-        given()
-                .headers("Authorization", "Bearer " + TokenHolder.token)
+        authorized()
             .when()
-                .post("/user/delete_user/" + user.getUsername())
+                .post(ApiConstants.User.DELETE_USER, user.getUsername())
             .then()
                 .statusCode(200);
         // @formatter:on
@@ -40,10 +41,9 @@ public class UserDSL {
      */
     public void getUser(String username) {
         // @formatter:off
-        given()
-                .headers("Authorization", "Bearer " + TokenHolder.token)
+        authorized()
             .when()
-                .post("/get_user/" + username)
+                .post(ApiConstants.User.GET_USER, username)
             .then()
                 .statusCode(200);
         // @formatter:on
@@ -59,14 +59,13 @@ public class UserDSL {
      */
     public void updateUser(String username, UserEntity user) throws JsonProcessingException {
         // @formatter:off
-        given()
-                .headers("Authorization", "Bearer " + TokenHolder.token)
-                .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(user))
-            .when()
-                .put("/update_user/" + username)
-            .then()
-                .statusCode(200);
+       authorized()
+               .contentType(ContentType.JSON)
+               .body(objectMapper.writeValueAsString(user))
+           .when()
+               .put(ApiConstants.User.UPDATE_USER, username)
+           .then()
+               .statusCode(200);
         // @formatter:on
     }
 }

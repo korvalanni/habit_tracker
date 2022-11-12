@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,13 +38,13 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
             .when()
-                .post(ApiConstants.REGISTRATION)
+                .post(ApiConstants.Auth.REGISTRATION)
             .then()
                 .statusCode(200);
         // @formatter:on
 
         CleanerService.addTask(() -> {
-            if (TokenHolder.token == null) {
+            if (DSLHelper.getToken() == null) {
                 try {
                     login(user);
                 } catch (JsonProcessingException e) {
@@ -68,12 +69,12 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
             .when()
-                .post(ApiConstants.REGISTRATION);
+                .post(ApiConstants.Auth.REGISTRATION);
         // @formatter:on
 
         if (result.getStatusCode() == 200) {
             CleanerService.addTask(() -> {
-                if (TokenHolder.token == null) {
+                if (DSLHelper.getToken() == null) {
                     try {
                         login(user);
                     } catch (JsonProcessingException e) {
@@ -104,10 +105,10 @@ public class AuthDSL {
                 .contentType(ContentType.JSON)
                 .body(json)
             .when()
-                .post(ApiConstants.LOGIN)
+                .post(ApiConstants.Auth.LOGIN)
             .then()
                 .statusCode(200);
         // @formatter:on
-        TokenHolder.token = response.extract().header("Authorization").split(" ")[1];
+        DSLHelper.setToken(response.extract().header(HttpHeaders.AUTHORIZATION).split(" ")[1]);
     }
 }

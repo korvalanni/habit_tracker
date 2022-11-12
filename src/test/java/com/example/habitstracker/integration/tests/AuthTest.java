@@ -2,9 +2,9 @@ package com.example.habitstracker.integration.tests;
 
 import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.constants.ApiConstants;
-import com.example.habitstracker.integration.utils.dsl.TokenHolder;
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.auth.IncorrectCredentialsException;
+import com.example.habitstracker.integration.utils.dsl.DSLHelper;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.ErrorResponseDTO;
@@ -40,8 +40,8 @@ class AuthTest extends AbstractIntegrationTest {
         authDSL.register(user);
         authDSL.login(user);
 
-        Assertions.assertNotNull(TokenHolder.token);
-        Assertions.assertFalse(TokenHolder.token.isEmpty());
+        Assertions.assertNotNull(DSLHelper.getToken());
+        Assertions.assertFalse(DSLHelper.getToken().isEmpty());
     }
 
     /**
@@ -63,7 +63,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
             .when()
-                .post("/auth/registration")
+                .post(ApiConstants.Auth.REGISTRATION)
                 .getBody()
                 .asString();
         // @formatter:on
@@ -93,7 +93,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
              .when()
-                .post(ApiConstants.LOGIN)
+                .post(ApiConstants.Auth.LOGIN)
                 .getBody()
                 .asString();
         // @formatter:on

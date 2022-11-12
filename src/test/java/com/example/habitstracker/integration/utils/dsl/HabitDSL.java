@@ -1,5 +1,6 @@
 package com.example.habitstracker.integration.utils.dsl;
 
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.integration.utils.CleanerService;
 import com.example.habitstracker.mappers.HabitMapper;
 import com.example.habitstracker.models.Habit;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.example.habitstracker.integration.utils.dsl.DSLHelper.authorized;
 import static io.restassured.RestAssured.given;
 
 /**
@@ -26,12 +28,11 @@ public class HabitDSL {
         HabitDTO habitDTO = HabitMapper.toDTO(habit);
 
         // @formatter:off
-        String result = given()
+        String result = authorized()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(habitDTO))
-                .header("Authorization", TokenHolder.token)
             .when()
-                .post("/habit/create_habit")
+                .post(ApiConstants.Habit.CREATE_HABIT)
             .then()
                 .statusCode(200)
                 .extract()
@@ -54,12 +55,11 @@ public class HabitDSL {
         var idDto = new IdDTO().id(habit.getId());
 
         // @formatter:off
-        given()
+        authorized()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(idDto))
-                .header("Authorization", TokenHolder.token)
             .when()
-                .delete("/habit/delete_habit")
+                .delete(ApiConstants.Habit.DELETE_HABIT)
             .then()
                 .statusCode(200);
         // @formatter:on
@@ -67,10 +67,9 @@ public class HabitDSL {
 
     public HabitDTO getHabit(String id) throws JsonProcessingException {
         // @formatter:off
-        String json = given()
-                .header("Authorization", TokenHolder.token)
+        String json = authorized()
             .when()
-                .get("/habit/get_habit/" + id)
+                .get(ApiConstants.Habit.GET_HABIT, id)
             .then()
                 .statusCode(200)
                 .extract()
@@ -83,12 +82,11 @@ public class HabitDSL {
 
     public void updateHabit(String id, Habit habit) throws JsonProcessingException {
         // @formatter:off
-        given()
-                .header("Authorization", TokenHolder.token)
+        authorized()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(HabitMapper.toDTO(habit)))
             .when()
-                .put("/habit/update_habit/{id}", id)
+                .put(ApiConstants.Habit.UPDATE_HABIT, id)
             .then()
                 .statusCode(200);
         // @formatter:on
