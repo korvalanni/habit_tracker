@@ -34,33 +34,23 @@ public class TokenAuthenticationService {
     private final long tokenExpiry;
     private final String secret;
     private final String TOKEN_PREFIX = "Bearer";
-    private JwtParser jwtParser;
+    private final JwtParser jwtParser;
 
     @Autowired
     public TokenAuthenticationService(
             @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.expire}") long expire) {
         this.secret = secret;
-        buildJwtParser();
+        jwtParser = Jwts.parserBuilder().setSigningKey(buildKey()).build();
         tokenExpiry = expire;
     }
 
-    private void buildJwtParser() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        Key key = Keys.hmacShaKeyFor(keyBytes);
-
-        // todo: убери дублирование 49-50 и 57-58
-        jwtParser = Jwts.parserBuilder().setSigningKey(key).build();
-    }
-
     public void addAuthentication(HttpServletResponse response, String username, Long id) {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        Key key = Keys.hmacShaKeyFor(keyBytes);
         var jwt = Jwts.builder()
                 .setSubject(username)
                 .claim(JWTClaims.USER_ID, id)
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpiry))
-                .signWith(key)
+                .signWith(buildKey())
                 .compact();
         response.addHeader(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + " " + jwt);
     }
@@ -71,6 +61,11 @@ public class TokenAuthenticationService {
         token = getJWT(token);
         String username = extractUsername(token);
         return new UsernamePasswordAuthenticationToken(username, extractUserCredentials(token), List.of());
+    }
+
+    private Key buildKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private String getAuthorizationToken(HttpServletRequest request) {
