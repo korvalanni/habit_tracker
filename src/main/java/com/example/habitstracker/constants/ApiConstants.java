@@ -4,12 +4,18 @@ package com.example.habitstracker.constants;
  * Пути в api
  */
 public class ApiConstants {
+    /**
+     * Пути в api для авторизации
+     */
     public static class Auth {
         private static final String base = "/auth";
         public static final String LOGIN = base + "/login";
         public static final String REGISTRATION = base + "/registration";
     }
 
+    /**
+     * Пути в api для взаимодействия с привычками
+     */
     public static class Habit {
         private static final String base = "/habit";
         public static final String CREATE_HABIT = base + "/create_habit";
@@ -18,11 +24,17 @@ public class ApiConstants {
         public static final String UPDATE_HABIT = base + "/update_habit/{id}";
     }
 
+    /**
+     * Пути в api для взаимодействия со списками привычек
+     */
     public static class HabitList {
         private static final String base = "/habit_list";
         public static final String GET_HABIT_LIST = base + "/get_habitList";
     }
 
+    /**
+     * Пути в api для взаимодействия с аккаунтом пользователя
+     */
     public static class User {
         private static final String base = "/user";
         public static final String GET_USER = base + "/get_user/{username}";
