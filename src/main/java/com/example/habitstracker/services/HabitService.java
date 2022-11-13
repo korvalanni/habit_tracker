@@ -57,8 +57,6 @@ public class HabitService {
             throw new HabitNotFoundException(id);
         Habit dataBaseHabit = oldHabitOpt.get();
 
-        if (updatedHabit.getHabitList() != null)
-            dataBaseHabit.setHabitList(updatedHabit.getHabitList());
         if (updatedHabit.getTitle() != null)
             dataBaseHabit.setTitle(updatedHabit.getTitle());
         if (updatedHabit.getColor() != null)

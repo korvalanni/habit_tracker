@@ -1,9 +1,6 @@
 package com.example.habitstracker.models;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,6 +19,7 @@ public class Habit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
+
     private String title;
     private String description;
     private Priority priority;

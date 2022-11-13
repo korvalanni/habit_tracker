@@ -47,4 +47,10 @@ public class HabitListService {
         return habitListOpt.get();
     }
 
+    public void updateListName(Long id, String newName){
+        HabitList habitList = getHabitListWithId(id);
+        habitList.setName(newName);
+        habitListRepository.save(habitList);
+    }
+
 }

@@ -1,7 +1,7 @@
 openapi: "3.0.3"
 info:
   version: 1.0.0
-  title: Swagger Petstore
+  title: habit_tracker
   license:
     name: MIT
 servers:
@@ -147,6 +147,32 @@ paths:
                 $ref: '#/components/schemas/HabitListDTO'
         500:
           description: ERROR
+
+  /habit_list/update/{id}:
+    put:
+       description: по id листа привычки обновляет только имя листа привычки, оно указано в теле запроса
+       summary: обновляет имя листа привычки
+       operationId: updateHabitList
+       parameters:
+         - in: path
+           name: id
+           description: идентификатор листа привычки
+           required: true
+           schema:
+             type: integer
+             format: int64
+       requestBody:
+         description: передаем новое имя листа привычки
+         required: true
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/HabitListDTO'
+       responses:
+         200:
+           description: OK
+         500:
+           description: ERROR
 
   /user/get_user/{username}:
     get:
@@ -346,6 +372,21 @@ components:
         password:
           description: Пароль пользователя
           type: string
+
+    HabitListNameDTO:
+      description: Объект, который хранит в себе только имя листа привычек
+      type: object
+      properties:
+        habitListName:
+          description: названия листа с привычками
+          type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Habit list name should not be null\")"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short habit list name\")"
+            - "@Size(max = 20, message = \"Too long habit list name\")"
 
     Priority:
       description: TODO
