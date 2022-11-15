@@ -133,14 +133,14 @@ paths:
           description: Запрос некорректный
 
   # FIXME TOO
-  /habit_list/get_habitList:
+  /habit_list/get:
     get:
-      description: TODO
-      summary: TODO
+      description: возвращает HabitListDTO у текущего зарегистрированного пользователя
+      summary: возвращает HabitListDTO
       operationId: getHabitList
       responses:
         200:
-          description: TODO
+          description: OK
           content:
             application/json:
               schema:
@@ -167,7 +167,7 @@ paths:
          content:
            application/json:
              schema:
-               $ref: '#/components/schemas/HabitListDTO'
+               $ref: '#/components/schemas/HabitListNameDTO'
        responses:
          200:
            description: OK
@@ -318,7 +318,7 @@ components:
             - "@NotNull(message = \"Habits should not be null\")"
 
     IdDTO:
-      description: хто я?
+      description: id произвольной сущности
       type: object
       properties:
         id:

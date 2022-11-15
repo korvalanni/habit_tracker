@@ -8,6 +8,8 @@ import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.services.UserService;
 import com.example.openapi.api.HabitListApi;
 import com.example.openapi.dto.HabitListDTO;
+import com.example.openapi.dto.HabitListNameDTO;
+import com.example.openapi.dto.IdDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +33,8 @@ public class HabitListApiImpl implements HabitListApi {
 
     @Override
     public ResponseEntity<HabitListDTO> getHabitList() {
-        UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        UserCredentials userCredentials =
+                (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
         UserEntity user = userService.getById(userCredentials.id());
         var id = user.getHabitList().getId();
         HabitList habitList = habitListService.getHabitListWithId(id);
@@ -43,8 +46,8 @@ public class HabitListApiImpl implements HabitListApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateHabitList(Long id, HabitListDTO habitListDTO) {
-        String newHabitListName = habitListDTO.getName();
+    public ResponseEntity<Void> updateHabitList(Long id, HabitListNameDTO habitListNameDTO) {
+        String newHabitListName = habitListNameDTO.getHabitListName();
         habitListService.updateListName(id, newHabitListName);
         return ResponseEntity.ok().build();
     }

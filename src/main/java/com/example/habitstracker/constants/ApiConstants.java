@@ -21,6 +21,7 @@ public class ApiConstants {
     public static class HabitList {
         private static final String base = "/habit_list";
         public static final String GET_HABIT_LIST = base + "/get_habitList";
+        public static final String UPDATE_HABIT_LIST = base + "/update/{id}";
     }
 
     public static class User {

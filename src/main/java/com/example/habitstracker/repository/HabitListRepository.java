@@ -20,4 +20,5 @@ public interface HabitListRepository extends CrudRepository<HabitList, Long> {
      * @return список привычек или пустой Optional
      */
     Optional<List<HabitList>> findByName(String name);
+
 }
