@@ -1,5 +1,6 @@
 package com.example.habitstracker.models;
 
+import com.example.habitstracker.constants.TableNameConstants;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "habit_list")
+@Table(name = TableNameConstants.HABIT_LIST)
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

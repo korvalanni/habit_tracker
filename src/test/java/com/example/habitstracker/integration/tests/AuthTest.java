@@ -68,7 +68,7 @@ class AuthTest extends AbstractIntegrationTest {
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
-            .when()
+                .when()
                 .post(ApiConstants.Auth.REGISTRATION)
                 .getBody()
                 .asString();
@@ -82,13 +82,10 @@ class AuthTest extends AbstractIntegrationTest {
      * Пробуем войти используя неверные данные для входа
      */
     @Test
-    void test_incorrectPassword() throws JsonProcessingException {
+    void test_incorrectPassword() throws JsonProcessingException, CloneNotSupportedException {
         authDSL.register(user);
 
-        UserEntity newUser = new UserEntity();
-        newUser.setUsername(user.getUsername());
-        newUser.setHabitList(user.getHabitList());
-        newUser.setUserId(user.getUserId());
+        UserEntity newUser = (UserEntity) user.clone();
         newUser.setPassword("X");
 
         var exception = new IncorrectCredentialsException();
@@ -103,7 +100,7 @@ class AuthTest extends AbstractIntegrationTest {
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
-             .when()
+                .when()
                 .post(ApiConstants.Auth.LOGIN)
                 .getBody()
                 .asString();

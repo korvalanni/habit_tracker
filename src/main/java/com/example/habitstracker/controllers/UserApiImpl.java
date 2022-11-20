@@ -36,7 +36,7 @@ public class UserApiImpl implements UserApi
     {
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
 
-        log.info("Delete " + userCredentials.username());
+        log.info("Delete user with username = " + userCredentials.username());
 
         userService.deleteByUsername(userCredentials.username());
         return ResponseEntity.ok().build();
@@ -45,6 +45,8 @@ public class UserApiImpl implements UserApi
     @Override
     public ResponseEntity<ReadonlyUserDTO> getUserByUsername(String username)
     {
+        log.info("Get user with username = " + username);
+
         ReadonlyUserDTO dto = new ReadonlyUserDTO();
         mapperService.transform(userService.getByUsername(username), dto);
         return ResponseEntity.ok(dto);
@@ -53,6 +55,8 @@ public class UserApiImpl implements UserApi
     @Override
     public ResponseEntity<Void> updateUserByUsername(UserDTO userDTO)
     {
+        log.info("Update " + userDTO.toInlineString());
+
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
         String username = userCredentials.username();
         userService.updateUserByUsername(username, userDTO);

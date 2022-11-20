@@ -1,7 +1,7 @@
 openapi: "3.0.3"
 info:
   version: 1.0.0
-  title: Swagger Petstore
+  title: Swagger habits tracker
   license:
     name: MIT
 servers:
@@ -9,11 +9,11 @@ servers:
 paths:
   /auth/registration:
     post:
-      description: TODO
-      summary: TODO
+      description: Зарегистрировать нового пользователя
+      summary: Регистрация
       operationId: registration
       requestBody:
-        description: TODO
+        description: Необходимые для регистрации данные
         required: true
         content:
           application/json:
@@ -21,15 +21,21 @@ paths:
               $ref: '#/components/schemas/UserDTO'
       responses:
         200:
-          description: OK
+          description: Зарегистрировал нового пользователя
+        400:
+          description: Некорректные данные. Ошибка валидации. List<ErrorResponseDTO>, не получилось это передать через openapi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDTO'
 
   /auth/login:
     post:
-      description: TODO
-      summary: TODO
+      description: Зайти в систему
+      summary: Залогиниться
       operationId: login
       requestBody:
-        description: TODO
+        description: Необходимые для входа данные
         required: true
         content:
           application/json:
@@ -37,19 +43,19 @@ paths:
               $ref: '#/components/schemas/LoginPasswordDTO'
       responses:
         200:
-          description: OK
+          description: Зашел в систему
+        403:
+          description: Например не верные данные
         500:
-          description: ERROR
-
-  # FIXME PLEASE and write description
+          description: Проверь, что все поля указаны
 
   /habit/create_habit:
     post:
-      description: Create new habit
-      summary: TODO
+      description: Создать новую привычку
+      summary: Создать привычку
       operationId: createHabit
       requestBody:
-        description: TODO
+        description: Данные, необходимые для создания привычки
         required: true
         content:
           application/json:
@@ -57,41 +63,39 @@ paths:
               $ref: '#/components/schemas/HabitDTO'
       responses:
         200:
-          description: OK
+          description: Привычка создана
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/IdDTO'
-        500:
-          description: ERROR
+        400:
+          description: Ошибка валидации
 
   /habit/get_habit/{id}:
     get:
-      description: Get habit by id
-      summary: TODO
+      description: Получить привычку по id
+      summary: Получить привычку
       operationId: getHabit
       parameters:
         - in: path
           name: id
-          description: TODO
+          description: Идентификатор привычки
           required: true
           schema:
             type: integer
             format: int64
       responses:
         200:
-          description: TODO
+          description: Привычка найдена
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HabitDTO'
-        500:
-          description: ERROR
 
   /habit/delete_habit/{id}:
     delete:
-      description: Delete habit by id (FIXME PLEASE)
-      summary: TODO
+      description: Удалить привычку
+      summary: Удалить привычку
       operationId: deleteHabit
       parameters:
         - in: path
@@ -103,25 +107,23 @@ paths:
             format: int64
       responses:
         200:
-          description: OK
-        500:
-          description: ERROR
+          description: Привычка удалена
 
   /habit/update_habit/{id}:
     put:
-      description: Обновляет только поля, указанные в теле запроса, у привычки с заданным в запросе id. Если поля менять не надо, то их не должно быть в теле запроса
+      description: Обновить привычку
       summary: Обновление привычки
       operationId: updateHabit
       parameters:
         - in: path
           name: id
-          description: идентификатор привычки
+          description: Идентификатор привычки
           required: true
           schema:
             type: integer
             format: int64
       requestBody:
-        description: здесь передаем поля, которые хотим менять
+        description: Новые данные для привычки
         required: true
         content:
           application/json:
@@ -130,65 +132,56 @@ paths:
       responses:
         200:
           description: Привычка обновилась
-        500:
-          description: Запрос некорректный
 
-  # FIXME TOO
   /habit_list/get_habitList:
     get:
-      description: TODO
-      summary: TODO
+      description: Получить список привычек для авторизованного пользователя
+      summary: Получить список привычек
       operationId: getHabitList
       responses:
         200:
-          description: TODO
+          description: Список привычек
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HabitListDTO'
-        500:
-          description: ERROR
 
   /user/get_user/{username}:
     get:
-      description: Get user
-      summary: TODO
+      description: Найти пользователя по имени
+      summary: Найти пользователя
       operationId: getUserByUsername
       parameters:
         - in: path
           name: username
-          description: TODO
+          description: Имя пользователя
           required: true
           schema:
             type: string
       responses:
         200:
-          description: OK
+          description: Пользователь найден
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReadonlyUserDTO'
-        500:
-          description: ERROR
 
   /user/delete_user:
     delete:
-      description: Delete user
-      summary: TODO
+      description: Удалить пользователя по имени
+      summary: Удалить прользователя
       operationId: deleteUserByUsername
       responses:
         200:
-          description: OK
-        500:
-          description: ERROR
+          description: Пользователь удален
 
   /user/update_user/:
     put:
-      description: Update user
-      summary: TODO
+      description: Обновить пользователя
+      summary: Обновить пользователя
       operationId: updateUserByUsername
       requestBody:
-        description: TODO
+        description: Новые значения для текущего пользователя
         required: true
         content:
           application/json:
@@ -196,23 +189,22 @@ paths:
               $ref: '#/components/schemas/UserDTO'
       responses:
         200:
-          description: OK
-        500:
-          description: ERROR
+          description: Пользователь обновлен
 
 components:
   schemas:
-
     ErrorResponseDTO:
-      description: TODO
+      description: Описание ошибки
       type: object
       properties:
         codeError:
           type: string
+          description: Код ошибки
           x-constraints:
             - "@NotNull(message = \"Error code should not be null\")"
         message:
           type: string
+          description: Сообщение об ошибке (возможно, далее сделаем локализованным)
           x-constraints:
             - "@NotNull(message = \"Message should not be null\")"
       required:
@@ -220,56 +212,61 @@ components:
         - message
 
     HabitDTO:
-      description: TODO
+      description: Описание привычки
       type: object
       properties:
         title:
-          description: TODO
+          description: Название привычки
           type: string
           x-constraints:
             - "@NotNull(message = \"Title should not be null\")"
             - "@NotBlank"
             - "@Size(max = 50, message = \"Too long username\")"
         description:
-          description: TODO
+          description: Полное описание привычки
           type: string
           x-constraints:
             - "@NotNull(message = \"Description should not be null\")"
             - "@NotBlank"
             - "@Size(max = 150, message = \"Too long username\")"
         priority:
-          description: TODO
           $ref: '#/components/schemas/Priority'
         color:
-          description: TODO
           $ref: '#/components/schemas/Color'
         repeats:
-          description: TODO
+          description: Количество необходимых повторений привычки
           type: integer
           format: int64
           x-constraints:
             - "@Positive"
         done_dates:
-          description: TODO AND FIXME
+          description: Список дат, когда привычка была отмечена как выполненная
           type: array
           items:
             type: integer
             format: int64
           x-constraints:
             - "@NotNull(message = \"Done dates should not be null\")"
+      required:
+        - title
+        - description
+        - priority
+        - color
+        - repeats
+        - done_dates
 
     HabitListDTO:
-      description: TODO
+      description: Список привычек
       type: object
       properties:
         id:
-          description: TODO
+          description: Идентификатор списка
           type: integer
           format: int64
           x-constraints:
             - "@PositiveOrZero"
         name:
-          description: TODO
+          description: Имя списка привычек
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
@@ -279,29 +276,36 @@ components:
             - "@Size(min = 3, message = \"Too short username\")"
             - "@Size(max = 20, message = \"Too long username\")"
         habits:
+          description: Список привычек
           type: array
           items:
             $ref: '#/components/schemas/HabitDTO'
           x-constraints:
             - "@NotNull(message = \"Habits should not be null\")"
+      required:
+        - id
+        - name
+        - habits
 
     IdDTO:
-      description: хто я?
+      description: Идентификатор сущности
       type: object
       properties:
         id:
-          description: TODO
+          description: Идентификатор сущности
           type: integer
           format: int64
           x-constraints:
             - "@PositiveOrZero"
+      required:
+        - id
 
     UserDTO:
-      description: TODO
+      description: Описание пользователя
       type: object
       properties:
         username:
-          description: TODO
+          description: Имя пользователя
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
@@ -312,7 +316,7 @@ components:
             - "@Size(max = 20, message = \"Too long username\")"
             # todo: check only latin
         password:
-          description: TODO
+          description: Пароль пользователя
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This password must contains at least one character\")"
@@ -320,7 +324,7 @@ components:
             - "@NotNull(message = \"Password should not be null\")"
             - "@Size(min = 8, message = \"Too short password\")"
         habitListName:
-          description: TODO
+          description: Название списка привычек
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
@@ -329,6 +333,10 @@ components:
             - "@NotBlank"
             - "@Size(min = 3, message = \"Too short habit list name\")"
             - "@Size(max = 20, message = \"Too long habit list name\")"
+      required:
+        - username
+        - password
+        - habitListName
 
     ReadonlyUserDTO:
       description: TODO
@@ -357,7 +365,7 @@ components:
             - "@Size(max = 20, message = \"Too long habit list name\")"
 
     LoginPasswordDTO:
-      description: Объект, который хранит в себе только имя пользователя и пароль
+      description: Объект, который хранит имя пользователя и пароль
       type: object
       properties:
         username:
@@ -366,9 +374,12 @@ components:
         password:
           description: Пароль пользователя
           type: string
+      required:
+        - username
+        - password
 
     Priority:
-      description: TODO
+      description: Возможные варианты приоритета
       type: string
       enum:
         - HIGH
@@ -376,7 +387,7 @@ components:
         - LOW
 
     Color:
-      description: TODO
+      description: Возможные цвета
       type: string
       enum:
         - RED

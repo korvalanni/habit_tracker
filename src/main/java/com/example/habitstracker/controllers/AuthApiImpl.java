@@ -28,8 +28,7 @@ public class AuthApiImpl implements AuthApi
     @Override
     public ResponseEntity<Void> registration(UserDTO userDTO)
     {
-        log.info("Register " + userDTO.getUsername());
-
+        log.info("Registration " + userDTO.toInlineString());
         userService.addUser(userDTO);
         return ResponseEntity.ok().build();
     }
@@ -37,6 +36,7 @@ public class AuthApiImpl implements AuthApi
     @Override
     public ResponseEntity<Void> login(LoginPasswordDTO loginPasswordDTO)
     {
+        log.info("Login " + loginPasswordDTO.toInlineString());
         // stub for swagger
         return ResponseEntity.ok().build();
     }

@@ -1,5 +1,6 @@
 package com.example.habitstracker.configuration;
 
+import com.example.habitstracker.constants.OpenApiConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,17 +16,17 @@ public class SwaggerConfig {
     public OpenAPI productApi() {
         // open swagger: http://localhost:8080/swagger-ui/index.html#/
         return new OpenAPI()
-                .addSecurityItem(new SecurityRequirement().addList("JWT"))
+                .addSecurityItem(new SecurityRequirement().addList(OpenApiConstants.SECURITY_SCHEME_NAME))
                 .components(
                         new Components()
-                                .addSecuritySchemes("JWT",
+                                .addSecuritySchemes(OpenApiConstants.SECURITY_SCHEME_NAME,
                                         new SecurityScheme()
-                                                .name("JWT")
+                                                .name(OpenApiConstants.SECURITY_SCHEME_NAME)
                                                 .type(SecurityScheme.Type.HTTP)
-                                                .scheme("bearer")
-                                                .bearerFormat("JWT")
+                                                .scheme(OpenApiConstants.SCHEME_NAME)
+                                                .bearerFormat(OpenApiConstants.SECURITY_SCHEME_NAME)
                                 )
                 )
-                .info(new Info().title("Habit tracker"));
+                .info(new Info().title(OpenApiConstants.APP_NAME));
     }
 }
