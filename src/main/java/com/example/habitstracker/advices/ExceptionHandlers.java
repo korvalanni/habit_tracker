@@ -34,7 +34,7 @@ public class ExceptionHandlers {
                 .getFieldErrors()
                 .stream()
                 .map(error -> {
-                    int code = ErrorCodes.parse(error).ordinal();
+                    String code = ErrorCodes.parse(error).getCode();
                     String message = error.getDefaultMessage();
                     return new ErrorResponseDTO().codeError(code).message(message);
                 })
