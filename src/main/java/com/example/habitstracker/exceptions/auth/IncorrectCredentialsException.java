@@ -1,5 +1,6 @@
 package com.example.habitstracker.exceptions.auth;
 
+import com.example.habitstracker.constants.ExceptionTextConstants;
 import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.exceptions.RepresentableException;
 
@@ -8,6 +9,6 @@ import com.example.habitstracker.exceptions.RepresentableException;
  */
 public class IncorrectCredentialsException extends RepresentableException {
     public IncorrectCredentialsException() {
-        super("Incorrect login or password", ErrorCodes.INCORRECT_LOGIN_PASSWORD);
+        super(ExceptionTextConstants.INCORRECT_CREDENTIALS, ErrorCodes.INCORRECT_LOGIN_PASSWORD);
     }
 }

@@ -10,7 +10,6 @@ public class WebSecurityCustomizerConfig {
     @Bean
     public WebSecurityCustomizer webCustomizer()
     {
-        // TODO где мы вообще нашли такие эндпойнты ?
         return (web) -> web.ignoring().antMatchers(SwaggerConstants.UI_ANY, SwaggerConstants.API_DOCS);
     }
 }
