@@ -1,5 +1,6 @@
 package com.example.habitstracker.models;
 
+import com.example.habitstracker.constants.TableNameConstants;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import com.example.openapi.dto.Color;
 import com.example.openapi.dto.Priority;
 
 @Entity
-@Table(name = "habit")
+@Table(name = TableNameConstants.HABIT)
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

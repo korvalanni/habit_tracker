@@ -1,5 +1,7 @@
 package com.example.habitstracker.exceptions;
 
+import com.example.habitstracker.constants.ExceptionTextConstants;
+
 /**
  * Использовать в случае, когда не смогли найти нужный маппер
  */
@@ -9,6 +11,6 @@ public class MapperNotFound extends RepresentableException {
      * @param typeTo   Имя типа в который делаем преобразование
      */
     public MapperNotFound(String typeFrom, String typeTo) {
-        super("Mapper not found! Can't map from type " + typeFrom + " to type " + typeTo, ErrorCodes.MAPPER_NOT_FOUND);
+        super(ExceptionTextConstants.MAPPER_NOT_FOUND.formatted(typeFrom, typeTo), ErrorCodes.MAPPER_NOT_FOUND);
     }
 }

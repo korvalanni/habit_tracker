@@ -1,5 +1,6 @@
 package com.example.habitstracker.exceptions.auth;
 
+import com.example.habitstracker.constants.ExceptionTextConstants;
 import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.exceptions.RepresentableException;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +10,6 @@ import org.springframework.http.HttpHeaders;
  */
 public class EmptyAuthorizationHeaderException extends RepresentableException {
     public EmptyAuthorizationHeaderException() {
-        super("You must fill value of the " + HttpHeaders.AUTHORIZATION + " header", ErrorCodes.EMPTY_AUTHORIZATION_HEADER);
+        super(ExceptionTextConstants.EMPTY_AUTHORIZATION_HEADER, ErrorCodes.EMPTY_AUTHORIZATION_HEADER);
     }
 }

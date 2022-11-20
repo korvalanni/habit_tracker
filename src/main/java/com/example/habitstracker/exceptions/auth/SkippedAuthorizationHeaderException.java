@@ -1,5 +1,6 @@
 package com.example.habitstracker.exceptions.auth;
 
+import com.example.habitstracker.constants.ExceptionTextConstants;
 import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.exceptions.RepresentableException;
 
@@ -8,6 +9,6 @@ import com.example.habitstracker.exceptions.RepresentableException;
  */
 public class SkippedAuthorizationHeaderException extends RepresentableException {
     public SkippedAuthorizationHeaderException() {
-        super("You forgot to set Authorization header", ErrorCodes.SKIPPED_AUTHORIZATION_HEADER);
+        super(ExceptionTextConstants.SKIPPED_AUTHORIZATION_HEADER, ErrorCodes.SKIPPED_AUTHORIZATION_HEADER);
     }
 }

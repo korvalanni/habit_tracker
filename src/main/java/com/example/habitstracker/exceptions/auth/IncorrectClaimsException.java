@@ -1,5 +1,6 @@
 package com.example.habitstracker.exceptions.auth;
 
+import com.example.habitstracker.constants.ExceptionTextConstants;
 import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.exceptions.RepresentableException;
 
@@ -8,6 +9,6 @@ import com.example.habitstracker.exceptions.RepresentableException;
  */
 public class IncorrectClaimsException extends RepresentableException {
     public IncorrectClaimsException() {
-        super("Incorrect claims in jwt", ErrorCodes.INCORRECT_CLAIMS);
+        super(ExceptionTextConstants.INCORRECT_CLAIMS, ErrorCodes.INCORRECT_CLAIMS);
     }
 }

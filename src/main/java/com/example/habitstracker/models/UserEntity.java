@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.example.habitstracker.constants.TableNameConstants;
 import com.example.habitstracker.models.listeners.UserListener;
 
 import lombok.EqualsAndHashCode;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Table(name = TableNameConstants.USER)
 @EntityListeners(UserListener.class)
 @Getter
 @Setter

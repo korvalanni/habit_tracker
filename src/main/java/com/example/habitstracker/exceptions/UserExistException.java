@@ -1,7 +1,9 @@
 package com.example.habitstracker.exceptions;
 
+import com.example.habitstracker.constants.ExceptionTextConstants;
+
 public class UserExistException extends RepresentableException {
     public UserExistException(String username) {
-        super(String.format("User with username %s has already registered", username), ErrorCodes.USER_EXISTS);
+        super(ExceptionTextConstants.USER_ALREADY_EXISTS.formatted(username), ErrorCodes.USER_EXISTS);
     }
 }
