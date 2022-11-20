@@ -2,6 +2,9 @@ package com.example.habitstracker.controllers;
 
 import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.security.UserCredentials;
+import com.example.openapi.dto.ReadonlyUserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,7 @@ public class UserApiImpl implements UserApi
 {
     private final UserService userService;
     private final MapperService mapperService;
+    private final Logger log = LoggerFactory.getLogger(UserApiImpl.class);
 
     @Autowired
     public UserApiImpl(UserService userService, MapperService mapperService)
@@ -28,16 +32,20 @@ public class UserApiImpl implements UserApi
     }
 
     @Override
-    public ResponseEntity<Void> deleteUserByUsername(String username)
+    public ResponseEntity<Void> deleteUserByUsername()
     {
-        userService.deleteByUsername(username);
+        UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+
+        log.info("Delete " + userCredentials.username());
+
+        userService.deleteByUsername(userCredentials.username());
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<UserDTO> getUserByUsername(String username)
+    public ResponseEntity<ReadonlyUserDTO> getUserByUsername(String username)
     {
-        UserDTO dto = new UserDTO();
+        ReadonlyUserDTO dto = new ReadonlyUserDTO();
         mapperService.transform(userService.getByUsername(username), dto);
         return ResponseEntity.ok(dto);
     }

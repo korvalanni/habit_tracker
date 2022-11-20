@@ -39,11 +39,9 @@ public class HabitApiImpl implements HabitApi
     }
 
     @Override
-    public ResponseEntity<Void> deleteHabit(IdDTO idDTO)
+    public ResponseEntity<Void> deleteHabit(Long id)
     {
-        // FIXME Write javadoc
-        UserCredentials credentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        habitService.deleteHabit(idDTO.getId());
+        habitService.deleteHabit(id);
         return ResponseEntity.ok().build();
     }
 

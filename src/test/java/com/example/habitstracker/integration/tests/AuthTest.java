@@ -82,10 +82,13 @@ class AuthTest extends AbstractIntegrationTest {
      * Пробуем войти используя неверные данные для входа
      */
     @Test
-    void test_incorrectPassword() throws JsonProcessingException, CloneNotSupportedException {
+    void test_incorrectPassword() throws JsonProcessingException {
         authDSL.register(user);
 
-        UserEntity newUser = (UserEntity) user.clone();
+        UserEntity newUser = new UserEntity();
+        newUser.setUsername(user.getUsername());
+        newUser.setHabitList(user.getHabitList());
+        newUser.setUserId(user.getUserId());
         newUser.setPassword("X");
 
         var exception = new IncorrectCredentialsException();

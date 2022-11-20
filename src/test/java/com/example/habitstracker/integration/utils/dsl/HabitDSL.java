@@ -54,14 +54,10 @@ public class HabitDSL {
     }
 
     public void deleteHabit(Habit habit) throws JsonProcessingException {
-        var idDto = new IdDTO().id(habit.getId());
-
         // @formatter:off
         authorized()
-                .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(idDto))
             .when()
-                .delete(ApiConstants.Habit.DELETE_HABIT)
+                .delete(ApiConstants.Habit.DELETE_HABIT, habit.getId())
             .then()
                 .statusCode(200);
         // @formatter:on
