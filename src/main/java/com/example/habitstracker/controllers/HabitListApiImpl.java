@@ -1,6 +1,8 @@
 package com.example.habitstracker.controllers;
 
 import com.example.habitstracker.services.MapperService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,7 @@ public class HabitListApiImpl implements HabitListApi
     private final HabitListService habitListService;
     private final UserService userService;
     private final MapperService mapperService;
+    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
     @Autowired
     public HabitListApiImpl(HabitListService habitListService, UserService userService, MapperService mapperService)
@@ -34,6 +37,8 @@ public class HabitListApiImpl implements HabitListApi
 
     @Override
     public ResponseEntity<HabitListDTO> getHabitList() {
+        log.info("Get habit list");
+
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
         UserEntity user = userService.getById(userCredentials.id());
         var id = user.getHabitList().getId();
