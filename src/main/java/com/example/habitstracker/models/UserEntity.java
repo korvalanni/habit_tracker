@@ -1,12 +1,6 @@
 package com.example.habitstracker.models;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.example.habitstracker.models.listeners.UserListener;
 
@@ -27,7 +21,7 @@ public class UserEntity implements Cloneable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long userId;
-
+    @Column(unique = true)
     private String username;
 
     private String password;
