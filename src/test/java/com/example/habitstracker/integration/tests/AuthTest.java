@@ -68,7 +68,7 @@ class AuthTest extends AbstractIntegrationTest {
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
-            .when()
+                .when()
                 .post(ApiConstants.Auth.REGISTRATION)
                 .getBody()
                 .asString();
@@ -100,7 +100,7 @@ class AuthTest extends AbstractIntegrationTest {
         var response = given()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
-             .when()
+                .when()
                 .post(ApiConstants.Auth.LOGIN)
                 .getBody()
                 .asString();

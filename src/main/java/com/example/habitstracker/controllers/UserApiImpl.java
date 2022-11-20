@@ -2,6 +2,7 @@ package com.example.habitstracker.controllers;
 
 import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.security.UserCredentials;
+import com.example.openapi.dto.ReadonlyUserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class UserApiImpl implements UserApi
 {
     private final UserService userService;
     private final MapperService mapperService;
-    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger log = LoggerFactory.getLogger(UserApiImpl.class);
 
     @Autowired
     public UserApiImpl(UserService userService, MapperService mapperService)
@@ -31,20 +32,22 @@ public class UserApiImpl implements UserApi
     }
 
     @Override
-    public ResponseEntity<Void> deleteUserByUsername(String username)
+    public ResponseEntity<Void> deleteUserByUsername()
     {
-        log.info("Delete user with username = " + username);
+        UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
 
-        userService.deleteByUsername(username);
+        log.info("Delete user with username = " + userCredentials.username());
+
+        userService.deleteByUsername(userCredentials.username());
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<UserDTO> getUserByUsername(String username)
+    public ResponseEntity<ReadonlyUserDTO> getUserByUsername(String username)
     {
         log.info("Get user with username = " + username);
 
-        UserDTO dto = new UserDTO();
+        ReadonlyUserDTO dto = new ReadonlyUserDTO();
         mapperService.transform(userService.getByUsername(username), dto);
         return ResponseEntity.ok(dto);
     }

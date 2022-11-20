@@ -92,18 +92,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/HabitDTO'
 
-  /habit/delete_habit:
+  /habit/delete_habit/{id}:
     delete:
       description: Удалить привычку
       summary: Удалить привычку
       operationId: deleteHabit
-      requestBody:
-        description: Идентификатор привычки
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/IdDTO'
+      parameters:
+        - in: path
+          name: id
+          description: Идентификатор привычки
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Привычка удалена
@@ -163,20 +164,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDTO'
+                $ref: '#/components/schemas/ReadonlyUserDTO'
 
-  /user/delete_user/{username}:
+  /user/delete_user:
     delete:
       description: Удалить пользователя по имени
       summary: Удалить прользователя
       operationId: deleteUserByUsername
-      parameters:
-        - in: path
-          name: username
-          description: Имя пользователя
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: Пользователь удален
@@ -343,6 +337,32 @@ components:
         - username
         - password
         - habitListName
+
+    ReadonlyUserDTO:
+      description: TODO
+      type: object
+      properties:
+        username:
+          description: TODO
+          type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Username should not be null\")"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
+            # todo: check only latin
+        habitListName:
+          description: TODO
+          type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Habit list name should not be null\")"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short habit list name\")"
+            - "@Size(max = 20, message = \"Too long habit list name\")"
 
     LoginPasswordDTO:
       description: Объект, который хранит имя пользователя и пароль

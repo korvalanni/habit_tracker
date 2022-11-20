@@ -2,6 +2,7 @@ package com.example.habitstracker.integration.tests;
 
 import com.example.habitstracker.integration.utils.CleanerService;
 import com.example.habitstracker.integration.utils.dsl.AuthDSL;
+import com.example.habitstracker.integration.utils.dsl.DSLHelper;
 import com.example.habitstracker.integration.utils.dsl.HabitDSL;
 import com.example.habitstracker.integration.utils.dsl.UserDSL;
 import io.restassured.RestAssured;
@@ -33,6 +34,7 @@ public abstract class AbstractIntegrationTest {
 
     @AfterEach
     public void afterTest() {
+        DSLHelper.setToken(null);
         CleanerService.clean();
     }
 }

@@ -21,14 +21,12 @@ public class UserDSL {
 
     /**
      * Удалить пользователя
-     *
-     * @param user Пользователь, которого удаляем
      */
-    public void deleteUser(UserEntity user) {
+    public void deleteUser() {
         // @formatter:off
         authorized()
             .when()
-                .post(ApiConstants.User.DELETE_USER, user.getUsername())
+                .delete(ApiConstants.User.DELETE_USER)
             .then()
                 .statusCode(200);
         // @formatter:on

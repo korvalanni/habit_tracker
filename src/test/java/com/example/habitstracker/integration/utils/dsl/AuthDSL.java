@@ -56,7 +56,9 @@ public class AuthDSL {
                 }
             }
 
-            userDSL.deleteUser(user);
+            if (DSLHelper.getToken() != null) {
+                userDSL.deleteUser();
+            }
         });
     }
 
@@ -87,7 +89,9 @@ public class AuthDSL {
                     }
                 }
 
-                userDSL.deleteUser(user);
+                if (DSLHelper.getToken() != null) {
+                    userDSL.deleteUser();
+                }
             });
         }
 
@@ -114,6 +118,7 @@ public class AuthDSL {
             .then()
                 .statusCode(200);
         // @formatter:on
+
         DSLHelper.setToken(response.extract().header(HttpHeaders.AUTHORIZATION).split(" ")[1]);
     }
 }

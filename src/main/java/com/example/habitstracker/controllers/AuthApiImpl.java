@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthApiImpl implements AuthApi
 {
     private final UserService userService;
-    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger log = LoggerFactory.getLogger(UserApiImpl.class);
 
     @Autowired
     public AuthApiImpl(UserService userService)
