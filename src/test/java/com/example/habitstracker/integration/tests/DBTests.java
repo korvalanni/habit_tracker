@@ -3,13 +3,11 @@ package com.example.habitstracker.integration.tests;
 import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.exceptions.ErrorCodes;
 import com.example.habitstracker.exceptions.HabitNotFoundException;
-import com.example.habitstracker.exceptions.UserNotFoundException;
+import com.example.habitstracker.integration.utils.TestHabitBuilder;
 import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.UserEntity;
-import com.example.openapi.dto.Color;
 import com.example.openapi.dto.ErrorResponseDTO;
-import com.example.openapi.dto.Priority;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -39,26 +37,14 @@ public class DBTests extends AbstractIntegrationTest {
         authDSL.registerWithoutCleaner(user);
         authDSL.login(user);
 
-        Habit habit1 = new Habit();
-        habit1.setHabitList(user.getHabitList());
-        habit1.setTitle("H1");
-        habit1.setDescription("D1");
-        habit1.setColor(Color.GREEN);
-        habit1.setPriority(Priority.HIGH);
-        habit1.setDoneDates(List.of(1L));
-        habit1.setRepeats(1L);
-
-        Habit habit2 = new Habit();
-        habit2.setHabitList(user.getHabitList());
-        habit2.setTitle("H2");
-        habit2.setDescription("D2");
-        habit2.setColor(Color.GREEN);
-        habit2.setPriority(Priority.HIGH);
-        habit2.setDoneDates(List.of(1L));
-        habit2.setRepeats(1L);
-
-        habitDSL.createHabitWithoutDelete(habit1);
-        habitDSL.createHabitWithoutDelete(habit2);
+        List<Habit> habits = List.of(new TestHabitBuilder().build(), new TestHabitBuilder().build());
+        habits.forEach(habit -> {
+            try {
+                habitDSL.createHabitWithoutDelete(habit);
+            } catch (JsonProcessingException exception) {
+                Assertions.fail();
+            }
+        });
 
         userDSL.deleteUser();
 
@@ -77,7 +63,7 @@ public class DBTests extends AbstractIntegrationTest {
             Assertions.fail();
         }
 
-        List.of(habit1, habit2).forEach(habit -> {
+        habits.forEach(habit -> {
             // @formatter:off
             String jsonBody = authorized()
                     .when()
