@@ -40,11 +40,17 @@ public class HabitListService {
         return habitListOpt.get();
     }
 
-    public List<HabitList> getListsWithName(String name) {
+    public List<HabitList> getHabitList(String name) {
         Optional<List<HabitList>> habitListOpt = habitListRepository.findByName(name);
         if (habitListOpt.get().isEmpty())
             throw new HabitListNotFoundException(name);
         return habitListOpt.get();
+    }
+
+    public void updateHabitListName(Long id, String name){
+        HabitList habitList = getHabitListWithId(id);
+        habitList.setName(name);
+        habitListRepository.save(habitList);
     }
 
 }
