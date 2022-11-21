@@ -1,7 +1,7 @@
 #
 # Build stage
 #
-FROM maven:3.6.0-jdk-11-slim AS build
+FROM maven:3.8.5-openjdk-17-slim AS build
 COPY src /home/app/src
 COPY pom.xml /home/app
 RUN mvn -B package -e -X --file /home/app/pom.xml
@@ -9,7 +9,7 @@ RUN mvn -B package -e -X --file /home/app/pom.xml
 #
 # Package stage
 #
-FROM openjdk:11-jre-slim
+FROM openjdk:17-slim
 COPY --from=build /home/app/target/habitstracker-0.0.1-SNAPSHOT.jar /usr/local/lib/demo.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/demo.jar"]
