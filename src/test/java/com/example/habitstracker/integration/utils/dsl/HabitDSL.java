@@ -53,6 +53,26 @@ public class HabitDSL {
         });
     }
 
+    public void createHabitWithoutDelete(Habit habit) throws JsonProcessingException {
+        var habitDTO = new HabitDTO();
+        mapperService.transform(habit, habitDTO);
+
+        // @formatter:off
+        String result = authorized()
+                .contentType(ContentType.JSON)
+                .body(objectMapper.writeValueAsString(habitDTO))
+                .when()
+                .post(ApiConstants.Habit.CREATE_HABIT)
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+        // @formatter:on
+        IdDTO id = objectMapper.readValue(result, IdDTO.class);
+        habit.setId(id.getId());
+    }
+
     public void deleteHabit(Habit habit) throws JsonProcessingException {
         // @formatter:off
         authorized()

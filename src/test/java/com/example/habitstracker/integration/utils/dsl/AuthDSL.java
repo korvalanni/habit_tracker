@@ -62,6 +62,21 @@ public class AuthDSL {
         });
     }
 
+    public void registerWithoutCleaner(UserEntity user) throws JsonProcessingException {
+        var dto = new UserDTO();
+        mapper.transform(user, dto);
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .body(objectMapper.writeValueAsString(dto))
+                .when()
+                .post(ApiConstants.Auth.REGISTRATION)
+                .then()
+                .statusCode(200);
+        // @formatter:on
+    }
+
     /**
      * Отправить запрос на регистрацию пользователя и получить ответ
      *

@@ -21,7 +21,7 @@ public class HabitList {
     @EqualsAndHashCode.Include
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "habitList")
+    @OneToMany(mappedBy = "habitList", cascade = CascadeType.ALL)
     private List<Habit> habits;
 
     public HabitList(String name) {
