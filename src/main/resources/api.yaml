@@ -1,7 +1,7 @@
 openapi: "3.0.3"
 info:
   version: 1.0.0
-  title: Swagger habits tracker
+  title: Habit Tracker
   license:
     name: MIT
 servers:
@@ -146,25 +146,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/HabitListDTO'
 
-  /habit_list/update_habitList/{name}:
+  /habit_list/update_habitList:
     put:
       description: Обновить лист привычек для авторизованного по имени
       summary: Обновить лист привычек по имени
       operationId: updateHabitList
-      parameters:
-        - in: path
-          name: name
-          description: временно имя прокидываем
-          required: true
-          schema:
-            type: string
-#      requestBody:
-#        description: Новые данные для привычки
-#        required: true
-#        content:
-#          application/json:
-#            schema:
-#              $ref: '#/components/schemas/NameDTO'
+      requestBody:
+        description: Новые данные для привычки
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NameDTO'
       responses:
         200:
           description: Лист привычек обновился
@@ -327,22 +320,19 @@ components:
       required:
         - id
 
-#    NameDTO:
-#      description: Строка с именем объекта
-#      type: object
-#      properties:
-#        name:
-#          description: Название объекта
-#          type: string
-#          x-constraints:
-#            - "@AtLeastOneLetter(message = \"This name must contains at least one character\")"
-#            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
-#            - "@NotNull(message = \"name should not be null\")"
-#            - "@NotBlank"
-#            - "@Size(min = 3, message = \"Too short name\")"
-#            - "@Size(max = 20, message = \"Too long name\")"
-#      required:
-#        -name
+    NameDTO:
+      description: Имя сущности
+      type: object
+      properties:
+        name:
+          description: Имя сущности
+          type: string
+          x-constraints:
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
+      required:
+        - name
 
     UserDTO:
       description: Описание пользователя
