@@ -8,6 +8,7 @@ import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.services.UserService;
 import com.example.openapi.api.HabitListApi;
 import com.example.openapi.dto.HabitListDTO;
+import com.example.openapi.dto.NameDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,10 @@ public class HabitListApiImpl implements HabitListApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateHabitList(String name) {
+    public ResponseEntity<Void> updateHabitList(NameDTO nameDTO) {
+
+        var name = nameDTO.getName();
+
         log.info(String.format("update habit list name to %s", name));
 
         var id = getAuthUserHabitList().getId();
