@@ -54,15 +54,13 @@ class HabitTest extends AbstractIntegrationTest {
      * Получаем привычку по идентификатору
      */
     @Test
-    @Disabled("Некорректный тест")
     void test_getHabit() throws JsonProcessingException {
         habitDSL.createHabit(habit);
-        List<Habit> habits = habitService.getHabits();
+        var expectedHabitDTO = new HabitDTO();
+        mapperService.transform(habit, expectedHabitDTO);
 
-        Assertions.assertEquals(1, habits.size());
-
-        HabitDTO getHabit = habitDSL.getHabit(String.valueOf(habit.getId()));
-        Assertions.assertNotNull(getHabit);
+        HabitDTO acceptedHabitDTO = habitDSL.getHabit(String.valueOf(habit.getId()));
+        Assertions.assertEquals(expectedHabitDTO, acceptedHabitDTO);
     }
 
     /**
@@ -84,7 +82,6 @@ class HabitTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Disabled("Некорректный тест")
     void test_updateHabit() throws JsonProcessingException {
         habitDSL.createHabit(habit);
         String id = habit.getId().toString();
