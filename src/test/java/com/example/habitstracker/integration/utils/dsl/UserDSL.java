@@ -2,6 +2,9 @@ package com.example.habitstracker.integration.utils.dsl;
 
 import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.models.UserEntity;
+import com.example.openapi.dto.ChangePasswordDTO;
+import com.example.openapi.dto.UserDTO;
+import com.example.openapi.dto.UsernameHabitListNameDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
@@ -55,15 +58,41 @@ public class UserDSL {
      * @param username Ник пользователя
      * @param user     Новые данные
      */
-    public void updateUser(String username, UserEntity user) throws JsonProcessingException {
+    public void updateUser(UserEntity user) throws JsonProcessingException {
+        UsernameHabitListNameDTO userDTO = new UsernameHabitListNameDTO();
+        userDTO.setUsername(user.getUsername());
+        userDTO.setHabitListName(user.getHabitList().getName());
+
         // @formatter:off
        authorized()
                .contentType(ContentType.JSON)
-               .body(objectMapper.writeValueAsString(user))
+               .body(objectMapper.writeValueAsString(userDTO))
            .when()
-               .put(ApiConstants.User.UPDATE_USER, username)
+               .put(ApiConstants.User.UPDATE_USER)
            .then()
                .statusCode(200);
+        // @formatter:on
+    }
+
+    /**
+     * Обновить пароль пользователя
+     *
+     * @param username Ник пользователя
+     * @param user     Новые данные
+     */
+    public void updatePassword(String oldPassword, String newPassword) throws JsonProcessingException {
+        ChangePasswordDTO dto = new ChangePasswordDTO();
+        dto.setOldPassword(oldPassword);
+        dto.setNewPassword(newPassword);
+
+        // @formatter:off
+        authorized()
+                .contentType(ContentType.JSON)
+                .body(objectMapper.writeValueAsString(dto))
+            .when()
+                .put(ApiConstants.User.UPDATE_PASSWORD)
+            .then()
+                .statusCode(200);
         // @formatter:on
     }
 }

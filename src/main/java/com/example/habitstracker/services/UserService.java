@@ -2,8 +2,13 @@ package com.example.habitstracker.services;
 
 import java.util.Optional;
 
-import com.example.openapi.dto.HabitListDTO;
+import com.example.habitstracker.models.UserPassword;
+import com.example.habitstracker.repository.UserPasswordRepository;
+import com.example.openapi.dto.ChangePasswordDTO;
+import com.example.openapi.dto.UserWithoutPasswordDTO;
+import com.example.openapi.dto.UsernameHabitListNameDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.habitstracker.exceptions.UserExistException;
@@ -12,22 +17,22 @@ import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.openapi.dto.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class UserService {
     private final UserRepository userRepository;
+    private final UserPasswordRepository userPasswordRepository;
     private final HabitListService habitListService;
     private final MapperService mapperService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, HabitListService habitListService, MapperService mapperService) {
+    public UserService(UserRepository userRepository, UserPasswordRepository userPasswordRepository, HabitListService habitListService, MapperService mapperService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userPasswordRepository = userPasswordRepository;
         this.habitListService = habitListService;
         this.mapperService = mapperService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserEntity addUser(UserDTO userDTO) {
@@ -60,6 +65,7 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    @Deprecated
     public void updateUserByUsername(String username, UserDTO userDTO) {
         UserEntity user = getByUsername(username);
         var userDTOName = userDTO.getUsername();
@@ -76,6 +82,30 @@ public class UserService {
             user.setPassword(userDTOPassword);
 
         userRepository.save(user);
+    }
+
+    public void updateUserById(long id, UsernameHabitListNameDTO newUser) {
+        UserEntity user = getById(id);
+        user.setUsername(newUser.getUsername());
+        user.getHabitList().setName(newUser.getHabitListName());
+
+        userRepository.save(user);
+    }
+
+    public void updatePassword(long id, ChangePasswordDTO userDto) {
+        UserEntity user = getById(id);
+
+//        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+
+//        var isEquals = user.getPassword().equals(encodedPassword);
+
+        var isEquals = passwordEncoder.matches(userDto.getOldPassword(), user.getPassword());
+
+        if(isEquals) {
+            UserPassword userPassword = new UserPassword(user.getUserId(), userDto.getNewPassword());
+            userPasswordRepository.save(userPassword);
+//            userRepository.save(user);
+        }
     }
 
     public HabitList getUserHabitList(UserDTO userDTO){

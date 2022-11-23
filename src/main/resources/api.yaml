@@ -184,7 +184,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadonlyUserDTO'
+                $ref: '#/components/schemas/UserWithoutPasswordDTO'
 
   /user/delete_user:
     delete:
@@ -206,7 +206,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/UsernameHabitListNameDTO'
+      responses:
+        200:
+          description: Пользователь обновлен
+
+  /user/update_password/:
+    put:
+      description: Обновить пароль
+      summary: Обновить пароль
+      operationId: updatePassword
+      requestBody:
+        description: Новые значения для текущего пользователя
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordDTO'
       responses:
         200:
           description: Пользователь обновлен
@@ -365,7 +381,37 @@ components:
         - password
         - habitListName
 
-    ReadonlyUserDTO:
+    UsernameHabitListNameDTO:
+      description: Описание имени пользователя и названия списка привычек
+      type: object
+      properties:
+        username:
+          description: Имя пользователя
+          type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Username should not be null\")"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
+            # todo: check only latin
+        habitListName:
+          description: Название списка привычек
+          type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Habit list name should not be null\")"
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short habit list name\")"
+            - "@Size(max = 20, message = \"Too long habit list name\")"
+      required:
+        - username
+        - password
+        - habitListName
+
+    UserWithoutPasswordDTO:
       description: TODO
       type: object
       properties:
@@ -404,6 +450,20 @@ components:
       required:
         - username
         - password
+
+    ChangePasswordDTO:
+      description: Объект, который хранит старый и новый пароль
+      type: object
+      properties:
+        oldPassword:
+          description: Старый пароль
+          type: string
+        newPassword:
+          description: Новый пароль
+          type: string
+      required:
+        - oldPassword
+        - newPassword
 
     Priority:
       description: Возможные варианты приоритета

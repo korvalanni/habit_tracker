@@ -40,6 +40,7 @@ public class ApiConstants {
         private static final String base = "/user";
         public static final String GET_USER = base + "/get_user/{username}";
         public static final String DELETE_USER = base + "/delete_user";
-        public static final String UPDATE_USER = base + "/update_user";
+        public static final String UPDATE_USER = base + "/update_user/";
+        public static final String UPDATE_PASSWORD = base + "/update_password/";
     }
 }

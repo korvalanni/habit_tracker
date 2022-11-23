@@ -3,8 +3,8 @@ package com.example.habitstracker.mappers;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.LoginPasswordDTO;
-import com.example.openapi.dto.ReadonlyUserDTO;
 import com.example.openapi.dto.UserDTO;
+import com.example.openapi.dto.UserWithoutPasswordDTO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -67,16 +67,16 @@ public class UserMapper {
         }
     }
     /**
-     * Конвертирует {@link UserEntity} в {@link ReadonlyUserDTO}
+     * Конвертирует {@link UserEntity} в {@link UserWithoutPasswordDTO}
      */
     @Component
-    public static class ReadonlyUserDtoMapper extends Mapper<UserEntity, ReadonlyUserDTO> {
+    public static class ReadonlyUserDtoMapper extends Mapper<UserEntity, UserWithoutPasswordDTO> {
         public ReadonlyUserDtoMapper() {
-            super(UserEntity.class, ReadonlyUserDTO.class);
+            super(UserEntity.class, UserWithoutPasswordDTO.class);
         }
 
         @Override
-        public void map(UserEntity from, ReadonlyUserDTO to) {
+        public void map(UserEntity from, UserWithoutPasswordDTO to) {
             String username = from.getUsername();
             HabitList habitList = from.getHabitList();
 
