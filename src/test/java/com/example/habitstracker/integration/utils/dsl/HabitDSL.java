@@ -38,8 +38,8 @@ public class HabitDSL {
             .then()
                 .statusCode(200)
                 .extract()
-                .body()
                 .asString();
+
         // @formatter:on
         IdDTO id = objectMapper.readValue(result, IdDTO.class);
         habit.setId(id.getId());

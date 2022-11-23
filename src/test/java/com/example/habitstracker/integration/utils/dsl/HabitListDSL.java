@@ -28,23 +28,22 @@ public class HabitListDSL {
         authorized()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(habitDTO))
-                .when()
+            .when()
                 .put(ApiConstants.HabitList.UPDATE_HABIT_LIST)
-                .then()
+            .then()
                 .statusCode(200);
         // @formatter:on
     }
 
     public HabitListDTO getHabitList() throws JsonProcessingException{
-       //@formatter:off
+
+        //@formatter:off
        String json = authorized()
                .when()
                     .get(ApiConstants.HabitList.GET_HABIT_LIST)
-               .then()
-                    .statusCode(200)
-                    .extract()
+               //.then()
                     .body()
-                    .toString();
+                    .asString();
         // @formatter:on
 
         return objectMapper.readValue(json, HabitListDTO.class);

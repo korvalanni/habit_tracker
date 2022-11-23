@@ -1,5 +1,6 @@
 package com.example.habitstracker.integration.tests;
 
+import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.HabitList;
@@ -7,13 +8,18 @@ import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.Color;
+import com.example.openapi.dto.HabitDTO;
+import com.example.openapi.dto.HabitListDTO;
 import com.example.openapi.dto.Priority;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static com.example.habitstracker.integration.utils.dsl.DSLHelper.authorized;
 
 public class HabitListTest extends AbstractIntegrationTest {
     @Autowired
@@ -32,17 +38,23 @@ public class HabitListTest extends AbstractIntegrationTest {
 
         authDSL.register(user);
         authDSL.login(user);
+        habitDSL.createHabit(habit);
+        user.getHabitList().setHabits(List.of(habit));
+
     }
 
     @Test
     void test_getHabitList() throws JsonProcessingException{
-       var authHabitList =  new HabitList();
-       mapperService.transform(habitListDSL.getHabitList(), authHabitList);
-        System.out.println("имя пользователя");
-        System.out.println(authHabitList.getName());
-        var expectedHabitList = habitListService.getHabitListWithId(user.getHabitList().getId());
-        System.out.println(expectedHabitList.getName());
-       //System.out.println(expectedHabitList.getName());
+
+
+        var habitList = user.getHabitList();
+        var expectedHabitListDTO = new HabitListDTO();
+        mapperService.transform(habitList, expectedHabitListDTO);
+
+
+       var acceptedHabitListDTO = habitListDSL.getHabitList();
+
+       Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);
     }
 
 

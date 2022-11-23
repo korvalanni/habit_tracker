@@ -42,12 +42,12 @@ class HabitTest extends AbstractIntegrationTest {
      * Проверяем, что привычка создается
      */
     @Test
-    @Disabled("Некорректный тест")
     void test_createHabit() throws JsonProcessingException {
         habitDSL.createHabit(habit);
         List<Habit> habits = habitService.getHabits();
 
         Assertions.assertEquals(1, habits.size());
+        Assertions.assertEquals(1, habits.get(0).getId());
     }
 
     /**
