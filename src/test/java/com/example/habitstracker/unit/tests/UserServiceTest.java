@@ -2,35 +2,42 @@ package com.example.habitstracker.unit.tests;
 
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
-import com.example.habitstracker.mappers.HabitListMapper;
 import com.example.habitstracker.mappers.UserMapper;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
+import com.example.habitstracker.repository.UserPasswordRepository;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.services.UserService;
-import com.example.openapi.dto.HabitListDTO;
 import com.example.openapi.dto.UserDTO;
+import com.example.openapi.dto.UsernameHabitListNameDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
 public class UserServiceTest extends AbstractUnitTest {
     private UserService userService;
     private UserRepository userRepository;
+    private UserPasswordRepository userPasswordRepository;
     private HabitListService habitListService;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @BeforeEach
     public void initMocks() {
         userRepository = Mockito.mock(UserRepository.class);
         habitListService = Mockito.mock(HabitListService.class);
         mapperService = Mockito.mock(MapperService.class);
+        userPasswordRepository = Mockito.mock(UserPasswordRepository.class);
 
-        userService = new UserService(userRepository, habitListService, mapperService);
+        userService = new UserService(userRepository, userPasswordRepository, habitListService, mapperService, passwordEncoder);
 
         setupMapperService(UserDTO.class, UserEntity.class, new UserMapper.Deserializer());
     }
@@ -170,6 +177,25 @@ public class UserServiceTest extends AbstractUnitTest {
         UserEntity result = userService.getByUsername("a");
 
         Assertions.assertEquals("123", result.getPassword());
+    }
+
+    @Test
+    void test_updateUser() {
+        UsernameHabitListNameDTO userDTO = new UsernameHabitListNameDTO();
+        userDTO.setUsername("a");
+        userDTO.setHabitListName("Test");
+
+        UserEntity user = buildSimpleUser();
+
+        Mockito.when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+
+        userService.updateUserById(user.getUserId(), userDTO);
+
+        UserEntity result = userService.getById(user.getUserId());
+
+        Assertions.assertEquals(userDTO.getUsername(), result.getUsername());
+        Assertions.assertEquals(userDTO.getHabitListName(), result.getHabitList().getName());
+        Assertions.assertEquals(user.getPassword(), result.getPassword());
     }
 
     /**
