@@ -1,22 +1,20 @@
 package com.example.habitstracker.integration.utils;
 
-import com.example.habitstracker.Lambda;
-
 import java.util.Stack;
 
 /**
  * Сервис, который хранит в себе все задачи на удаление сущностей из базы данных
  */
 public class CleanerService {
-    private static final Stack<Lambda> stack = new Stack<>();
+    private static final Stack<Runnable> stack = new Stack<>();
 
-    public static void addTask(Lambda delete) {
+    public static void addTask(Runnable delete) {
         stack.push(delete);
     }
 
     public static void clean() {
         while (!stack.isEmpty()) {
-            stack.pop().act();
+            stack.pop().run();
         }
     }
 }
