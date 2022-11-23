@@ -31,10 +31,11 @@ public class UserService {
     }
 
     public UserEntity addUser(UserDTO userDTO) {
-        UserEntity user = new UserEntity();
-        mapperService.transform(userDTO, user);
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
             throw new UserExistException(userDTO.getUsername());
+
+        UserEntity user = new UserEntity();
+        mapperService.transform(userDTO, user);
         habitListService.addHabitList(user.getHabitList());        
         userRepository.save(user);
         return user;

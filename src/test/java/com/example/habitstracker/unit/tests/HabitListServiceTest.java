@@ -37,7 +37,6 @@ public class HabitListServiceTest extends AbstractUnitTest {
     @Test
     void test_addHabitList() {
         HabitListDTO habitListDTO = new HabitListDTO();
-        habitListDTO.setId(0L);
         habitListDTO.setName("Test");
         habitListDTO.setHabits(new ArrayList<>());
 

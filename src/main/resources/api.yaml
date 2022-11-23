@@ -279,12 +279,6 @@ components:
       description: Список привычек
       type: object
       properties:
-        id:
-          description: Идентификатор списка
-          type: integer
-          format: int64
-          x-constraints:
-            - "@PositiveOrZero"
         name:
           description: Имя списка привычек
           type: string
@@ -303,7 +297,6 @@ components:
           x-constraints:
             - "@NotNull(message = \"Habits should not be null\")"
       required:
-        - id
         - name
         - habits
 
