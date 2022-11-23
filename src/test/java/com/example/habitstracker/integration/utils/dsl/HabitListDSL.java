@@ -5,6 +5,7 @@ import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.HabitListDTO;
+import com.example.openapi.dto.NameDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
@@ -20,14 +21,14 @@ public class HabitListDSL {
     @Autowired
     private MapperService mapperService;
 
-    public void updateHabitList(HabitList habitList) throws JsonProcessingException {
-        var habitDTO = new HabitDTO();
-        mapperService.transform(habitList, habitDTO);
+    public void updateHabitList(String name) throws JsonProcessingException {
+        var nameDTO = new NameDTO();
+        nameDTO.setName(name);
 
         // @formatter:off
         authorized()
                 .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(habitDTO))
+                .body(objectMapper.writeValueAsString(nameDTO))
             .when()
                 .put(ApiConstants.HabitList.UPDATE_HABIT_LIST)
             .then()

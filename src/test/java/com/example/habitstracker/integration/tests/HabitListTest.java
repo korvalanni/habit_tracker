@@ -57,5 +57,21 @@ public class HabitListTest extends AbstractIntegrationTest {
        Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);
     }
 
+    @Test
+    void test_updateHabit() throws JsonProcessingException{
+        var habitList = user.getHabitList();
+        var newName = "new";
+        habitList.setName(newName);
+
+        var expectedHabitListDTO = new HabitListDTO();
+        mapperService.transform(habitList, expectedHabitListDTO);
+        habitListDSL.updateHabitList(newName);
+        var acceptedHabitListDTO = habitListDSL.getHabitList();
+
+        Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);
+
+
+    }
+
 
 }
