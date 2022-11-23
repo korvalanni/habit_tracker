@@ -1,14 +1,11 @@
 package com.example.habitstracker.integration.tests;
 
-import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.models.Habit;
-import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.Color;
-import com.example.openapi.dto.HabitDTO;
 import com.example.openapi.dto.HabitListDTO;
 import com.example.openapi.dto.Priority;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,8 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-
-import static com.example.habitstracker.integration.utils.dsl.DSLHelper.authorized;
 
 public class HabitListTest extends AbstractIntegrationTest {
     @Autowired
@@ -44,7 +39,7 @@ public class HabitListTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void test_getHabitList() throws JsonProcessingException{
+    void test_getHabitList() throws JsonProcessingException {
 
 
         var habitList = user.getHabitList();
@@ -52,13 +47,13 @@ public class HabitListTest extends AbstractIntegrationTest {
         mapperService.transform(habitList, expectedHabitListDTO);
 
 
-       var acceptedHabitListDTO = habitListDSL.getHabitList();
+        var acceptedHabitListDTO = habitListDSL.getHabitList();
 
-       Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);
+        Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);
     }
 
     @Test
-    void test_updateHabit() throws JsonProcessingException{
+    void test_updateHabit() throws JsonProcessingException {
         var habitList = user.getHabitList();
         var newName = "new";
         habitList.setName(newName);
@@ -69,7 +64,6 @@ public class HabitListTest extends AbstractIntegrationTest {
         var acceptedHabitListDTO = habitListDSL.getHabitList();
 
         Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);
-
 
     }
 
