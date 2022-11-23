@@ -4,6 +4,7 @@ import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.HabitDTO;
+import com.example.openapi.dto.HabitListDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
@@ -19,7 +20,7 @@ public class HabitListDSL {
     @Autowired
     private MapperService mapperService;
 
-    public void updateHabitList(String name, HabitList habitList) throws JsonProcessingException {
+    public void updateHabitList(HabitList habitList) throws JsonProcessingException {
         var habitDTO = new HabitDTO();
         mapperService.transform(habitList, habitDTO);
 
@@ -28,10 +29,25 @@ public class HabitListDSL {
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(habitDTO))
                 .when()
-                .put(ApiConstants.HabitList.UPDATE_HABIT_LIST, name)
+                .put(ApiConstants.HabitList.UPDATE_HABIT_LIST)
                 .then()
                 .statusCode(200);
         // @formatter:on
+    }
+
+    public HabitListDTO getHabitList() throws JsonProcessingException{
+       //@formatter:off
+       String json = authorized()
+               .when()
+                    .get(ApiConstants.HabitList.GET_HABIT_LIST)
+               .then()
+                    .statusCode(200)
+                    .extract()
+                    .body()
+                    .toString();
+        // @formatter:on
+
+        return objectMapper.readValue(json, HabitListDTO.class);
     }
 
 }

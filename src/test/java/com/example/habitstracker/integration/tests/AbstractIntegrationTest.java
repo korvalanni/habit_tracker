@@ -1,10 +1,7 @@
 package com.example.habitstracker.integration.tests;
 
 import com.example.habitstracker.integration.utils.CleanerService;
-import com.example.habitstracker.integration.utils.dsl.AuthDSL;
-import com.example.habitstracker.integration.utils.dsl.DSLHelper;
-import com.example.habitstracker.integration.utils.dsl.HabitDSL;
-import com.example.habitstracker.integration.utils.dsl.UserDSL;
+import com.example.habitstracker.integration.utils.dsl.*;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +20,9 @@ public abstract class AbstractIntegrationTest {
     protected HabitDSL habitDSL;
     @Autowired
     protected UserDSL userDSL;
+
+    @Autowired
+    protected HabitListDSL habitListDSL;
 
     @LocalServerPort
     private Integer port;
