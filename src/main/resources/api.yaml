@@ -184,7 +184,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadonlyUserDTO'
+                $ref: '#/components/schemas/UserWithoutPasswordDTO'
 
   /user/delete_user:
     delete:
@@ -206,7 +206,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/UserWithoutPasswordDTO'
+      responses:
+        200:
+          description: Пользователь обновлен
+
+  /user/update_password/:
+    put:
+      description: Обновить пароль
+      summary: Обновить пароль
+      operationId: updatePassword
+      requestBody:
+        description: Новые значения для текущего пользователя
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordDTO'
       responses:
         200:
           description: Пользователь обновлен
@@ -365,7 +381,7 @@ components:
         - password
         - habitListName
 
-    ReadonlyUserDTO:
+    UserWithoutPasswordDTO:
       description: TODO
       type: object
       properties:
@@ -404,6 +420,20 @@ components:
       required:
         - username
         - password
+
+    ChangePasswordDTO:
+      description: Объект, который хранит старый и новый пароль
+      type: object
+      properties:
+        oldPassword:
+          description: Старый пароль
+          type: string
+        newPassword:
+          description: Новый пароль
+          type: string
+      required:
+        - oldPassword
+        - newPassword
 
     Priority:
       description: Возможные варианты приоритета

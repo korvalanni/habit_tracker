@@ -1,18 +1,17 @@
 package com.example.habitstracker.controllers;
 
-import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.security.UserCredentials;
-import com.example.openapi.dto.ReadonlyUserDTO;
+import com.example.habitstracker.services.MapperService;
+import com.example.habitstracker.services.UserService;
+import com.example.openapi.api.UserApi;
+import com.example.openapi.dto.ChangePasswordDTO;
+import com.example.openapi.dto.UserWithoutPasswordDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.habitstracker.services.UserService;
-import com.example.openapi.api.UserApi;
-import com.example.openapi.dto.UserDTO;
 
 /**
  *
@@ -43,23 +42,38 @@ public class UserApiImpl implements UserApi
     }
 
     @Override
-    public ResponseEntity<ReadonlyUserDTO> getUserByUsername(String username)
+    public ResponseEntity<UserWithoutPasswordDTO> getUserByUsername(String username)
     {
         log.info("Get user with username = " + username);
 
-        ReadonlyUserDTO dto = new ReadonlyUserDTO();
+        UserWithoutPasswordDTO dto = new UserWithoutPasswordDTO();
         mapperService.transform(userService.getByUsername(username), dto);
         return ResponseEntity.ok(dto);
     }
 
     @Override
-    public ResponseEntity<Void> updateUserByUsername(UserDTO userDTO)
+    public ResponseEntity<Void> updateUserByUsername(UserWithoutPasswordDTO userDTO)
     {
-        log.info("Update " + userDTO.toInlineString());
-
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        String username = userCredentials.username();
-        userService.updateUserByUsername(username, userDTO);
+
+        log.info("Update user " + userCredentials.username() + " with values " + userDTO.toInlineString());
+
+        userService.updateUserById(userCredentials.id(), userDTO);
+
+//        String username = userCredentials.username();
+//        userService.updateUserByUsername(username, userDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updatePassword(ChangePasswordDTO updatePassword) {
+        UserCredentials credentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+
+        log.info("Update password " + credentials.username());
+
+        userService.updatePassword(credentials.id(), updatePassword);
+        // maybe u will use @PreUpdate
+
         return ResponseEntity.ok().build();
     }
 }
