@@ -11,12 +11,10 @@ import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.services.UserService;
 import com.example.openapi.dto.UserDTO;
-import com.example.openapi.dto.UsernameHabitListNameDTO;
+import com.example.openapi.dto.UserWithoutPasswordDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -181,7 +179,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
     @Test
     void test_updateUser() {
-        UsernameHabitListNameDTO userDTO = new UsernameHabitListNameDTO();
+        UserWithoutPasswordDTO userDTO = new UserWithoutPasswordDTO();
         userDTO.setUsername("a");
         userDTO.setHabitListName("Test");
 

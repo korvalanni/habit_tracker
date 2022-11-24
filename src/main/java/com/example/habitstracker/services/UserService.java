@@ -6,7 +6,6 @@ import com.example.habitstracker.models.UserPassword;
 import com.example.habitstracker.repository.UserPasswordRepository;
 import com.example.openapi.dto.ChangePasswordDTO;
 import com.example.openapi.dto.UserWithoutPasswordDTO;
-import com.example.openapi.dto.UsernameHabitListNameDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -84,7 +83,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateUserById(long id, UsernameHabitListNameDTO newUser) {
+    public void updateUserById(long id, UserWithoutPasswordDTO newUser) {
         UserEntity user = getById(id);
         user.setUsername(newUser.getUsername());
         user.getHabitList().setName(newUser.getHabitListName());

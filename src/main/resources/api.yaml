@@ -206,7 +206,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UsernameHabitListNameDTO'
+              $ref: '#/components/schemas/UserWithoutPasswordDTO'
       responses:
         200:
           description: Пользователь обновлен
@@ -366,36 +366,6 @@ components:
             - "@AtLeastOneDigit(message = \"This password must contains at least one digit\")"
             - "@NotNull(message = \"Password should not be null\")"
             - "@Size(min = 8, message = \"Too short password\")"
-        habitListName:
-          description: Название списка привычек
-          type: string
-          x-constraints:
-            - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
-            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
-            - "@NotNull(message = \"Habit list name should not be null\")"
-            - "@NotBlank"
-            - "@Size(min = 3, message = \"Too short habit list name\")"
-            - "@Size(max = 20, message = \"Too long habit list name\")"
-      required:
-        - username
-        - password
-        - habitListName
-
-    UsernameHabitListNameDTO:
-      description: Описание имени пользователя и названия списка привычек
-      type: object
-      properties:
-        username:
-          description: Имя пользователя
-          type: string
-          x-constraints:
-            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
-            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
-            - "@NotNull(message = \"Username should not be null\")"
-            - "@NotBlank"
-            - "@Size(min = 3, message = \"Too short username\")"
-            - "@Size(max = 20, message = \"Too long username\")"
-            # todo: check only latin
         habitListName:
           description: Название списка привычек
           type: string
