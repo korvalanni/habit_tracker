@@ -2,6 +2,7 @@ package com.example.habitstracker.services;
 
 import java.util.Optional;
 
+
 import com.example.habitstracker.models.UserPassword;
 import com.example.habitstracker.repository.UserPasswordRepository;
 import com.example.openapi.dto.ChangePasswordDTO;
@@ -34,15 +35,14 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserEntity addUser(UserDTO userDTO) {
+    public void addUser(UserDTO userDTO) {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
             throw new UserExistException(userDTO.getUsername());
 
         UserEntity user = new UserEntity();
         mapperService.transform(userDTO, user);
-        habitListService.addHabitList(user.getHabitList());        
+        habitListService.addHabitList(user.getHabitList());
         userRepository.save(user);
-        return user;
     }
 
     public UserEntity getByUsername(String username){

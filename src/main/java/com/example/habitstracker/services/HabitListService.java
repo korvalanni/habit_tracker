@@ -22,11 +22,10 @@ public class HabitListService {
         this.mapperService = mapperService;
     }
 
-    public HabitList addHabitList(HabitListDTO habitListDTO) {
+    public void addHabitList(HabitListDTO habitListDTO) {
         HabitList habitList = new HabitList();
         mapperService.transform(habitListDTO, habitList);
         habitListRepository.save(habitList);
-        return habitList;
     }
 
     public void addHabitList(HabitList habitList) {
