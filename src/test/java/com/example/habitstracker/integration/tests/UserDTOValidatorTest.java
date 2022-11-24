@@ -189,8 +189,6 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
     /**
      * Пароль должен содержать как минимум один символ
      */
-    @Disabled("Упал Assertions.assertEquals(1, errors.size()); в списке было два пунтка. А должен быть один." +
-            "https://github.com/AlibabaRazboinik/habit_tracker/issues/118")
     @Test
     void test_validationRegistration_atLeastOneSymbolPassword() throws JsonProcessingException {
         user.setPassword("234234234");
