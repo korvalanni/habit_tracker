@@ -2,7 +2,6 @@ package com.example.habitstracker.services;
 
 import java.util.Optional;
 
-import com.example.openapi.dto.HabitListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +11,6 @@ import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.openapi.dto.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class UserService {
@@ -30,15 +25,14 @@ public class UserService {
         this.mapperService = mapperService;
     }
 
-    public UserEntity addUser(UserDTO userDTO) {
+    public void addUser(UserDTO userDTO) {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
             throw new UserExistException(userDTO.getUsername());
 
         UserEntity user = new UserEntity();
         mapperService.transform(userDTO, user);
-        habitListService.addHabitList(user.getHabitList());        
+        habitListService.addHabitList(user.getHabitList());
         userRepository.save(user);
-        return user;
     }
 
     public UserEntity getByUsername(String username){
