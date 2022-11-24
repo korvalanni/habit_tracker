@@ -3,8 +3,7 @@ package com.example.habitstracker.integration.utils.dsl;
 import com.example.habitstracker.constants.ApiConstants;
 import com.example.habitstracker.models.UserEntity;
 import com.example.openapi.dto.ChangePasswordDTO;
-import com.example.openapi.dto.UserDTO;
-import com.example.openapi.dto.UsernameHabitListNameDTO;
+import com.example.openapi.dto.UserWithoutPasswordDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
@@ -59,7 +58,7 @@ public class UserDSL {
      * @param user     Новые данные
      */
     public void updateUser(UserEntity user) throws JsonProcessingException {
-        UsernameHabitListNameDTO userDTO = new UsernameHabitListNameDTO();
+        UserWithoutPasswordDTO userDTO = new UserWithoutPasswordDTO();
         userDTO.setUsername(user.getUsername());
         userDTO.setHabitListName(user.getHabitList().getName());
 

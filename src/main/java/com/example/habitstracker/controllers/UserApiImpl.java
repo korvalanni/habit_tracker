@@ -1,20 +1,17 @@
 package com.example.habitstracker.controllers;
 
-import com.example.habitstracker.services.MapperService;
 import com.example.habitstracker.security.UserCredentials;
+import com.example.habitstracker.services.MapperService;
+import com.example.habitstracker.services.UserService;
+import com.example.openapi.api.UserApi;
 import com.example.openapi.dto.ChangePasswordDTO;
 import com.example.openapi.dto.UserWithoutPasswordDTO;
-import com.example.openapi.dto.UsernameHabitListNameDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.habitstracker.services.UserService;
-import com.example.openapi.api.UserApi;
-import com.example.openapi.dto.UserDTO;
 
 /**
  *
@@ -55,7 +52,7 @@ public class UserApiImpl implements UserApi
     }
 
     @Override
-    public ResponseEntity<Void> updateUserByUsername(UsernameHabitListNameDTO userDTO)
+    public ResponseEntity<Void> updateUserByUsername(UserWithoutPasswordDTO userDTO)
     {
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
 
