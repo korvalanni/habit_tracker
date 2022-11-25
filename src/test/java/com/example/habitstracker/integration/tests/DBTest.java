@@ -7,12 +7,15 @@ import com.example.habitstracker.integration.utils.TestHabitBuilder;
 import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.models.Habit;
 import com.example.habitstracker.models.UserEntity;
+import com.example.habitstracker.repository.UserRepository;
 import com.example.openapi.dto.ErrorResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
@@ -21,6 +24,8 @@ import static com.example.habitstracker.integration.utils.dsl.DSLHelper.authoriz
 public class DBTest extends AbstractIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Проверка каскадного удаления
@@ -30,6 +35,7 @@ public class DBTest extends AbstractIntegrationTest {
      * 4) Удаляем пользователя
      * 5) Убеждаемся, что привычки были удалены
      */
+    @Disabled("Некорректно написан. Надо использовать репозитории для взаимодействия с бд")
     @Test
     void test_cascadeDeleting() throws JsonProcessingException {
         UserEntity user = new TestUserBuilder().build();
@@ -80,5 +86,25 @@ public class DBTest extends AbstractIntegrationTest {
                 Assertions.fail();
             }
         });
+    }
+
+    /**
+     * Проверка ограничения на уникальность имени
+     */
+    @Test
+    void test_uniqueUserName() {
+        UserEntity user = new TestUserBuilder().build();
+
+        userRepository.save(user);
+        try {
+            userRepository.save(user);
+            Assertions.fail();
+        } catch (DataIntegrityViolationException exception) {
+            Assertions.assertTrue(true);
+        } catch (Exception exception) {
+            Assertions.fail();
+        } finally {
+            userRepository.delete(user);
+        }
     }
 }
