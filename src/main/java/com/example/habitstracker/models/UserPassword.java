@@ -20,7 +20,6 @@ import java.util.Objects;
 public class UserPassword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long userId;
     private String password;
     // todo: inherit userEntity from userPassword

@@ -1,27 +1,25 @@
 package com.example.habitstracker.models;
 
 import com.example.habitstracker.constants.TableNameConstants;
-import lombok.EqualsAndHashCode;
+import com.example.openapi.dto.Color;
+import com.example.openapi.dto.Priority;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
-
-import com.example.openapi.dto.Color;
-import com.example.openapi.dto.Priority;
+import java.util.Objects;
 
 @Entity
 @Table(name = TableNameConstants.HABIT)
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class Habit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
     private String title;
     private String description;
@@ -42,4 +40,16 @@ public class Habit {
         this.doneDates = doneDates;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Habit habit = (Habit) o;
+        return id != null && Objects.equals(id, habit.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
