@@ -2,7 +2,7 @@ package com.example.habitstracker.unit.tests;
 
 import com.example.habitstracker.exceptions.UserExistException;
 import com.example.habitstracker.exceptions.UserNotFoundException;
-import com.example.habitstracker.mappers.UserMapper;
+import com.example.habitstracker.mappers.UserDeserializer;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.repository.UserPasswordRepository;
@@ -37,7 +37,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
         userService = new UserService(userRepository, userPasswordRepository, habitListService, mapperService, passwordEncoder);
 
-        setupMapperService(UserDTO.class, UserEntity.class, new UserMapper.Deserializer());
+        setupMapperService(UserDTO.class, UserEntity.class, new UserDeserializer());
     }
 
     private UserDTO buildSimpleUserDTO() {
