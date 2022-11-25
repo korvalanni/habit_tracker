@@ -22,7 +22,7 @@ public class UserEntity implements Cloneable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long userId;
-
+    @Column(unique = true)
     private String username;
 
     private String password;
