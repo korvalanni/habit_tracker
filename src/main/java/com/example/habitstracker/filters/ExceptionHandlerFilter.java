@@ -1,7 +1,6 @@
 package com.example.habitstracker.filters;
 
 import com.example.habitstracker.exceptions.RepresentableException;
-import com.example.habitstracker.exceptions.RepresentableExceptionMapper;
 import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.ErrorResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
