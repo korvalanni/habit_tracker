@@ -18,7 +18,7 @@ import java.util.List;
 
 import static com.example.habitstracker.integration.utils.dsl.DSLHelper.authorized;
 
-public class DBTests extends AbstractIntegrationTest {
+public class DBTest extends AbstractIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 

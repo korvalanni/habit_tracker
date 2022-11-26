@@ -30,6 +30,7 @@ public class ApiConstants {
     public static class HabitList {
         private static final String base = "/habit_list";
         public static final String GET_HABIT_LIST = base + "/get_habitList";
+        public static final String UPDATE_HABIT_LIST = base + "/update_habitList";
     }
 
     /**
@@ -39,6 +40,7 @@ public class ApiConstants {
         private static final String base = "/user";
         public static final String GET_USER = base + "/get_user/{username}";
         public static final String DELETE_USER = base + "/delete_user";
-        public static final String UPDATE_USER = base + "/update_user";
+        public static final String UPDATE_USER = base + "/update_user/";
+        public static final String UPDATE_PASSWORD = base + "/update_password/";
     }
 }

@@ -25,7 +25,7 @@ public class HabitDSL {
     @Autowired
     private MapperService mapperService;
 
-    public void createHabit(Habit habit) throws JsonProcessingException {
+    public IdDTO createHabit(Habit habit) throws JsonProcessingException {
         var habitDTO = new HabitDTO();
         mapperService.transform(habit, habitDTO);
 
@@ -38,8 +38,8 @@ public class HabitDSL {
             .then()
                 .statusCode(200)
                 .extract()
-                .body()
                 .asString();
+
         // @formatter:on
         IdDTO id = objectMapper.readValue(result, IdDTO.class);
         habit.setId(id.getId());
@@ -51,6 +51,8 @@ public class HabitDSL {
                 Assertions.fail();
             }
         });
+
+        return id;
     }
 
     public void createHabitWithoutDelete(Habit habit) throws JsonProcessingException {

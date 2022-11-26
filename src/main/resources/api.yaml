@@ -1,7 +1,7 @@
 openapi: "3.0.3"
 info:
   version: 1.0.0
-  title: Swagger habits tracker
+  title: Habit Tracker
   license:
     name: MIT
 servers:
@@ -135,16 +135,36 @@ paths:
 
   /habit_list/get_habitList:
     get:
-      description: Получить список привычек для авторизованного пользователя
-      summary: Получить список привычек
+      description: Получить лист привычек для авторизованного пользователя
+      summary: Получить лист привычек
       operationId: getHabitList
       responses:
         200:
-          description: Список привычек
+          description: Лист привычек
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HabitListDTO'
+
+  /habit_list/update_habitList:
+    put:
+      description: Обновить лист привычек для авторизованного по имени
+      summary: Обновить лист привычек по имени
+      operationId: updateHabitList
+      requestBody:
+        description: Новые данные для привычки
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NameDTO'
+      responses:
+        200:
+          description: Лист привычек обновился
+        403:
+          description: Залогиненный пользователь был удален или никто не залогинился
+        500:
+          description: Проверь, что имя указано
 
   /user/get_user/{username}:
     get:
@@ -164,7 +184,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadonlyUserDTO'
+                $ref: '#/components/schemas/UserWithoutPasswordDTO'
 
   /user/delete_user:
     delete:
@@ -186,7 +206,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/UserWithoutPasswordDTO'
+      responses:
+        200:
+          description: Пользователь обновлен
+
+  /user/update_password/:
+    put:
+      description: Обновить пароль
+      summary: Обновить пароль
+      operationId: updatePassword
+      requestBody:
+        description: Новые значения для текущего пользователя
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordDTO'
       responses:
         200:
           description: Пользователь обновлен
@@ -259,12 +295,6 @@ components:
       description: Список привычек
       type: object
       properties:
-        id:
-          description: Идентификатор списка
-          type: integer
-          format: int64
-          x-constraints:
-            - "@PositiveOrZero"
         name:
           description: Имя списка привычек
           type: string
@@ -283,7 +313,6 @@ components:
           x-constraints:
             - "@NotNull(message = \"Habits should not be null\")"
       required:
-        - id
         - name
         - habits
 
@@ -299,6 +328,20 @@ components:
             - "@PositiveOrZero"
       required:
         - id
+
+    NameDTO:
+      description: Имя сущности
+      type: object
+      properties:
+        name:
+          description: Имя сущности
+          type: string
+          x-constraints:
+            - "@NotBlank"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
+      required:
+        - name
 
     UserDTO:
       description: Описание пользователя
@@ -338,7 +381,7 @@ components:
         - password
         - habitListName
 
-    ReadonlyUserDTO:
+    UserWithoutPasswordDTO:
       description: TODO
       type: object
       properties:
@@ -377,6 +420,20 @@ components:
       required:
         - username
         - password
+
+    ChangePasswordDTO:
+      description: Объект, который хранит старый и новый пароль
+      type: object
+      properties:
+        oldPassword:
+          description: Старый пароль
+          type: string
+        newPassword:
+          description: Новый пароль
+          type: string
+      required:
+        - oldPassword
+        - newPassword
 
     Priority:
       description: Возможные варианты приоритета

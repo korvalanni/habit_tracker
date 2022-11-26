@@ -41,7 +41,6 @@ public class HabitListMapper {
                     })
                     .toList();
 
-            to.setId(id);
             to.setName(name);
             to.setHabits(habits);
         }
@@ -61,7 +60,6 @@ public class HabitListMapper {
 
         @Override
         public void map(HabitListDTO from, HabitList to) {
-            Long id = from.getId();
             String name = from.getName();
 
             List<Habit> habits = from
@@ -74,7 +72,6 @@ public class HabitListMapper {
                     })
                     .toList();
 
-            to.setId(id);
             to.setName(name);
             to.setHabits(habits);
         }

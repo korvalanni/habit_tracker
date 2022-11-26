@@ -42,37 +42,34 @@ class HabitTest extends AbstractIntegrationTest {
      * Проверяем, что привычка создается
      */
     @Test
-    @Disabled("Некорректный тест")
     void test_createHabit() throws JsonProcessingException {
-        habitDSL.createHabit(habit);
+        var idDTO = habitDSL.createHabit(habit);
+
         List<Habit> habits = habitService.getHabits();
 
         Assertions.assertEquals(1, habits.size());
+        Assertions.assertEquals(idDTO.getId(), habits.get(0).getId());
     }
 
     /**
      * Получаем привычку по идентификатору
      */
     @Test
-    @Disabled("Некорректный тест")
     void test_getHabit() throws JsonProcessingException {
         habitDSL.createHabit(habit);
-        List<Habit> habits = habitService.getHabits();
+        var expectedHabitDTO = new HabitDTO();
+        mapperService.transform(habit, expectedHabitDTO);
 
-        Assertions.assertEquals(1, habits.size());
-
-        HabitDTO getHabit = habitDSL.getHabit(String.valueOf(habit.getId()));
-        Assertions.assertNotNull(getHabit);
+        HabitDTO acceptedHabitDTO = habitDSL.getHabit(String.valueOf(habit.getId()));
+        Assertions.assertEquals(expectedHabitDTO, acceptedHabitDTO);
     }
 
     /**
      * Получаем привычку по идентификатору
      */
     @Test
-    @Disabled("Почини. Падает потому что при создании привычки добавляем задачу на ее удаление. Потом удаляем " +
-            "привычку, а задание остается.")
     void test_deleteHabit() throws JsonProcessingException {
-        habitDSL.createHabit(habit);
+        habitDSL.createHabitWithoutDelete(habit);
         List<Habit> habits = habitService.getHabits();
 
         Assertions.assertEquals(1, habits.size());
@@ -84,28 +81,23 @@ class HabitTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Disabled("Некорректный тест")
     void test_updateHabit() throws JsonProcessingException {
-        habitDSL.createHabit(habit);
-        String id = habit.getId().toString();
 
-        Habit updatedHabit = new Habit();
-        updatedHabit.setTitle("Test1");
-        updatedHabit.setDescription("Description new");
-        updatedHabit.setPriority(Priority.MIDDLE);
-        updatedHabit.setDoneDates(List.of(1L, 2L));
+        var idDTO = habitDSL.createHabit(habit);
+        var id = idDTO.getId().toString();
 
-        habitDSL.updateHabit(id, updatedHabit);
-        Habit expectedHabit = new Habit("Test1", "Description new",
-                Priority.MIDDLE, Color.GREEN, 1L, List.of(1L, 2L));
-        Habit gotHabit = new Habit();
-        mapperService.transform(habitDSL.getHabit(id), gotHabit);
+        habit.setTitle("Test1");
+        habit.setDescription("Description new");
+        habit.setPriority(Priority.MIDDLE);
+        habit.setDoneDates(List.of(1L, 2L));
 
-        Assertions.assertEquals(expectedHabit.getTitle(), gotHabit.getTitle());
-        Assertions.assertEquals(expectedHabit.getDescription(), gotHabit.getDescription());
-        Assertions.assertEquals(expectedHabit.getPriority(), gotHabit.getPriority());
-        Assertions.assertEquals(expectedHabit.getColor(), gotHabit.getColor());
-        Assertions.assertEquals(expectedHabit.getRepeats(), gotHabit.getRepeats());
-        Assertions.assertEquals(expectedHabit.getDoneDates(), gotHabit.getDoneDates());
+        habitDSL.updateHabit(id, habit);
+
+        var expectedHabitDTO = new HabitDTO();
+        mapperService.transform(habit, expectedHabitDTO);
+
+        var acceptedHabitDTO = habitDSL.getHabit(id);
+
+        Assertions.assertEquals(expectedHabitDTO, acceptedHabitDTO);
     }
 }

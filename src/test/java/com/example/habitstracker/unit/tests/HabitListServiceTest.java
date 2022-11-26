@@ -9,6 +9,7 @@ import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.HabitListDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -36,7 +37,6 @@ public class HabitListServiceTest extends AbstractUnitTest {
     @Test
     void test_addHabitList() {
         HabitListDTO habitListDTO = new HabitListDTO();
-        habitListDTO.setId(0L);
         habitListDTO.setName("Test");
         habitListDTO.setHabits(new ArrayList<>());
 
@@ -77,6 +77,8 @@ public class HabitListServiceTest extends AbstractUnitTest {
     /**
      * Получение списка привычек по имени
      */
+
+
     @Test
     void test_getHabitListWithName() {
         HabitList habitList = new HabitList();
@@ -86,7 +88,7 @@ public class HabitListServiceTest extends AbstractUnitTest {
 
         Mockito.when(habitListRepository.findByName("Test")).thenReturn(Optional.of(List.of(habitList)));
 
-        List<HabitList> getHabitList = habitListService.getListsWithName("Test");
+        List<HabitList> getHabitList = habitListService.getHabitList("Test");
 
         Assertions.assertTrue(getHabitList.contains(habitList));
     }
@@ -94,10 +96,11 @@ public class HabitListServiceTest extends AbstractUnitTest {
     /**
      * Получение списка привычек по несуществующему имени
      */
+
     @Test
     void test_getHabitListWithNotExistingName() {
         Mockito.when(habitListRepository.findByName("Test")).thenReturn(Optional.of(List.of()));
 
-        Assertions.assertThrows(HabitListNotFoundException.class, () -> habitListService.getListsWithName("Test"));
+        Assertions.assertThrows(HabitListNotFoundException.class, () -> habitListService.getHabitList("Test"));
     }
 }

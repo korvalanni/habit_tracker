@@ -22,11 +22,10 @@ public class HabitListService {
         this.mapperService = mapperService;
     }
 
-    public HabitList addHabitList(HabitListDTO habitListDTO) {
+    public void addHabitList(HabitListDTO habitListDTO) {
         HabitList habitList = new HabitList();
         mapperService.transform(habitListDTO, habitList);
         habitListRepository.save(habitList);
-        return habitList;
     }
 
     public void addHabitList(HabitList habitList) {
@@ -40,11 +39,17 @@ public class HabitListService {
         return habitListOpt.get();
     }
 
-    public List<HabitList> getListsWithName(String name) {
+    public List<HabitList> getHabitList(String name) {
         Optional<List<HabitList>> habitListOpt = habitListRepository.findByName(name);
         if (habitListOpt.get().isEmpty())
             throw new HabitListNotFoundException(name);
         return habitListOpt.get();
+    }
+
+    public void updateHabitListName(Long id, String name){
+        HabitList habitList = getHabitListWithId(id);
+        habitList.setName(name);
+        habitListRepository.save(habitList);
     }
 
 }

@@ -23,12 +23,11 @@ public class HabitService {
         this.userService = userService;
     }
 
-    public Habit addHabit(UserCredentials credentials, Habit habit) {
+    public void addHabit(UserCredentials credentials, Habit habit) {
         UserEntity user = userService.getById(credentials.id());
         HabitList habitList = user.getHabitList();
         habit.setHabitList(habitList);
         habitRepository.save(habit);
-        return habit;
     }
 
     public Habit getHabit(long id) {
