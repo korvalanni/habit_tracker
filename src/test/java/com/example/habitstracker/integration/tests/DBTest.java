@@ -6,7 +6,10 @@ import com.example.habitstracker.exceptions.HabitNotFoundException;
 import com.example.habitstracker.integration.utils.TestHabitBuilder;
 import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.models.Habit;
+import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
+import com.example.habitstracker.repository.HabitListRepository;
+import com.example.habitstracker.repository.HabitRepository;
 import com.example.habitstracker.repository.UserRepository;
 import com.example.openapi.dto.ErrorResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.habitstracker.integration.utils.dsl.DSLHelper.authorized;
 
@@ -26,65 +30,43 @@ public class DBTest extends AbstractIntegrationTest {
     private ObjectMapper objectMapper;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HabitListRepository habitListRepository;
+    @Autowired
+    private HabitRepository habitRepository;
 
     /**
      * Проверка каскадного удаления
-     * 1) Регистрируемся
-     * 2) Логинимся
-     * 3) Создаем две привычки
+     * 1) Генерируем пользователя
+     * 2) Сохраняем HabitList и самого пользователя
+     * 3) Создаем и сохраняем две привычки
      * 4) Удаляем пользователя
-     * 5) Убеждаемся, что привычки были удалены
+     * 5) Убеждаемся, что пользователь, список и привычки удалились
      */
-    @Disabled("Некорректно написан. Надо использовать репозитории для взаимодействия с бд")
     @Test
-    void test_cascadeDeleting() throws JsonProcessingException {
+    void test_cascadeDeleting() {
         UserEntity user = new TestUserBuilder().build();
 
-        authDSL.registerWithoutCleaner(user);
-        authDSL.login(user);
+        habitListRepository.save(user.getHabitList());
+        user = userRepository.save(user);
 
-        List<Habit> habits = List.of(new TestHabitBuilder().build(), new TestHabitBuilder().build());
-        habits.forEach(habit -> {
-            try {
-                habitDSL.createHabitWithoutDelete(habit);
-            } catch (JsonProcessingException exception) {
-                Assertions.fail();
-            }
-        });
+        List<Habit> habits = List.of(
+                new TestHabitBuilder().setHabitList(user.getHabitList()).build(),
+                new TestHabitBuilder().setHabitList(user.getHabitList()).build());
+        user.getHabitList().setHabits(habits);
+        habits.forEach(item -> habitRepository.save(item));
 
-        userDSL.deleteUser();
+        userRepository.deleteById(user.getUserId());
 
-        // @formatter:off
-        String json = authorized()
-                .when()
-                .get(ApiConstants.HabitList.GET_HABIT_LIST)
-                .body()
-                .asString();
-        // @formatter:on
+        Optional<UserEntity> userEntity = userRepository.findById(user.getUserId());
+        Assertions.assertTrue(userEntity.isEmpty());
 
-        try {
-            var response = objectMapper.readValue(json, ErrorResponseDTO.class);
-            Assertions.assertEquals(response.getCodeError(), ErrorCodes.USER_NOT_FOUND.getCode());
-        } catch (JsonProcessingException exception) {
-            Assertions.fail();
-        }
+        Optional<HabitList> habitList = habitListRepository.findById(user.getHabitList().getId());
+        Assertions.assertTrue(habitList.isEmpty());
 
         habits.forEach(habit -> {
-            // @formatter:off
-            String jsonBody = authorized()
-                    .when()
-                    .get(ApiConstants.Habit.GET_HABIT, habit.getId())
-                    .body()
-                    .asString();
-            // @formatter:on
-
-            try {
-                var response = objectMapper.readValue(jsonBody, ErrorResponseDTO.class);
-                Assertions.assertEquals(response.getCodeError(), ErrorCodes.HABIT_NOT_FOUND.getCode());
-                Assertions.assertEquals(response.getMessage(), new HabitNotFoundException(habit.getId()).getMessage());
-            } catch (JsonProcessingException exception) {
-                Assertions.fail();
-            }
+            Optional<Habit> habit1 = habitRepository.findById(habit.getId());
+            Assertions.assertTrue(habit1.isEmpty());
         });
     }
 
