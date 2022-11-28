@@ -88,7 +88,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
         var result = authDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("не должно быть пустым")
+                .message("Username should not be blank")
                 .codeError(ErrorCodes.NOT_BLANK.getCode());
 
         var errors = objectMapper.readValue(result, listType);
@@ -106,8 +106,8 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
         var result = authDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("не должно быть пустым")
-                .codeError(ErrorCodes.NOT_BLANK.getCode());
+                .message("Username should not be null")
+                .codeError(ErrorCodes.NOT_NULL.getCode());
 
         var errors = objectMapper.readValue(result, listType);
 
@@ -124,7 +124,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
         var result = authDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("Field can contains only letters, digits or underscore")
+                .message("Username can contains only letters, digits or underscore")
                 .codeError(ErrorCodes.ONLY_LETTERS_DIGITS_UNDERSCORE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
@@ -253,7 +253,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
         var result = authDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("не должно быть пустым")
+                .message("Habit list name should not be blank")
                 .codeError(ErrorCodes.NOT_BLANK.getCode());
 
         var errors = objectMapper.readValue(result, listType);
@@ -271,7 +271,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
         var result = authDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("не должно быть пустым")
+                .message("Habit list name should not be blank")
                 .codeError(ErrorCodes.NOT_BLANK.getCode());
 
         var errors = objectMapper.readValue(result, listType);
@@ -289,7 +289,7 @@ class UserDTOValidatorTest extends AbstractIntegrationTest {
         var result = authDSL.sendRegistrationRequest(user);
 
         var expected = new ErrorResponseDTO()
-                .message("Field can contains only letters, digits or underscore")
+                .message("Habit list name can contains only letters, digits or underscore")
                 .codeError(ErrorCodes.ONLY_LETTERS_DIGITS_UNDERSCORE.getCode());
 
         var errors = objectMapper.readValue(result, listType);
