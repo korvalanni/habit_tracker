@@ -22,6 +22,7 @@ public enum ErrorCodes {
     INCORRECT_JWT("INCORRECT_JWT"),
     SKIPPED_AUTHORIZATION_HEADER("SKIPPED_AUTHORIZATION_HEADER"),
     INCORRECT_LOGIN_PASSWORD("INCORRECT_LOGIN_PASSWORD"),
+    HABIT_PERMISSION_EXCEPTION("HABIT_PERMISSION_EXCEPTION"),
     AT_LEAST_ONE_LETTER("AT_LEAST_ONE_LETTER"),
     AT_LEAST_ONE_DIGIT("AT_LEAST_ONE_DIGIT"),
     ONLY_LETTERS_DIGITS_UNDERSCORE("ONLY_LETTERS_DIGITS_UNDERSCORE"),
@@ -30,6 +31,7 @@ public enum ErrorCodes {
     INCORRECT_SIZE("INCORRECT_SIZE"),
     UNKNOWN_EXCEPTION("UNKNOWN_EXCEPTION"),
     MAPPER_NOT_FOUND("MAPPER_NOT_FOUND");
+
 
     private final String code;
 
@@ -43,25 +45,26 @@ public enum ErrorCodes {
 
     /**
      * Получить по названию ошибки валидации ее код
+     *
      * @param exception Информация о поле в dto и ошибке
      */
     public static ErrorCodes parse(FieldError exception) {
-        if(Objects.equals(exception.getCode(), AtLeastOneLetter.class.getSimpleName())) {
+        if (Objects.equals(exception.getCode(), AtLeastOneLetter.class.getSimpleName())) {
             return AT_LEAST_ONE_LETTER;
         }
-        if(Objects.equals(exception.getCode(), AtLeastOneDigit.class.getSimpleName())) {
+        if (Objects.equals(exception.getCode(), AtLeastOneDigit.class.getSimpleName())) {
             return AT_LEAST_ONE_DIGIT;
         }
-        if(Objects.equals(exception.getCode(), OnlyLettersDigitsUnderscore.class.getSimpleName())) {
+        if (Objects.equals(exception.getCode(), OnlyLettersDigitsUnderscore.class.getSimpleName())) {
             return ONLY_LETTERS_DIGITS_UNDERSCORE;
         }
-        if(Objects.equals(exception.getCode(), NotNull.class.getSimpleName())) {
+        if (Objects.equals(exception.getCode(), NotNull.class.getSimpleName())) {
             return NOT_NULL;
         }
-        if(Objects.equals(exception.getCode(), NotBlank.class.getSimpleName())) {
+        if (Objects.equals(exception.getCode(), NotBlank.class.getSimpleName())) {
             return NOT_BLANK;
         }
-        if(Objects.equals(exception.getCode(), Size.class.getSimpleName())) {
+        if (Objects.equals(exception.getCode(), Size.class.getSimpleName())) {
             return INCORRECT_SIZE;
         }
         return UNKNOWN_EXCEPTION;
