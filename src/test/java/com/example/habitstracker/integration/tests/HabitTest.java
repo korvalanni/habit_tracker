@@ -36,11 +36,11 @@ class HabitTest extends AbstractIntegrationTest {
         super.setup();
 
         oldUser = new TestUserBuilder().build();
+        authDSL.register(oldUser);
+        authDSL.login(oldUser);
         oldHabit = new Habit("Test0", "Description", Priority.HIGH, Color.GREEN,
                 1L, List.of(1L, 2L));
 
-        authDSL.register(oldUser);
-        authDSL.login(oldUser);
     }
 
     Long registrationAnother() throws JsonProcessingException{
@@ -83,7 +83,6 @@ class HabitTest extends AbstractIntegrationTest {
     /**
      * Получаем привычку по идентификатору
      */
-    @Disabled("Привычка не удаляется, почему непонятно")
     @Test
     void test_deleteHabit() throws JsonProcessingException {
         habitDSL.createHabitWithoutDelete(oldHabit);

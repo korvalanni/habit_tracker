@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Контроллер для привычки
@@ -57,8 +58,9 @@ public class HabitApiImpl implements HabitApi
     {
         log.info("Delete habit " + id);
 
-        if(isUserHabit(id) == false)
+        if(isNotUserHabit(id))
             throw new HabitPermissionException(id);
+
 
         habitService.deleteHabit(id);
         return ResponseEntity.ok().build();
@@ -69,7 +71,7 @@ public class HabitApiImpl implements HabitApi
     {
         log.info("Get habit with id = " + id);
 
-        if(isUserHabit(id) == false)
+        if(isNotUserHabit(id))
             throw new HabitPermissionException(id);
 
         HabitDTO habitDTO = new HabitDTO();
@@ -81,7 +83,7 @@ public class HabitApiImpl implements HabitApi
     public ResponseEntity<Void> updateHabit(Long id, HabitDTO habitDTO)
     {
         log.info("Update habit with id = " + id + " new values " + habitDTO.toInlineString());
-        if(isUserHabit(id) == false)
+        if(isNotUserHabit(id))
             throw new HabitPermissionException(id);
 
         Habit habit = new Habit();
@@ -90,14 +92,13 @@ public class HabitApiImpl implements HabitApi
         return ResponseEntity.ok().build();
     }
 
-    private boolean isUserHabit(Long id){
+    private boolean isNotUserHabit(Long id){
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext()
                 .getAuthentication().getCredentials();
         UserEntity user = userService.getById(userCredentials.id());
-        List<Habit> habits = user.getHabitList().getHabits();
-        for(var i = 0; i < habits.size(); i++)
-            if (habits.get(i).getId().equals(id))
-                return true;
-        return false;
+        var habitListRegisteredId = user.getHabitList().getId();
+        var habitHabitListId = habitService.getHabit(id).getHabitList().getId();
+
+        return !habitHabitListId.equals(habitListRegisteredId);
     }
 }
