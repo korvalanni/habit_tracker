@@ -36,29 +36,23 @@ class HabitTest extends AbstractIntegrationTest {
         super.setup();
 
         oldUser = new TestUserBuilder().build();
-        authDSL.register(oldUser);
-        authDSL.login(oldUser);
-        oldHabit = new Habit("Test0", "Description", Priority.HIGH, Color.GREEN,
-                1L, List.of(1L, 2L));
-
-    }
-
-    Long registrationAnother() throws JsonProcessingException{
         newUser = new TestUserBuilder().build();
         newHabit = new Habit("Test1", "Description1", Priority.MIDDLE, Color.YELLOW,
                 5L, List.of(5L, 2L));
-
+        oldHabit = new Habit("Test0", "Description", Priority.HIGH, Color.GREEN,
+                1L, List.of(1L, 2L));
+        authDSL.register(oldUser);
         authDSL.register(newUser);
-        authDSL.login(newUser);
-        var idDTO = habitDSL.createHabit(newHabit);
-        return idDTO.getId();
+
     }
+
 
     /**
      * Проверяем, что привычка создается
      */
     @Test
     void test_createHabit() throws JsonProcessingException {
+        authDSL.login(oldUser);
         var idDTO = habitDSL.createHabit(oldHabit);
 
         List<Habit> habits = habitService.getHabits();
@@ -72,6 +66,7 @@ class HabitTest extends AbstractIntegrationTest {
      */
     @Test
     void test_getHabit() throws JsonProcessingException {
+        authDSL.login(oldUser);
         habitDSL.createHabit(oldHabit);
         var expectedHabitDTO = new HabitDTO();
         mapperService.transform(oldHabit, expectedHabitDTO);
@@ -85,6 +80,7 @@ class HabitTest extends AbstractIntegrationTest {
      */
     @Test
     void test_deleteHabit() throws JsonProcessingException {
+        authDSL.login(oldUser);
         habitDSL.createHabitWithoutDelete(oldHabit);
         List<Habit> habits = habitService.getHabits();
 
@@ -98,7 +94,7 @@ class HabitTest extends AbstractIntegrationTest {
 
     @Test
     void test_updateHabit() throws JsonProcessingException {
-
+        authDSL.login(oldUser);
         var idDTO = habitDSL.createHabit(oldHabit);
         var id = idDTO.getId().toString();
 
@@ -122,7 +118,11 @@ class HabitTest extends AbstractIntegrationTest {
      */
     @Test
     void test_get_unauthorised_user_habit() throws JsonProcessingException {
-            var id  = registrationAnother();
+            authDSL.login(oldUser);
+            habitDSL.createHabit(oldHabit);
+            authDSL.login(newUser);
+            var idDTO = habitDSL.createHabit(newHabit);
+
 
 
     }
