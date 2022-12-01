@@ -33,9 +33,9 @@ public class HabitDSL {
         String result = authorized()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(habitDTO))
-            .when()
+                .when()
                 .post(ApiConstants.Habit.CREATE_HABIT)
-            .then()
+                .then()
                 .statusCode(200)
                 .extract()
                 .asString();
@@ -44,8 +44,11 @@ public class HabitDSL {
         IdDTO id = objectMapper.readValue(result, IdDTO.class);
         habit.setId(id.getId());
 
+        String currentUser = DSLHelper.getSelectedUsername();
+
         CleanerService.addTask(() -> {
             try {
+                DSLHelper.selectUsername(currentUser);
                 deleteHabit(habit);
             } catch (JsonProcessingException e) {
                 Assertions.fail();
