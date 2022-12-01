@@ -48,6 +48,7 @@ public class AuthDSL {
         // @formatter:on
 
         CleanerService.addTask(() -> {
+            DSLHelper.selectUsername(user.getUsername());
             if (DSLHelper.getToken() == null) {
                 try {
                     login(user);
