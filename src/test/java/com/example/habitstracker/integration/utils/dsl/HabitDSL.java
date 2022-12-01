@@ -55,7 +55,7 @@ public class HabitDSL {
         return id;
     }
 
-    public void createHabitWithoutDelete(Habit habit) throws JsonProcessingException {
+    public IdDTO createHabitWithoutDelete(Habit habit) throws JsonProcessingException {
         var habitDTO = new HabitDTO();
         mapperService.transform(habit, habitDTO);
 
@@ -73,6 +73,8 @@ public class HabitDSL {
         // @formatter:on
         IdDTO id = objectMapper.readValue(result, IdDTO.class);
         habit.setId(id.getId());
+
+        return id;
     }
 
     public void deleteHabit(Habit habit) throws JsonProcessingException {
