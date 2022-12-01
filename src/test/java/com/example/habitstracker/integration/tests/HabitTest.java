@@ -121,9 +121,7 @@ class HabitTest extends AbstractIntegrationTest {
             authDSL.login(oldUser);
             habitDSL.createHabit(oldHabit);
             authDSL.login(newUser);
-            var idDTO = habitDSL.createHabit(newHabit);
-
-
+            //var idDTO = habitDSL.createHabit(newHabit);
 
     }
 }
