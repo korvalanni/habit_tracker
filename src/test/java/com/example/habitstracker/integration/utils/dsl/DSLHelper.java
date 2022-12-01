@@ -26,6 +26,13 @@ public class DSLHelper {
         return given().header(HttpHeaders.AUTHORIZATION, "Bearer " + loginUsers.get(selectedUsername));
     }
 
+    /*
+     * Возвращает имя залогиненного пользователя
+     */
+    public static String getSelectedUsername() {
+        return selectedUsername;
+    }
+
     /**
      * Установить имя пользователя, от имени которого будем делать запросы
      */
