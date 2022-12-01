@@ -1,7 +1,7 @@
 package com.example.habitstracker.unit.tests;
 
 import com.example.habitstracker.exceptions.HabitListNotFoundException;
-import com.example.habitstracker.mappers.HabitListMapper;
+import com.example.habitstracker.mappers.HabitListDeserializer;
 import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.repository.HabitListRepository;
 import com.example.habitstracker.services.HabitListService;
@@ -9,7 +9,6 @@ import com.example.habitstracker.services.MapperService;
 import com.example.openapi.dto.HabitListDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -28,7 +27,7 @@ public class HabitListServiceTest extends AbstractUnitTest {
 
         habitListService = new HabitListService(habitListRepository, mapperService);
 
-        setupMapperService(HabitListDTO.class, HabitList.class, new HabitListMapper.Deserializer());
+        setupMapperService(HabitListDTO.class, HabitList.class, new HabitListDeserializer());
     }
 
     /**

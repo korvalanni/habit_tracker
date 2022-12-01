@@ -35,6 +35,6 @@ public abstract class AbstractIntegrationTest {
     @AfterEach
     public void afterTest() {
         CleanerService.clean();
-        DSLHelper.setToken(null);
+        DSLHelper.clean();
     }
 }

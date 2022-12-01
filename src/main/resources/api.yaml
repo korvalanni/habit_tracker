@@ -256,15 +256,15 @@ components:
           type: string
           x-constraints:
             - "@NotNull(message = \"Title should not be null\")"
-            - "@NotBlank"
-            - "@Size(max = 50, message = \"Too long username\")"
+            - "@NotBlank(message = \"Title should not be blank\")"
+            - "@Size(max = 50, message = \"Too long title\")"
         description:
           description: Полное описание привычки
           type: string
           x-constraints:
             - "@NotNull(message = \"Description should not be null\")"
-            - "@NotBlank"
-            - "@Size(max = 150, message = \"Too long username\")"
+            - "@NotBlank(message = \"Description should not be null\")"
+            - "@Size(max = 150, message = \"Too long description\")"
         priority:
           $ref: '#/components/schemas/Priority'
         color:
@@ -274,7 +274,7 @@ components:
           type: integer
           format: int64
           x-constraints:
-            - "@Positive"
+            - "@Positive(message = \"Repeats should be positive number\")"
         done_dates:
           description: Список дат, когда привычка была отмечена как выполненная
           type: array
@@ -299,12 +299,12 @@ components:
           description: Имя списка привычек
           type: string
           x-constraints:
-            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
-            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
-            - "@NotNull(message = \"Name should not be null\")"
-            - "@NotBlank"
-            - "@Size(min = 3, message = \"Too short username\")"
-            - "@Size(max = 20, message = \"Too long username\")"
+            - "@AtLeastOneLetter(message = \"Habit list name must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Habit list name can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Habit list name should not be null\")"
+            - "@NotBlank(message = \"Habit list name should not be blank\")"
+            - "@Size(min = 3, message = \"Too short habit list name\")"
+            - "@Size(max = 20, message = \"Too long habit list name\")"
         habits:
           description: Список привычек
           type: array
@@ -337,9 +337,9 @@ components:
           description: Имя сущности
           type: string
           x-constraints:
-            - "@NotBlank"
-            - "@Size(min = 3, message = \"Too short username\")"
-            - "@Size(max = 20, message = \"Too long username\")"
+            - "@NotBlank(message = \"Name should not be blank\")"
+            - "@Size(min = 3, message = \"Too short name\")"
+            - "@Size(max = 20, message = \"Too long name\")"
       required:
         - name
 
@@ -352,9 +352,9 @@ components:
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
-            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Username can contains only letters, digits or underscore\")"
             - "@NotNull(message = \"Username should not be null\")"
-            - "@NotBlank"
+            - "@NotBlank(message = \"Username should not be blank\")"
             - "@Size(min = 3, message = \"Too short username\")"
             - "@Size(max = 20, message = \"Too long username\")"
             # todo: check only latin
@@ -371,9 +371,9 @@ components:
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
-            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Habit list name can contains only letters, digits or underscore\")"
             - "@NotNull(message = \"Habit list name should not be null\")"
-            - "@NotBlank"
+            - "@NotBlank(message = \"Habit list name should not be blank\")"
             - "@Size(min = 3, message = \"Too short habit list name\")"
             - "@Size(max = 20, message = \"Too long habit list name\")"
       required:
@@ -390,9 +390,9 @@ components:
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
-            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Username can contains only letters, digits or underscore\")"
             - "@NotNull(message = \"Username should not be null\")"
-            - "@NotBlank"
+            - "@NotBlank(message = \"Username should not be null\")"
             - "@Size(min = 3, message = \"Too short username\")"
             - "@Size(max = 20, message = \"Too long username\")"
             # todo: check only latin
@@ -401,9 +401,9 @@ components:
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
-            - "@OnlyLettersDigitsUnderscore(message = \"Field can contains only letters, digits or underscore\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Habit list name can contains only letters, digits or underscore\")"
             - "@NotNull(message = \"Habit list name should not be null\")"
-            - "@NotBlank"
+            - "@NotBlank(message = \"Habit list name should not be blank\")"
             - "@Size(min = 3, message = \"Too short habit list name\")"
             - "@Size(max = 20, message = \"Too long habit list name\")"
 
@@ -414,9 +414,22 @@ components:
         username:
           description: Имя пользователя
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
+            - "@OnlyLettersDigitsUnderscore(message = \"Username can contains only letters, digits or underscore\")"
+            - "@NotNull(message = \"Username should not be null\")"
+            - "@NotBlank(message = \"Username should not be null\")"
+            - "@Size(min = 3, message = \"Too short username\")"
+            - "@Size(max = 20, message = \"Too long username\")"
+            # todo: check only latin
         password:
           description: Пароль пользователя
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This password must contains at least one character\")"
+            - "@AtLeastOneDigit(message = \"This password must contains at least one digit\")"
+            - "@NotNull(message = \"Password should not be null\")"
+            - "@Size(min = 8, message = \"Too short password\")"
       required:
         - username
         - password
@@ -431,6 +444,11 @@ components:
         newPassword:
           description: Новый пароль
           type: string
+          x-constraints:
+            - "@AtLeastOneLetter(message = \"This password must contains at least one character\")"
+            - "@AtLeastOneDigit(message = \"This password must contains at least one digit\")"
+            - "@NotNull(message = \"Password should not be null\")"
+            - "@Size(min = 8, message = \"Too short password\")"
       required:
         - oldPassword
         - newPassword

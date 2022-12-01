@@ -26,7 +26,9 @@ public class MapperService {
                 .getBeansOfType(Mapper.class)
                 .values()
                 .stream()
-                .filter(item -> item.getFromType().equals(from.getClass()) && item.getToType().equals(to.getClass()))
+                .filter(item ->
+                        item.getFromType().isAssignableFrom(from.getClass())
+                                && item.getToType().isAssignableFrom(to.getClass()))
                 .findFirst()
                 .ifPresentOrElse(mapper -> mapper.map(from, to), () -> {
                     throw new MapperNotFound(from.getClass().getTypeName(), to.getClass().getTypeName());

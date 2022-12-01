@@ -48,6 +48,7 @@ public class AuthDSL {
         // @formatter:on
 
         CleanerService.addTask(() -> {
+            DSLHelper.selectUsername(user.getUsername());
             if (DSLHelper.getToken() == null) {
                 try {
                     login(user);
@@ -96,6 +97,7 @@ public class AuthDSL {
 
         if (result.getStatusCode() == 200) {
             CleanerService.addTask(() -> {
+                DSLHelper.selectUsername(user.getUsername());
                 if (DSLHelper.getToken() == null) {
                     try {
                         login(user);
@@ -134,6 +136,7 @@ public class AuthDSL {
                 .statusCode(200);
         // @formatter:on
 
+        DSLHelper.selectUsername(user.getUsername());
         DSLHelper.setToken(response.extract().header(HttpHeaders.AUTHORIZATION).split(" ")[1]);
     }
 }
