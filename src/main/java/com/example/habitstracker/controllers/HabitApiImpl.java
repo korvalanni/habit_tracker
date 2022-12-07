@@ -71,8 +71,9 @@ public class HabitApiImpl implements HabitApi
     {
         log.info("Get habit with id = " + id);
 
-        if(isNotUserHabit(id))
-            throw new HabitPermissionException(id);
+        if(isNotUserHabit(id)){
+            System.out.println("я сгенерил исключение");
+            throw new HabitPermissionException(id);}
 
         HabitDTO habitDTO = new HabitDTO();
         mapperService.transform(habitService.getHabit(id), habitDTO);
