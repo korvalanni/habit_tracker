@@ -28,6 +28,6 @@ jobs:
           # context: .
           # platforms: linux/arm64/v8
           push: true
-          tags: smoothdenis/habit-tracker:latest
+          tags: korvalanni/habit_tracker:latest
           # cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/habit-tracker:buildcache
           # cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/habit-tracker:buildcache,mode=max
