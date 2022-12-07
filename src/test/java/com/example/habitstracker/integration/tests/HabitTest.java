@@ -158,9 +158,8 @@ class HabitTest extends AbstractIntegrationTest {
                                          .asString();
             // @formatter:on
             System.out.println(response);
-            //{"timestamp":1670207908825,"status":500,"error":"Internal Server Error","path":"/habit/get_habit/1"}
-            //надо {"codeError":"HABIT_PERMISSION_EXCEPTION","message":"Non-authorized user has habit with id %s"}
-            var result = objectMapper.readValue(response, HabitPermissionException.class);
+
+            var result = objectMapper.readValue(response, ErrorResponseDTO.class);
 
             var expected = getExpected(oldHabitId);
             Assertions.assertEquals(expected, result);

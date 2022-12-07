@@ -15,7 +15,8 @@ import java.util.List;
  */
 @ControllerAdvice
 public class ExceptionHandlers {
-    @ExceptionHandler({HabitNotFoundException.class, UserExistException.class, UserNotFoundException.class})
+    @ExceptionHandler({HabitNotFoundException.class, UserExistException.class, UserNotFoundException.class,
+            HabitPermissionException.class})
     public ResponseEntity<ErrorResponseDTO> exceptionHandler(RepresentableException exception) {
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO()
                 .codeError(exception.getCode())
