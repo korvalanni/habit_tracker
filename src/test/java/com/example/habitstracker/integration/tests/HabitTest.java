@@ -72,12 +72,12 @@ class HabitTest extends AbstractIntegrationTest {
     @Test
     void test_createHabit() throws JsonProcessingException {
         authDSL.login(oldUser);
-        IdDTO idDTO = habitDSL.createHabit(oldHabit);
+        habitDSL.createHabit(oldHabit);
 
         List<Habit> habits = habitService.getHabits();
 
         Assertions.assertEquals(1, habits.size());
-        Assertions.assertEquals(idDTO.getId(), habits.get(0).getId());
+        Assertions.assertEquals(oldHabit.getId(), habits.get(0).getId());
     }
 
     /**
@@ -117,8 +117,8 @@ class HabitTest extends AbstractIntegrationTest {
     @Test
     void test_updateHabit() throws JsonProcessingException {
         authDSL.login(oldUser);
-        IdDTO idDTO = habitDSL.createHabit(oldHabit);
-        String id = idDTO.getId().toString();
+        habitDSL.createHabit(oldHabit);
+        String id = oldHabit.getId().toString();
 
         oldHabit.setTitle("Test1");
         oldHabit.setDescription("Description new");
