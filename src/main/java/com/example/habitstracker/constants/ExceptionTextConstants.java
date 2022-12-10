@@ -16,5 +16,5 @@ public class ExceptionTextConstants {
     public static final String USER_ALREADY_EXISTS = "User with username %s has already registered";
     public static final String USER_NOT_FOUND_ID = "User with id %s has not found";
     public static final String USER_NOT_FOUND_USERNAME = "User with username %s has not found";
-    public static final String HABIT_PERMISSION_EXCEPTION = "Non-authorized user has habit with id %s";
+    public static final String HABIT_PERMISSION_EXCEPTION = "Trying to edit another user habit with id %s";
 }

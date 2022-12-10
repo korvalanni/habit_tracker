@@ -68,6 +68,8 @@ public class HabitService {
             dataBaseHabit.setRepeats(updatedHabit.getRepeats());
         if (updatedHabit.getDescription() != null)
             dataBaseHabit.setDescription(updatedHabit.getDescription());
+        if (updatedHabit.getDoneDates() != null)
+            dataBaseHabit.setDoneDates(updatedHabit.getDoneDates());
         
         habitRepository.save(dataBaseHabit);
     }

@@ -57,14 +57,14 @@ public class UserTest extends AbstractIntegrationTest {
 
         userDSL.updatePassword(oldPassword, user.getPassword());
 
-        var values = new HashMap<String, String>();
+        HashMap<String, String> values = new HashMap<String, String>();
         values.put("username", user.getUsername());
         values.put("password", oldPassword);
-        var json = objectMapper.writeValueAsString(values);
+        String json = objectMapper.writeValueAsString(values);
 
-        var exception = new IncorrectCredentialsException();
+        IncorrectCredentialsException exception = new IncorrectCredentialsException();
         // @formatter:off
-        var response = given()
+        String response = given()
                 .contentType(ContentType.JSON)
                 .body(json)
                 .when()
@@ -72,9 +72,9 @@ public class UserTest extends AbstractIntegrationTest {
                 .getBody()
                 .asString();
         // @formatter:on
-        var result = objectMapper.readValue(response, ErrorResponseDTO.class);
+        ErrorResponseDTO result = objectMapper.readValue(response, ErrorResponseDTO.class);
 
-        var expected = new ErrorResponseDTO().message(exception.getMessage()).codeError(exception.getCode());
+        ErrorResponseDTO expected = new ErrorResponseDTO().message(exception.getMessage()).codeError(exception.getCode());
 
         Assertions.assertEquals(expected, result);
 

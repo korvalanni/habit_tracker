@@ -2,6 +2,7 @@ package com.example.habitstracker.integration.tests;
 
 import com.example.habitstracker.integration.utils.TestUserBuilder;
 import com.example.habitstracker.models.Habit;
+import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.services.HabitListService;
 import com.example.habitstracker.services.MapperService;
@@ -35,37 +36,33 @@ public class HabitListTest extends AbstractIntegrationTest {
         authDSL.login(user);
         habitDSL.createHabit(habit);
         user.getHabitList().setHabits(List.of(habit));
-
     }
 
     @Test
     void test_getHabitList() throws JsonProcessingException {
 
 
-        var habitList = user.getHabitList();
-        var expectedHabitListDTO = new HabitListDTO();
+        HabitList habitList = user.getHabitList();
+        HabitListDTO expectedHabitListDTO = new HabitListDTO();
         mapperService.transform(habitList, expectedHabitListDTO);
 
 
-        var acceptedHabitListDTO = habitListDSL.getHabitList();
+        HabitListDTO acceptedHabitListDTO = habitListDSL.getHabitList();
 
         Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);
     }
 
     @Test
     void test_updateHabit() throws JsonProcessingException {
-        var habitList = user.getHabitList();
-        var newName = "new";
+        HabitList habitList = user.getHabitList();
+        String newName = "new";
         habitList.setName(newName);
 
-        var expectedHabitListDTO = new HabitListDTO();
+        HabitListDTO expectedHabitListDTO = new HabitListDTO();
         mapperService.transform(habitList, expectedHabitListDTO);
         habitListDSL.updateHabitList(newName);
-        var acceptedHabitListDTO = habitListDSL.getHabitList();
+        HabitListDTO acceptedHabitListDTO = habitListDSL.getHabitList();
 
-        Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);
-
-    }
-
-
+        Assertions.assertEquals(expectedHabitListDTO, acceptedHabitListDTO);        
+    }    
 }

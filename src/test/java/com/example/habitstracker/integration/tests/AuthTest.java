@@ -56,8 +56,8 @@ class AuthTest extends AbstractIntegrationTest {
     void test_registerUserTwice() throws JsonProcessingException {
         authDSL.register(user);
 
-        var exception = new UserExistException(user.getUsername());
-        var expected = new ErrorResponseDTO()
+        UserExistException exception = new UserExistException(user.getUsername());
+        ErrorResponseDTO expected = new ErrorResponseDTO()
                 .codeError(ErrorCodes.USER_EXISTS.getCode())
                 .message(exception.getMessage());
 
@@ -88,16 +88,16 @@ class AuthTest extends AbstractIntegrationTest {
         UserEntity newUser = (UserEntity) user.clone();
         newUser.setPassword("X");
 
-        var exception = new IncorrectCredentialsException();
-        var expected = new ErrorResponseDTO()
+        IncorrectCredentialsException exception = new IncorrectCredentialsException();
+        ErrorResponseDTO expected = new ErrorResponseDTO()
                 .codeError(ErrorCodes.INCORRECT_LOGIN_PASSWORD.getCode())
                 .message(exception.getMessage());
 
         // @formatter:off
-        var dto = new LoginPasswordDTO();
+        LoginPasswordDTO dto = new LoginPasswordDTO();
         mapperService.transform(newUser, dto);
 
-        var response = given()
+        String response = given()
                 .contentType(ContentType.JSON)
                 .body(objectMapper.writeValueAsString(dto))
                 .when()
@@ -106,7 +106,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .asString();
         // @formatter:on
 
-        var result = objectMapper.readValue(response, ErrorResponseDTO.class);
+        ErrorResponseDTO result = objectMapper.readValue(response, ErrorResponseDTO.class);
         Assertions.assertEquals(expected, result);
     }
 }
