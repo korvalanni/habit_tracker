@@ -1,5 +1,7 @@
 package com.example.habitstracker.configuration;
 
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,8 +15,9 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 public class SwaggerConfig {
     @Bean
     public OpenAPI productApi() {
-        // open swagger: http://localhost:8080/swagger-ui/index.html#/
         return new OpenAPI()
+                .addServersItem(new Server().url("https://localhost:8080/"))
+                .addServersItem(new Server().url("http://localhost:8080/"))
                 .addSecurityItem(new SecurityRequirement().addList("JWT"))
                 .components(
                         new Components()
@@ -26,6 +29,6 @@ public class SwaggerConfig {
                                                 .bearerFormat("JWT")
                                 )
                 )
-                .info(new Info().title("Habit tracker"));
+                .info(new Info().title("Habit tracker").version("1.0.0").license(new License().name("MIT")));
     }
 }
