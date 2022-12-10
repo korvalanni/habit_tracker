@@ -48,3 +48,11 @@ app.jwt.secret=veryverybigsecretveryverybigsecretveryverybigsecretveryverybigsec
 ```properties
 app.jwt.expire=600000000000
 ```
+
+# PMD
+
+Как запустить PMD?
+1) Идем в Edit configurations...
+2) Добавить новую Maven конфигурацию
+3) В поле Run пишем "pmd:pmd"
+4) При запуске этой конфигурации получаем отчет. Его можно найти по пути **/target/site/pmd.html
