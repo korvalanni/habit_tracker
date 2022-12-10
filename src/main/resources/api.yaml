@@ -400,11 +400,11 @@ components:
         - habitListName
 
     UserWithoutPasswordDTO:
-      description: TODO
+      description: Описание всех полей пользователя за исключением пароля
       type: object
       properties:
         username:
-          description: TODO
+          description: Никнейм пользователя
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This username must contains at least one character\")"
@@ -415,7 +415,7 @@ components:
             - "@Size(max = 20, message = \"Too long username\")"
             # todo: check only latin
         habitListName:
-          description: TODO
+          description: Имя списка привычек
           type: string
           x-constraints:
             - "@AtLeastOneLetter(message = \"This habit list name must contains at least one character\")"
