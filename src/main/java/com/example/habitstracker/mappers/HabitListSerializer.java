@@ -23,7 +23,6 @@ public class HabitListSerializer extends Mapper<HabitList, HabitListDTO> {
 
     @Override
     public void map(HabitList from, HabitListDTO to) {
-        Long id = from.getId();
         String name = from.getName();
 
         List<HabitDTO> habits = from
