@@ -2,7 +2,6 @@ package com.example.habitstracker.controllers;
 
 import com.example.habitstracker.exceptions.HabitPermissionException;
 import com.example.habitstracker.models.Habit;
-import com.example.habitstracker.models.HabitList;
 import com.example.habitstracker.models.UserEntity;
 import com.example.habitstracker.security.UserCredentials;
 import com.example.habitstracker.services.HabitService;
@@ -18,31 +17,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Objects;
-
 /**
  * Контроллер для привычки
  */
 @RestController
-public class HabitApiImpl implements HabitApi
-{
+public class HabitApiImpl implements HabitApi {
     private final HabitService habitService;
-    private final MapperService mapperService;
     private final UserService userService;
+    private final MapperService mapperService;
+
     private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
     @Autowired
-    public HabitApiImpl(HabitService habitService, MapperService mapperService, UserService userService)
-    {
+    public HabitApiImpl(HabitService habitService, MapperService mapperService, UserService userService) {
         this.habitService = habitService;
         this.mapperService = mapperService;
         this.userService = userService;
     }
 
     @Override
-    public ResponseEntity<IdDTO> createHabit(HabitDTO habitDTO)
-    {
+    public ResponseEntity<IdDTO> createHabit(HabitDTO habitDTO) {
         UserCredentials credentials = (UserCredentials) SecurityContextHolder.getContext().getAuthentication().getCredentials();
 
         log.info("Create " + habitDTO.toInlineString());
@@ -54,26 +48,21 @@ public class HabitApiImpl implements HabitApi
     }
 
     @Override
-    public ResponseEntity<Void> deleteHabit(Long id)
-    {
-        log.info("Delete habit " + id);
+    public ResponseEntity<Void> deleteHabit(Long id) {
+        log.info("Delete habit with " + id);
 
-        if(isNotUserHabit(id))
+        if (!isHabitBelongUser(id))
             throw new HabitPermissionException(id);
-
 
         habitService.deleteHabit(id);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<HabitDTO> getHabit(Long id)
-    {
+    public ResponseEntity<HabitDTO> getHabit(Long id) {
         log.info("Get habit with id = " + id);
 
-        if(isNotUserHabit(id)){
-            System.out.println("я сгенерил исключение");
-            throw new HabitPermissionException(id);}
+        if (!isHabitBelongUser(id)) throw new HabitPermissionException(id);
 
         HabitDTO habitDTO = new HabitDTO();
         mapperService.transform(habitService.getHabit(id), habitDTO);
@@ -81,10 +70,9 @@ public class HabitApiImpl implements HabitApi
     }
 
     @Override
-    public ResponseEntity<Void> updateHabit(Long id, HabitDTO habitDTO)
-    {
+    public ResponseEntity<Void> updateHabit(Long id, HabitDTO habitDTO) {
         log.info("Update habit with id = " + id + " new values " + habitDTO.toInlineString());
-        if(isNotUserHabit(id))
+        if (!isHabitBelongUser(id))
             throw new HabitPermissionException(id);
 
         Habit habit = new Habit();
@@ -93,13 +81,13 @@ public class HabitApiImpl implements HabitApi
         return ResponseEntity.ok().build();
     }
 
-    private boolean isNotUserHabit(Long id){
+    private boolean isHabitBelongUser(Long id) {
         UserCredentials userCredentials = (UserCredentials) SecurityContextHolder.getContext()
                 .getAuthentication().getCredentials();
         UserEntity user = userService.getById(userCredentials.id());
-        var habitListRegisteredId = user.getHabitList().getId();
-        var habitHabitListId = habitService.getHabit(id).getHabitList().getId();
+        Long habitListRegisteredId = user.getHabitList().getId();
+        Long habitHabitListId = habitService.getHabit(id).getHabitList().getId();
 
-        return !habitHabitListId.equals(habitListRegisteredId);
+        return habitHabitListId.equals(habitListRegisteredId);
     }
 }

@@ -88,5 +88,5 @@ public class DBTest extends AbstractIntegrationTest {
         } finally {
             userRepository.delete(user);
         }
-    }
+    }    
 }
