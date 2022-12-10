@@ -62,7 +62,8 @@ public class HabitApiImpl implements HabitApi {
     public ResponseEntity<HabitDTO> getHabit(Long id) {
         log.info("Get habit with id = " + id);
 
-        if (!isHabitBelongUser(id)) throw new HabitPermissionException(id);
+        if (!isHabitBelongUser(id))
+            throw new HabitPermissionException(id);
 
         HabitDTO habitDTO = new HabitDTO();
         mapperService.transform(habitService.getHabit(id), habitDTO);
