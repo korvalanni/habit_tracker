@@ -16,7 +16,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI productApi() {
         return new OpenAPI()
-                .addServersItem(new Server().url("https://localhost:8080/"))
+                .addServersItem(new Server().url("https://habit.quantumwijeeworks.ru/"))
                 .addServersItem(new Server().url("http://localhost:8080/"))
                 .addSecurityItem(new SecurityRequirement().addList("JWT"))
                 .components(
