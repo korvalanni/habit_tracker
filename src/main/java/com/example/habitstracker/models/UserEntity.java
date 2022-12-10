@@ -2,7 +2,6 @@ package com.example.habitstracker.models;
 
 import com.example.habitstracker.constants.TableNameConstants;
 import com.example.habitstracker.models.listeners.UserListener;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,11 +1,9 @@
 package com.example.habitstracker.models;
 
 import com.example.habitstracker.constants.TableNameConstants;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
