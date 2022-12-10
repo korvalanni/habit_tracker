@@ -73,7 +73,7 @@ class AuthTest extends AbstractIntegrationTest {
                 .getBody()
                 .asString();
         // @formatter:on
-        System.out.println(response);
+
         var result = objectMapper.readValue(response, ErrorResponseDTO.class);
         Assertions.assertEquals(expected, result);
     }
