@@ -4,8 +4,6 @@ info:
   title: Habit Tracker
   license:
     name: MIT
-servers:
-  - url: http://localhost:8080/
 paths:
   /auth/registration:
     post:

@@ -1,6 +1,8 @@
 package com.example.habitstracker.configuration;
 
 import com.example.habitstracker.constants.OpenApiConstants;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +16,9 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 public class SwaggerConfig {
     @Bean
     public OpenAPI productApi() {
-        // open swagger: http://localhost:8080/swagger-ui/index.html#/
         return new OpenAPI()
+                .addServersItem(new Server().url("https://habit.quantumwijeeworks.ru/"))
+                .addServersItem(new Server().url("http://localhost:8080/"))
                 .addSecurityItem(new SecurityRequirement().addList(OpenApiConstants.SECURITY_SCHEME_NAME))
                 .components(
                         new Components()
@@ -27,6 +30,6 @@ public class SwaggerConfig {
                                                 .bearerFormat(OpenApiConstants.SECURITY_SCHEME_NAME)
                                 )
                 )
-                .info(new Info().title(OpenApiConstants.APP_NAME));
+                .info(new Info().title(OpenApiConstants.APP_NAME).version("1.0.0").license(new License().name("MIT")));
     }
 }
