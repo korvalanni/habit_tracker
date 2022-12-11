@@ -1,5 +1,6 @@
 package com.example.habitstracker.configuration;
 
+import com.example.habitstracker.constants.OpenApiConstants;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
@@ -18,17 +19,17 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .addServersItem(new Server().url("https://habit.quantumwijeeworks.ru/"))
                 .addServersItem(new Server().url("http://localhost:8080/"))
-                .addSecurityItem(new SecurityRequirement().addList("JWT"))
+                .addSecurityItem(new SecurityRequirement().addList(OpenApiConstants.SECURITY_SCHEME_NAME))
                 .components(
                         new Components()
-                                .addSecuritySchemes("JWT",
+                                .addSecuritySchemes(OpenApiConstants.SECURITY_SCHEME_NAME,
                                         new SecurityScheme()
-                                                .name("JWT")
+                                                .name(OpenApiConstants.SECURITY_SCHEME_NAME)
                                                 .type(SecurityScheme.Type.HTTP)
-                                                .scheme("bearer")
-                                                .bearerFormat("JWT")
+                                                .scheme(OpenApiConstants.SCHEME_NAME)
+                                                .bearerFormat(OpenApiConstants.SECURITY_SCHEME_NAME)
                                 )
                 )
-                .info(new Info().title("Habit tracker").version("1.0.0").license(new License().name("MIT")));
+                .info(new Info().title(OpenApiConstants.APP_NAME).version("1.0.0").license(new License().name("MIT")));
     }
 }

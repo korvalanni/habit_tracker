@@ -1,26 +1,25 @@
 package com.example.habitstracker.models;
 
-import lombok.EqualsAndHashCode;
+import com.example.habitstracker.constants.TableNameConstants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "habit_list")
+@Table(name = TableNameConstants.HABIT_LIST)
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class HabitList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "habitList")
+    @OneToMany(mappedBy = "habitList", cascade = CascadeType.ALL)
     private List<Habit> habits;
 
     public HabitList(String name) {
@@ -34,4 +33,16 @@ public class HabitList {
         this.habits = habits;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HabitList habitList = (HabitList) o;
+        return Objects.equals(habits, habitList.habits);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(habits);
+    }
 }

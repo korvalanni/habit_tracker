@@ -1,12 +1,13 @@
 package com.example.habitstracker.exceptions;
 
+import com.example.habitstracker.constants.ExceptionTextConstants;
+
 public class HabitListNotFoundException extends RuntimeException {
     public HabitListNotFoundException(Long id) {
-        super(String.format("HabitList with id id%s has not found", id));
+        super(ExceptionTextConstants.HABIT_LIST_NOT_FOUND_ID.formatted(id));
     }
 
     public HabitListNotFoundException(String name){
-        super(String.format("HabitLists with name name%s has not found", name));
+        super(ExceptionTextConstants.HABIT_LIST_NOT_FOUND_USERNAME.formatted(name));
     }
-
 }

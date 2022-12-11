@@ -1,11 +1,13 @@
 package com.example.habitstracker.exceptions;
 
-public class UserNotFoundException extends RuntimeException {
+import com.example.habitstracker.constants.ExceptionTextConstants;
+
+public class UserNotFoundException extends RepresentableException {
     public UserNotFoundException(Long id) {
-        super(String.format("User with id%s has not found", id.toString()));
+        super(ExceptionTextConstants.USER_NOT_FOUND_ID.formatted(id), ErrorCodes.USER_NOT_FOUND);
     }
 
     public UserNotFoundException(String username){
-        super(String.format("User with username%s has not found", username));
+        super(ExceptionTextConstants.USER_NOT_FOUND_USERNAME.formatted(username), ErrorCodes.USER_NOT_FOUND);
     }
 }
